@@ -25,7 +25,7 @@ class CdnFacadeProvider implements CdnFacadeProviderInterface{
 
 
     public function load(){
-        dd('LOADDD 2222');
+        dd('TESTING');
     }
 
 
