@@ -41,7 +41,7 @@ class CdnCommand extends Command {
      */
     public function fire()
     {
-        dd($this->cdn->make());
+        $this->cdn->make();
     }
 
 	/**
