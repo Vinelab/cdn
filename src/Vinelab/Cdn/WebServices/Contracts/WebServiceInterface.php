@@ -4,7 +4,8 @@
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
-interface AmazonWebServiceInterface{
+interface WebServiceInterface{
 
+    public function connect($credentials);
 
 } 

@@ -6,6 +6,6 @@
 
 interface DirectoryManagerInterface {
 
-    public function directoryReader(Array $included_directories, $ignored_patterns);
+    public function directoryReader(Array $include, Array $ignore);
 
 } 

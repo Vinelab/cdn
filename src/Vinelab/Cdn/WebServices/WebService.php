@@ -4,8 +4,7 @@
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
-abstract class WebService {
-
+abstract class WebService{
 
 
 } 

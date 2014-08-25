@@ -6,6 +6,6 @@
 
 interface CdnInterface {
 
-    public function make();
+    public function push();
 
 } 

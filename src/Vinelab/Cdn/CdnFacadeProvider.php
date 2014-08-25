@@ -14,7 +14,7 @@ class CdnFacadeProvider implements CdnFacadeProviderInterface{
     protected $aws;
 
     protected $directory_manager;
-
+//TODO: remove all useless injections
     public function __construct(AmazonWebServiceInterface $aws,
                                 DirectoryManagerInterface $directory_manager
                                 )

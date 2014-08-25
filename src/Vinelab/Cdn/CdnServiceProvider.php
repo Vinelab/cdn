@@ -43,14 +43,10 @@ class CdnServiceProvider extends ServiceProvider {
         );
 
         $this->app->bind(
-            'Vinelab\Cdn\WebServices\Contracts\AmazonWebServiceInterface',
+            'Vinelab\Cdn\WebServices\Contracts\WebServiceInterface',
             'Vinelab\Cdn\WebServices\AmazonWebService'
         );
 
-        $this->app->bind(
-            'Vinelab\Cdn\WebServices\Contracts\WebServiceInterface',
-            'Vinelab\Cdn\WebServices\WebService'
-        );
 
         $this->app->bind(
             'Vinelab\Cdn\Contracts\DirectoryManagerInterface',
@@ -64,11 +60,12 @@ class CdnServiceProvider extends ServiceProvider {
 
 
 
+
         // register the commands:
         //-----------------------
         $this->app['cdn.push'] = $this->app->share(function()
             {
-                return  $this->app->make('Vinelab\Cdn\Commands\CdnCommand');
+                return  $this->app->make('Vinelab\Cdn\Commands\PushCommand');
             });
 
         $this->commands('cdn.push');
