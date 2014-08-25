@@ -4,9 +4,9 @@
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
+use \Illuminate\Config\Repository;
 use Vinelab\Cdn\Contracts\CdnInterface;
 use Vinelab\Cdn\Contracts\DirectoryManagerInterface;
-use \Illuminate\Config\Repository;
 
 class Cdn implements CdnInterface{
 
@@ -17,7 +17,11 @@ class Cdn implements CdnInterface{
      */
     protected $directory_manager;
 
-
+    /**
+     * this allow to access the config file
+     *
+     * @var \Illuminate\Config\Repository
+     */
     protected $config;
 
     /**
@@ -53,7 +57,12 @@ class Cdn implements CdnInterface{
     }
 
     /**
-     * Run the CDN
+     * Will be called from the Vinelab\Cdn\PushCommand class on Fire()
+     *
+     * It call the directory reader (to read allowed files for upload)
+     * It call ... (to generate a URL for each path)
+     * It call ... (to upload files to the CDN)
+     *
      */
     public function push(){
 
@@ -62,34 +71,15 @@ class Cdn implements CdnInterface{
 
         $directories = $this->directory_manager->directoryReader($included_dir, $excluded_dir);
 
+        // TODO: to continue from here..
         dd($directories);
-
 
 
 //        $cdn_credentials = $this->config->get('cdn::cdn.providers.'.$this->default_provider);
 //        $this->web_service->connect($cdn_credentials);
 
-
 //        $this->establishConnection($default_provider);
 
-
-
-            /**
-             * 1.
-             * 2. call directory reader
-             * 3. call convert path to url
-             * 4. call upload files to cdn
-             */
-
     }
-
-
-
-
-
-
-
-
-
 
 }

@@ -4,96 +4,69 @@
 
 return [
 
-
     /*
     |--------------------------------------------------------------------------
-    | CDN default provider
+    | Default CDN provider name
     |--------------------------------------------------------------------------
     |
-    | Specify the default CDN provider, to be used in the application
+    | Here you may specify which of the CDN providers below you wish
+	| to use as your default provider for all CDN work.
     |
     */
     'default' => 'aws-s3',
 
     /*
     |--------------------------------------------------------------------------
-    | CDN Providers Info
+    | CDN Providers
     |--------------------------------------------------------------------------
     |
-    |
+	| Here are each of the CDN providers setup for your application.
+	| Of course, examples of configuring each provider platform that is
+	| supported by Laravel is shown below to make development simple.
     |
     */
-
     'providers' => [
 
         'aws-s3' => [
-            /*
-            | Enter the CDN credentials here, to allow the application to
-            | upload your assets.
-            |
-            */
             'access_key'    => '',
             'secret_key'    => '',
-
         ],
-
-
-        'Cloudflare' => [
-
-            'KEY'    => '',
-            'SECRET' => '',
-
-        ]
-
-
 
     ],
 
-
     /*
-    | Specify which directories you want to include, for upload when
-    | running the [php artisan cdn:push]
+    | Specify which directories to be uploaded when running the
+    | [$ php artisan cdn:push] command
     |
-    | Enter the full path of directories and/or files (starting from the public
-    | directory as the root).
+    | Enter the full paths of directories (starting from the application root).
     |
     */
     'include'    => ['public', 'private'],
 
-
     /*
-    | Specify what to exclude from the above 'include' when uploading
+    | Specify what to exclude from the 'include' directories when uploading
     | to the CDN.
-    |
-    | Enter the full path of directories and/or files (starting from the public
-    | directory as the root).
     |
     */
     'exclude'    => [
-        'directories'   => [''],
+        'directories'   => ['public/uploads'],
         'files'         => ['README.md', 'LICENSE'],
         'extensions'    => ['.txt'],
         'pattern'       => '404.*'
     ],
 
-
-
-
     /*
-    | Set only the CDN url here.
+    | Set the CDN url. (without the bucket name)
     |
     */
     'url' => 'https://s3.amazonaws.com',
 
-
-
     /*
     | If you want all your 'included' assets to be uploaded to one bucket,
-    | then set your bucket name next to the '*'.
-
+    | then set your bucket name below.
+    |
     | And if you have multiple buckets (each for a specific directory),
-    | then you need to specify which directories need to uploaded to
-    | which buckets.
+    | then you need to specify each bucket and it's directories
     |
     | * Note: in case of multiple buckets remove the '*'.
     |
@@ -103,11 +76,5 @@ return [
 //        'your-js-bucket-name-here'  =>  ['public/js'],
 //        'your-css-bucket-name-here'  =>  ['public/css'],
     ],
-
-
-
-
-
-
 
 ];
