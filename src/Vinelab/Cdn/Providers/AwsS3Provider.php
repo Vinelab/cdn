@@ -1,11 +1,11 @@
-<?php namespace Vinelab\Cdn\WebServices;
+<?php namespace Vinelab\Cdn\Provider;
 
 /**
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
-use Vinelab\Cdn\WebServices\Contracts\WebServiceInterface;
+use Vinelab\Cdn\Providers\Contracts\ProviderInterface;
 
-class AmazonWebService extends WebService implements WebServiceInterface{
+class AwsS3Provider extends Provider implements ProviderInterface{
 
 
     public function __construct(){

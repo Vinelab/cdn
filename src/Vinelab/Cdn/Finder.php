@@ -5,24 +5,19 @@
  */
 
 use File;
-use Vinelab\Cdn\Contracts\DirectoryManagerInterface;
-use Symfony\Component\Finder\Finder;
+use Vinelab\Cdn\Contracts\FinderInterface;
+use Symfony\Component\Finder\Finder as SymfonyFinder;
+use Vinelab\Cdn\Contracts\PathsInterface;
+use Illuminate\Support\Collection;
 
-class DirectoryManager implements DirectoryManagerInterface{
+class Finder extends SymfonyFinder implements FinderInterface{
 
-    /**
-     * An instance of the Symfony Finder class
-     *
-     * @var \Symfony\Component\Finder\Finder
-     */
-    protected $finder;
+    protected $finder_helper;
 
-    /**
-     * @param Finder $finder
-     */
-    public function __construct(Finder $finder)
+    public function __construct(SymfonyFinder $finder_service)
     {
-        $this->finder = $finder;
+        $this->finder_service = $finder_service;
+        Parent::__construct();
     }
 
     /**
@@ -30,38 +25,42 @@ class DirectoryManager implements DirectoryManagerInterface{
      * in the included directories except all ignored
      * (directories, patterns, extensions and files)
      *
-     * @param array $include
-     * @param array $ignore
+     * @param Contracts\PathsInterface $paths
      *
+     * @internal param $
      * @return array
      */
-    public function directoryReader(Array $include, Array $ignore){
-
-        $directories = [];
+    public function read(PathsInterface $paths){
 
         // include the included directories
-        $this->finder->in($include);
+        $this->finder_service->in($paths->included_directories);
         //  ignored directories
-        $this->finder->exclude($ignore['directories']);
+        $this->finder_service->exclude($paths->excluded_directories);
         // exclude files with this extensions
-        foreach($ignore['extensions'] as $ext){
-            $this->finder->notName('*'.$ext);
+        foreach($paths->excluded_extensions as $extension){
+            $this->finder_service->notName('*'.$extension);
         }
         // exclude the regex pattern
-        $this->finder->notName($ignore['pattern']);
-
-
-        foreach ($this->finder->files() as $file) {
-//            echo $file->getRealpath() . PHP_EOL;
-            $directories[] =  $file->getRealpath();
+        foreach($paths->excluded_patterns as $pattern){
+            $this->finder_service->notName($pattern);
         }
 
-        return $directories;
+        // get all allowed paths and store them in an array
+        $allowed_paths = [];
+        foreach ($this->finder_service->files() as $file) {
+//            echo $file->getRealpath() . PHP_EOL;
+            $allowed_paths[] =  $file->getRealpath();
+        }
+
+        // store all allowed paths in the $paths object as collection
+        $paths->allowed_paths = new Collection($allowed_paths);
+
+        return $paths;
     }
 
 
 
-
+//TODO: will be removed from this class
     /**
      * convert the array of files paths to an an array of the files path and it's URL.
      * The url is built form the configuration provided in the config file
@@ -85,13 +84,6 @@ class DirectoryManager implements DirectoryManagerInterface{
          */
 
     }
-
-
-
-
-
-
-
 
 
 

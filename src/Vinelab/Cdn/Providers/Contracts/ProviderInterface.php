@@ -1,10 +1,10 @@
-<?php namespace Vinelab\Cdn\WebServices\Contracts;
+<?php namespace Vinelab\Cdn\Providers\Contracts;
 
 /**
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
-interface WebServiceInterface{
+interface ProviderInterface{
 
     public function connect($credentials);
 

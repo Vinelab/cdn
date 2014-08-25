@@ -43,14 +43,18 @@ class CdnServiceProvider extends ServiceProvider {
         );
 
         $this->app->bind(
-            'Vinelab\Cdn\WebServices\Contracts\WebServiceInterface',
-            'Vinelab\Cdn\WebServices\AmazonWebService'
+            'Vinelab\Cdn\Providers\Contracts\ProviderInterface',
+            'Vinelab\Cdn\Providers\AwsS3Provider'
         );
 
+        $this->app->bind(
+            'Vinelab\Cdn\Contracts\PathsInterface',
+            'Vinelab\Cdn\Paths'
+        );
 
         $this->app->bind(
-            'Vinelab\Cdn\Contracts\DirectoryManagerInterface',
-            'Vinelab\Cdn\DirectoryManager'
+            'Vinelab\Cdn\Contracts\FinderInterface',
+            'Vinelab\Cdn\Finder'
         );
 
         $this->app->bind(

@@ -6,55 +6,53 @@
 
 use \Illuminate\Config\Repository;
 use Vinelab\Cdn\Contracts\CdnInterface;
-use Vinelab\Cdn\Contracts\DirectoryManagerInterface;
+use Vinelab\Cdn\Contracts\FinderInterface;
+use Vinelab\Cdn\Contracts\PathsInterface;
 
+/**
+ * Class Cdn is the manager and base class
+ * @package Vinelab\Cdn
+ */
 class Cdn implements CdnInterface{
 
     /**
-     * An instance of the class responsible of reading directories
-     *
-     * @var Contracts\DirectoryManagerInterface
-     */
-    protected $directory_manager;
-
-    /**
-     * this allow to access the config file
+     * An object of the 'Repository' class that allows reading the laravel config files
      *
      * @var \Illuminate\Config\Repository
      */
     protected $config;
 
     /**
-     * The default web service provider (found in the config file)
+     * An instance of the finder class
      *
-     * @var string
+     * @var Contracts\
      */
-    protected $default_provider;
+    protected $finder;
 
     /**
-     * @param DirectoryManagerInterface $directory_manager
-     * @param Repository $config
+     * The object that will hold the directories configurations and the paths data
+     *
+     * @var Contracts\PathsInterface
      */
-    public function __construct(DirectoryManagerInterface $directory_manager,
-                                Repository $config)
+    protected $paths;
+
+    /**
+     * @param \Illuminate\Config\Repository $config
+     * @param FinderInterface $finder
+     * @param Contracts\PathsInterface $paths
+     *
+     * @internal param $
+     */
+    public function __construct(Repository $config,
+                                FinderInterface $finder,
+                                PathsInterface $paths
+                                )
     {
-        $this->directory_manager = $directory_manager;
-
-        $this->config = $config;
-
-        $this->configuration_reader();
+        $this->finder   = $finder;
+        $this->paths    = $paths;
+        $this->config   = $config;
     }
 
-    /**
-     * Read the default configurations from the config file and store them as
-     * properties of this class.
-     */
-    public function configuration_reader(){
-
-        // read the default CDN provider from the configuration file
-        $this->default_provider = $this->config->get('cdn::cdn.default');
-
-    }
 
     /**
      * Will be called from the Vinelab\Cdn\PushCommand class on Fire()
@@ -66,13 +64,17 @@ class Cdn implements CdnInterface{
      */
     public function push(){
 
-        $included_dir = $this->config->get('cdn::cdn.include');
-        $excluded_dir = $this->config->get('cdn::cdn.exclude');
+        // get configurations from the config file
+        $configurations = $this->config->get('cdn::cdn');
 
-        $directories = $this->directory_manager->directoryReader($included_dir, $excluded_dir);
+        // build a path object that contains the directories related configurations
+        $this->paths = $this->paths->parse($configurations);
+
+        // call the files finder to read files form the directories
+        $paths = $this->finder->read($this->paths);
 
         // TODO: to continue from here..
-        dd($directories);
+        dd($paths);
 
 
 //        $cdn_credentials = $this->config->get('cdn::cdn.providers.'.$this->default_provider);

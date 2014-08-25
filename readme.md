@@ -15,7 +15,7 @@ The package has special helpers for including assets in code, the helpers withh 
  - [Installation](#installation)
  - [Configuration](#configuration)
  - [Usage](#usage)
- - 
+
 ----------
 
 ## Installation

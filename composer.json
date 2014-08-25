@@ -25,5 +25,5 @@
             "Vinelab\\Cdn\\": "src/"
         }
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "stable"
 }

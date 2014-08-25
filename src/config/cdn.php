@@ -13,7 +13,16 @@ return [
 	| to use as your default provider for all CDN work.
     |
     */
-    'default' => 'aws-s3',
+    'default' => 'aws.s3',
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Set the CDN url. (without the bucket name)
+    |--------------------------------------------------------------------------
+    |
+    */
+    'url' => 'https://s3.amazonaws.com',
 
     /*
     |--------------------------------------------------------------------------
@@ -27,7 +36,37 @@ return [
     */
     'providers' => [
 
-        'aws-s3' => [
+        'aws' => [
+
+            's3' => [
+                'access_key'    => '111',
+                'secret_key'    => '222',
+            ],
+
+            'cloudfront' => [
+                'access_key'    => '',
+                'secret_key'    => '',
+            ],
+
+            /*
+            | If you want all your 'included' assets to be uploaded to one bucket,
+            | then set your bucket name below.
+            |
+            | And if you have multiple buckets (each for a specific directory),
+            | then you need to specify each bucket and it's directories
+            |
+            | * Note: in case of multiple buckets remove the '*'.
+            |
+            */
+            'buckets' => [
+                  'your-main-bucket-name-here' => '*',
+        //        'your-js-bucket-name-here'  =>  ['public/js'],
+        //        'your-css-bucket-name-here'  =>  ['public/css'],
+            ],
+
+        ],
+
+        'cloudflare' => [
             'access_key'    => '',
             'secret_key'    => '',
         ],
@@ -35,6 +74,10 @@ return [
     ],
 
     /*
+    |--------------------------------------------------------------------------
+    | Include
+    |--------------------------------------------------------------------------
+    |
     | Specify which directories to be uploaded when running the
     | [$ php artisan cdn:push] command
     |
@@ -44,6 +87,10 @@ return [
     'include'    => ['public', 'private'],
 
     /*
+    |--------------------------------------------------------------------------
+    | Exclude
+    |--------------------------------------------------------------------------
+    |
     | Specify what to exclude from the 'include' directories when uploading
     | to the CDN.
     |
@@ -52,29 +99,10 @@ return [
         'directories'   => ['public/uploads'],
         'files'         => ['README.md', 'LICENSE'],
         'extensions'    => ['.txt'],
-        'pattern'       => '404.*'
+        'patterns'       => ['404.*'],
     ],
 
-    /*
-    | Set the CDN url. (without the bucket name)
-    |
-    */
-    'url' => 'https://s3.amazonaws.com',
 
-    /*
-    | If you want all your 'included' assets to be uploaded to one bucket,
-    | then set your bucket name below.
-    |
-    | And if you have multiple buckets (each for a specific directory),
-    | then you need to specify each bucket and it's directories
-    |
-    | * Note: in case of multiple buckets remove the '*'.
-    |
-    */
-    'buckets' => [
-        'your-main-bucket-name-here' => '*',
-//        'your-js-bucket-name-here'  =>  ['public/js'],
-//        'your-css-bucket-name-here'  =>  ['public/css'],
-    ],
+
 
 ];
