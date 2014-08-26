@@ -19,7 +19,7 @@
     },
     "autoload": {
         "classmap": [
-            "src/migrations"
+            "tests/TestCase.php"
         ],
         "psr-0": {
             "Vinelab\\Cdn\\": "src/"

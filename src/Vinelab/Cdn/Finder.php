@@ -34,8 +34,12 @@ class Finder extends SymfonyFinder implements FinderInterface{
 
         // include the included directories
         $this->finder_service->in($paths->included_directories);
-        //  ignored directories
+        // exclude ignored directories
         $this->finder_service->exclude($paths->excluded_directories);
+
+        // exclude ignored files
+        // TODO: exclude this $paths->excluded_files
+
         // exclude files with this extensions
         foreach($paths->excluded_extensions as $extension){
             $this->finder_service->notName('*'.$extension);
