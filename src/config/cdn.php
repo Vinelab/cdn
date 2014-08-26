@@ -84,7 +84,12 @@ return [
     | Enter the full paths of directories (starting from the application root).
     |
     */
-    'include'    => ['public', 'private'],
+    'include'    => [
+        'directories'   => ['public', 'private'],
+        'files'         => [''],
+        'extensions'    => [''],
+        'patterns'      => [''],
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -99,7 +104,7 @@ return [
         'directories'   => ['public/uploads'],
         'files'         => ['README.md', 'LICENSE'],
         'extensions'    => ['.txt'],
-        'patterns'       => ['404.*'],
+        'patterns'      => ['404.*'],
     ],
 
 

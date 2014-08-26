@@ -14,38 +14,56 @@ class Paths implements PathsInterface{
     /**
      * @var Array
      */
-    protected $included_directories;
+    public $included_directories;
     /**
      * @var Array
      */
-    protected $excluded_directories;
+    public $included_files;
     /**
      * @var Array
      */
-    protected $excluded_files;
+    public $included_extensions;
     /**
      * @var Array
      */
-    protected $excluded_extensions;
+    public $included_patterns;
+
     /**
      * @var Array
      */
-    protected $excluded_patterns;
+    public $excluded_directories;
+    /**
+     * @var Array
+     */
+    public $excluded_files;
+    /**
+     * @var Array
+     */
+    public $excluded_extensions;
+    /**
+     * @var Array
+     */
+    public $excluded_patterns;
     /*
      * Allowed paths for upload (found in included_directories)
      *
      * @var Collection
      */
-    protected $allowed_paths;
+    public $allowed_paths;
 
     /**
      * @param $configurations
      *
      * @return $this (Paths)
      */
-    public function parse($configurations)
+    public function init($configurations)
     {
-        $this->included_directories  = $configurations['include'];
+        // TODO: check if empty {validate if exist configs else take defaults}
+        $this->included_directories  = $configurations['include']['directories'];
+        $this->included_files        = $configurations['include']['files'];
+        $this->included_extensions   = $configurations['include']['extensions'];
+        $this->included_patterns     = $configurations['include']['patterns'];
+
         $this->excluded_directories  = $configurations['exclude']['directories'];
         $this->excluded_files        = $configurations['exclude']['files'];
         $this->excluded_extensions   = $configurations['exclude']['extensions'];
@@ -54,24 +72,78 @@ class Paths implements PathsInterface{
         return $this;
     }
 
-
     /**
-     * @param $attr
-     *
-     * @return null
+     * @return Array
      */
-    public function __get($attr)
+    public function getIncludedDirectories()
     {
-        return isset($this->$attr) ? $this->$attr : null;
+        return $this->included_directories;
+    }
+    /**
+     * @return Array
+     */
+    public function getIncludedFiles()
+    {
+        return $this->included_files;
+    }
+    /**
+     * @return Array
+     */
+    public function getIncludedExtensions()
+    {
+        return $this->included_extensions;
+    }
+    /**
+     * @return Array
+     */
+    public function getIncludedPatterns()
+    {
+        return $this->included_patterns;
+    }
+    /**
+     * @return Array
+     */
+    public function getExcludedDirectories()
+    {
+        return $this->excluded_directories;
+    }
+    /**
+     * @return Array
+     */
+    public function getExcludedFiles()
+    {
+        return $this->excluded_files;
+    }
+    /**
+     * @return Array
+     */
+    public function getExcludedExtensions()
+    {
+        return $this->excluded_extensions;
+    }
+    /**
+     * @return Array
+     */
+    public function getExcludedPatterns()
+    {
+        return $this->excluded_patterns;
     }
 
     /**
-     * @param $key
-     * @param $value
+     * @return mixed
      */
-    public function __set($key, $value)
+    public function getAllowedPaths()
     {
-        $this->$key = $value;
+        return $this->allowed_paths;
     }
+
+    /**
+     * @param mixed $allowed_paths
+     */
+    public function setAllowedPaths($allowed_paths)
+    {
+        $this->allowed_paths = $allowed_paths;
+    }
+
 
 }

@@ -68,7 +68,7 @@ class Cdn implements CdnInterface{
         $configurations = $this->config->get('cdn::cdn');
 
         // build a path object that contains the directories related configurations
-        $this->paths = $this->paths->parse($configurations);
+        $this->paths = $this->paths->init($configurations);
 
         // call the files finder to read files form the directories
         $paths = $this->finder->read($this->paths);

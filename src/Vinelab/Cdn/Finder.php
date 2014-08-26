@@ -12,11 +12,8 @@ use Illuminate\Support\Collection;
 
 class Finder extends SymfonyFinder implements FinderInterface{
 
-    protected $finder_helper;
-
-    public function __construct(SymfonyFinder $finder_service)
+    public function __construct()
     {
-        $this->finder_service = $finder_service;
         Parent::__construct();
     }
 
@@ -33,31 +30,31 @@ class Finder extends SymfonyFinder implements FinderInterface{
     public function read(PathsInterface $paths){
 
         // include the included directories
-        $this->finder_service->in($paths->included_directories);
+        $this->in($paths->getIncludedDirectories());
         // exclude ignored directories
-        $this->finder_service->exclude($paths->excluded_directories);
+        $this->exclude($paths->getExcludedDirectories());
 
         // exclude ignored files
-        // TODO: exclude this $paths->excluded_files
+        // TODO: exclude this $paths->getExcludedFiles()
 
         // exclude files with this extensions
-        foreach($paths->excluded_extensions as $extension){
-            $this->finder_service->notName('*'.$extension);
+        foreach($paths->getExcludedExtensions() as $extension){
+            $this->notName('*'.$extension);
         }
         // exclude the regex pattern
-        foreach($paths->excluded_patterns as $pattern){
-            $this->finder_service->notName($pattern);
+        foreach($paths->getExcludedPatterns() as $pattern){
+            $this->notName($pattern);
         }
 
         // get all allowed paths and store them in an array
         $allowed_paths = [];
-        foreach ($this->finder_service->files() as $file) {
+        foreach ($this->files() as $file) {
 //            echo $file->getRealpath() . PHP_EOL;
             $allowed_paths[] =  $file->getRealpath();
         }
 
         // store all allowed paths in the $paths object as collection
-        $paths->allowed_paths = new Collection($allowed_paths);
+        $paths->setAllowedPaths(new Collection($allowed_paths));
 
         return $paths;
     }
