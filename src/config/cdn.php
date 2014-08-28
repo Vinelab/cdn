@@ -81,8 +81,6 @@ return [
     | Specify which directories to be uploaded when running the
     | [$ php artisan cdn:push] command
     |
-    | 'hidden' is a boolean to excludes "hidden" directories and files (starting with a dot)
-    |
     | Enter the full paths of directories (starting from the application root).
     |
     */
@@ -99,6 +97,8 @@ return [
     |
     | Specify what to exclude from the 'include' directories when uploading
     | to the CDN.
+    |
+    | 'hidden' is a boolean to excludes "hidden" directories and files (starting with a dot)
     |
     */
     'exclude'    => [

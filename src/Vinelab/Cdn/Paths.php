@@ -17,7 +17,7 @@ class Paths implements PathsInterface{
      *
      * @var array
      */
-    private $original_include = [
+    private $default_include = [
         'directories'   => ['public'],
         'extensions'    => [''],
         'patterns'      => [''],
@@ -28,7 +28,7 @@ class Paths implements PathsInterface{
      *
      * @var array
      */
-    private $original_exclude =  [
+    private $default_exclude =  [
         'directories'   => [''],
         'files'         => [''],
         'extensions'    => [''],
@@ -88,17 +88,17 @@ class Paths implements PathsInterface{
      */
     public function init($configurations)
     {
-        $this->checkAndFix($configurations);
+        $this->parseAndFillConfiguration($configurations);
 
-        $this->included_directories  = $this->original_include['directories'];
-        $this->included_extensions   = $this->original_include['extensions'];
-        $this->included_patterns     = $this->original_include['patterns'];
+        $this->included_directories  = $this->default_include['directories'];
+        $this->included_extensions   = $this->default_include['extensions'];
+        $this->included_patterns     = $this->default_include['patterns'];
 
-        $this->excluded_directories  = $this->original_exclude['directories'];
-        $this->excluded_files        = $this->original_exclude['files'];
-        $this->excluded_extensions   = $this->original_exclude['extensions'];
-        $this->excluded_patterns     = $this->original_exclude['patterns'];
-        $this->exclude_hidden        = $this->original_exclude['hidden'];
+        $this->excluded_directories  = $this->default_exclude['directories'];
+        $this->excluded_files        = $this->default_exclude['files'];
+        $this->excluded_extensions   = $this->default_exclude['extensions'];
+        $this->excluded_patterns     = $this->default_exclude['patterns'];
+        $this->exclude_hidden        = $this->default_exclude['hidden'];
 
         return $this;
     }
@@ -111,10 +111,10 @@ class Paths implements PathsInterface{
      * @param $configurations
      *
      */
-    public function checkAndFix($configurations)
+    public function parseAndFillConfiguration($configurations)
     {
-        $this->original_include = isset($configurations['include']) ? array_merge($this->original_include, $configurations['include']) : $this->original_include;
-        $this->original_exclude = isset($configurations['exclude']) ? array_merge($this->original_exclude, $configurations['exclude']) : $this->original_exclude;
+        $this->default_include = isset($configurations['include']) ? array_merge($this->default_include, $configurations['include']) : $this->default_include;
+        $this->default_exclude = isset($configurations['exclude']) ? array_merge($this->default_exclude, $configurations['exclude']) : $this->default_exclude;
     }
 
     /**
