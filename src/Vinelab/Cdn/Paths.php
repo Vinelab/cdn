@@ -11,6 +11,32 @@ use Vinelab\Cdn\Contracts\PathsInterface;
  */
 class Paths implements PathsInterface{
 
+
+    /**
+     * default [include] configurations
+     *
+     * @var array
+     */
+    private $original_include = [
+        'directories'   => ['public'],
+        'files'         => [''],
+        'extensions'    => [''],
+        'patterns'      => [''],
+    ];
+
+    /**
+     * default [exclude] configurations
+     *
+     * @var array
+     */
+    private $original_exclude =  [
+        'directories'   => [''],
+        'files'         => [''],
+        'extensions'    => [''],
+        'patterns'      => [''],
+        'hidden'        => true,
+    ];
+
     /**
      * @var Array
      */
@@ -45,6 +71,11 @@ class Paths implements PathsInterface{
      */
     public $excluded_patterns;
     /*
+     * @var boolean
+     */
+    public $exclude_hidden;
+
+    /*
      * Allowed paths for upload (found in included_directories)
      *
      * @var Collection
@@ -58,19 +89,33 @@ class Paths implements PathsInterface{
      */
     public function init($configurations)
     {
+        $this->checkAndFix($configurations);
 
-        // TODO: check if empty {validate if exist configs else take defaults}
-        $this->included_directories  = $configurations['include']['directories'];
-        $this->included_files        = $configurations['include']['files'];
-        $this->included_extensions   = $configurations['include']['extensions'];
-        $this->included_patterns     = $configurations['include']['patterns'];
+        $this->included_directories  = $this->original_include['directories'];
+        $this->included_files        = $this->original_include['files'];
+        $this->included_extensions   = $this->original_include['extensions'];
+        $this->included_patterns     = $this->original_include['patterns'];
 
-        $this->excluded_directories  = $configurations['exclude']['directories'];
-        $this->excluded_files        = $configurations['exclude']['files'];
-        $this->excluded_extensions   = $configurations['exclude']['extensions'];
-        $this->excluded_patterns     = $configurations['exclude']['patterns'];
+        $this->excluded_directories  = $this->original_exclude['directories'];
+        $this->excluded_files        = $this->original_exclude['files'];
+        $this->excluded_extensions   = $this->original_exclude['extensions'];
+        $this->excluded_patterns     = $this->original_exclude['patterns'];
+        $this->exclude_hidden        = $this->original_exclude['hidden'];
 
         return $this;
+    }
+
+
+    /**
+     * Check if the config file has any missed attribute, and if any attribute
+     * is missed will be overridden by a default attribute defined in this class.
+     *
+     * @param $configurations
+     *
+     */
+    public function checkAndFix($configurations){
+        $this->original_include = isset($configurations['include']) ? array_merge($this->original_include, $configurations['include']) : $this->original_include;
+        $this->original_exclude = isset($configurations['exclude']) ? array_merge($this->original_exclude, $configurations['exclude']) : $this->original_exclude;
     }
 
     /**
@@ -144,6 +189,14 @@ class Paths implements PathsInterface{
     public function setAllowedPaths($allowed_paths)
     {
         $this->allowed_paths = $allowed_paths;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getExcludeHidden()
+    {
+        return $this->exclude_hidden;
     }
 
 

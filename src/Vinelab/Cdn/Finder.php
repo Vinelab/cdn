@@ -36,6 +36,9 @@ class Finder extends SymfonyFinder implements FinderInterface{
         // exclude ignored directories
         $this->exclude($paths->getExcludedDirectories());
 
+        // add or ignore hidden directories
+        $this->ignoreDotFiles($paths->getExcludeHidden());
+
         // exclude ignored files
         // TODO: exclude this $paths->getExcludedFiles()
 
@@ -49,11 +52,19 @@ class Finder extends SymfonyFinder implements FinderInterface{
             $this->notName($pattern);
         }
 
+        // printing user message
+        echo 'The following files will be uploaded:' . PHP_EOL;
+        echo '-------------------------------------' . PHP_EOL;
+
         // get all allowed paths and store them in an array
         $allowed_paths = [];
+
         foreach ($this->files() as $file) {
-//            echo $file->getRealpath() . PHP_EOL;
-            $allowed_paths[] =  $file->getRealpath();
+            $path = $file->getRealpath();
+            // print the result for the user
+            echo  $path . PHP_EOL;
+
+            $allowed_paths[] = $path;
         }
 
         // store all allowed paths in the $paths object as collection

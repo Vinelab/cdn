@@ -81,11 +81,13 @@ return [
     | Specify which directories to be uploaded when running the
     | [$ php artisan cdn:push] command
     |
+    | 'hidden' is a boolean to excludes "hidden" directories and files (starting with a dot)
+    |
     | Enter the full paths of directories (starting from the application root).
     |
     */
     'include'    => [
-        'directories'   => ['public', 'private'],
+        'directories'   => ['public'],
         'files'         => [''],
         'extensions'    => [''],
         'patterns'      => [''],
@@ -105,6 +107,7 @@ return [
         'files'         => ['README.md', 'LICENSE'],
         'extensions'    => ['.txt'],
         'patterns'      => ['404.*'],
+        'hidden'        => true,
     ],
 
 

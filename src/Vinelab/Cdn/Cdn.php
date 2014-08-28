@@ -74,7 +74,7 @@ class Cdn implements CdnInterface{
         $paths = $this->finder->read($this->paths);
 
         // TODO: to continue from here..
-        dd($paths);
+//        dd($paths);
 
 
 //        $cdn_credentials = $this->config->get('cdn::cdn.providers.'.$this->default_provider);

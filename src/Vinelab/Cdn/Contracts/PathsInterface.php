@@ -17,4 +17,10 @@ interface PathsInterface {
     public function getExcludedFiles();
     public function getExcludedExtensions();
     public function getExcludedPatterns();
+
+    public function getExcludeHidden();
+
+    public function getAllowedPaths();
+    public function setAllowedPaths($allowed_paths);
+
 } 
