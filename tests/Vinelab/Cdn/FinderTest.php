@@ -15,18 +15,26 @@ class FinderTest extends TestCase {
             ->shouldReceive('getIncludedDirectories')
             ->andReturn(['public', 'private'])
 
+            ->shouldReceive('getIncludedExtensions')
+            ->andReturn(['.php'])
+
+            ->shouldReceive('getIncludedPatterns')
+            ->andReturn(['*.js'])
+
             ->shouldReceive('getExcludedDirectories')
             ->andReturn(['README.md', 'LICENSE'])
+
+            ->shouldReceive('getExcludeHidden')
+            ->andReturn(true)
 
             ->shouldReceive('getExcludedExtensions')
             ->andReturn(['.txt'])
 
+            ->shouldReceive('getExcludedFiles')
+            ->andReturn(['test.php'])
+
             ->shouldReceive('getExcludedPatterns')
             ->andReturn(['404.*']);
-
-            // preparing fake data to be passed to the setAllowedPaths() function
-            $allowed_paths = ['/var/www/html/VINELAB/CDN-Package/cdn-package/public/index.php',
-                '/var/www/html/VINELAB/CDN-Package/cdn-package/public/file.php'];
 
             $this->m_paths->shouldReceive('setAllowedPaths');
 

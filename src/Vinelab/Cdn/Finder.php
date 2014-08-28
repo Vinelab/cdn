@@ -43,7 +43,6 @@ class Finder extends SymfonyFinder implements FinderInterface{
             $this->name($pattern);
         }
 
-
         // exclude ignored directories
         $this->exclude($paths->getExcludedDirectories());
 
