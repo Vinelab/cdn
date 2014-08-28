@@ -39,8 +39,8 @@ return [
         'aws' => [
 
             's3' => [
-                'access_key'    => '111',
-                'secret_key'    => '222',
+                'access_key'    => '',
+                'secret_key'    => '',
             ],
 
             'cloudfront' => [

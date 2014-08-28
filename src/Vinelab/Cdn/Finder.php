@@ -28,8 +28,8 @@ class Finder extends SymfonyFinder implements FinderInterface{
      * @internal param $
      * @return array
      */
-    public function read(PathsInterface $paths){
-
+    public function read(PathsInterface $paths)
+    {
         // include the included directories
         $this->in($paths->getIncludedDirectories());
 
@@ -40,19 +40,20 @@ class Finder extends SymfonyFinder implements FinderInterface{
 
         // include patterns
         foreach($paths->getIncludedPatterns() as $pattern){
-            $this->notName($pattern);
+            $this->name($pattern);
         }
+
 
         // exclude ignored directories
         $this->exclude($paths->getExcludedDirectories());
-
-
 
         // add or ignore hidden directories
         $this->ignoreDotFiles($paths->getExcludeHidden());
 
         // exclude ignored files
-        // TODO: exclude this $paths->getExcludedFiles()
+        foreach($paths->getExcludedFiles() as $name){
+            $this->notName($name);
+        }
 
         // exclude files with this extensions
         foreach($paths->getExcludedExtensions() as $extension){
@@ -92,7 +93,8 @@ class Finder extends SymfonyFinder implements FinderInterface{
      * convert the array of files paths to an an array of the files path and it's URL.
      * The url is built form the configuration provided in the config file
      */
-    public function pathToUrlConverter(){
+    public function pathToUrlConverter()
+    {
 
         /**
          * read the array example:
