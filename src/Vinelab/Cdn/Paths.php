@@ -19,7 +19,6 @@ class Paths implements PathsInterface{
      */
     private $original_include = [
         'directories'   => ['public'],
-        'files'         => [''],
         'extensions'    => [''],
         'patterns'      => [''],
     ];
@@ -92,7 +91,6 @@ class Paths implements PathsInterface{
         $this->checkAndFix($configurations);
 
         $this->included_directories  = $this->original_include['directories'];
-        $this->included_files        = $this->original_include['files'];
         $this->included_extensions   = $this->original_include['extensions'];
         $this->included_patterns     = $this->original_include['patterns'];
 
@@ -113,7 +111,8 @@ class Paths implements PathsInterface{
      * @param $configurations
      *
      */
-    public function checkAndFix($configurations){
+    public function checkAndFix($configurations)
+    {
         $this->original_include = isset($configurations['include']) ? array_merge($this->original_include, $configurations['include']) : $this->original_include;
         $this->original_exclude = isset($configurations['exclude']) ? array_merge($this->original_exclude, $configurations['exclude']) : $this->original_exclude;
     }
@@ -125,13 +124,7 @@ class Paths implements PathsInterface{
     {
         return $this->included_directories;
     }
-    /**
-     * @return Array
-     */
-    public function getIncludedFiles()
-    {
-        return $this->included_files;
-    }
+
     /**
      * @return Array
      */

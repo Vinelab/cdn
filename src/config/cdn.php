@@ -88,7 +88,6 @@ return [
     */
     'include'    => [
         'directories'   => ['public'],
-        'files'         => [''],
         'extensions'    => [''],
         'patterns'      => [''],
     ],

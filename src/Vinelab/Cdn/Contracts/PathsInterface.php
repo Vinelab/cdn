@@ -9,7 +9,6 @@ interface PathsInterface {
     public function init($configurations);
 
     public function getIncludedDirectories();
-    public function getIncludedFiles();
     public function getIncludedExtensions();
     public function getIncludedPatterns();
 

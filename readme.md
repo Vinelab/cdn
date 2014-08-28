@@ -25,7 +25,7 @@ Add the package to your `composer.json` and run `composer update`.
 ```json
 {
     "require": {
-        "vinelab/neoeloquent": "*"
+        "vinelab/cdn": "*"
     }
 }
 ```
@@ -33,7 +33,7 @@ Add the package to your `composer.json` and run `composer update`.
 Add the service provider in `app/config/app.php`:
 
 ```php
-'Vinelab\NeoEloquent\NeoEloquentServiceProvider',
+'Vinelab\Cdn\CdnServiceProvider',
 ```
 
 The service provider will register all the required classes for this package and will also alias

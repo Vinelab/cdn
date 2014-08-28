@@ -33,8 +33,20 @@ class Finder extends SymfonyFinder implements FinderInterface{
         // include the included directories
         $this->in($paths->getIncludedDirectories());
 
+        // include files with this extensions
+        foreach($paths->getIncludedExtensions() as $extension){
+            $this->name('*'.$extension);
+        }
+
+        // include patterns
+        foreach($paths->getIncludedPatterns() as $pattern){
+            $this->notName($pattern);
+        }
+
         // exclude ignored directories
         $this->exclude($paths->getExcludedDirectories());
+
+
 
         // add or ignore hidden directories
         $this->ignoreDotFiles($paths->getExcludeHidden());
