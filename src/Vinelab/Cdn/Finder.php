@@ -17,6 +17,7 @@ class Finder extends SymfonyFinder implements FinderInterface{
         Parent::__construct();
     }
 
+
     /**
      * Build and return an array of the full paths of files found
      * in the included directories except all ignored
@@ -31,6 +32,7 @@ class Finder extends SymfonyFinder implements FinderInterface{
 
         // include the included directories
         $this->in($paths->getIncludedDirectories());
+
         // exclude ignored directories
         $this->exclude($paths->getExcludedDirectories());
 
@@ -41,6 +43,7 @@ class Finder extends SymfonyFinder implements FinderInterface{
         foreach($paths->getExcludedExtensions() as $extension){
             $this->notName('*'.$extension);
         }
+
         // exclude the regex pattern
         foreach($paths->getExcludedPatterns() as $pattern){
             $this->notName($pattern);

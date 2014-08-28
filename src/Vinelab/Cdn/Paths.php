@@ -58,6 +58,7 @@ class Paths implements PathsInterface{
      */
     public function init($configurations)
     {
+
         // TODO: check if empty {validate if exist configs else take defaults}
         $this->included_directories  = $configurations['include']['directories'];
         $this->included_files        = $configurations['include']['files'];
