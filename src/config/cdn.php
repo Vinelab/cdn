@@ -4,27 +4,118 @@
 
 return [
 
+    /*
+    |--------------------------------------------------------------------------
+    | Default CDN provider name
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify which of the CDN providers below you wish
+	| to use as your default provider for all CDN work.
+    |
+    */
+    'default' => 'aws.s3',
+
 
     /*
     |--------------------------------------------------------------------------
-    | AWS Credentials
+    | Set the CDN url. (without the bucket name)
     |--------------------------------------------------------------------------
     |
-    | You must provide your AWS credentials
-    | In order to communicate with your AWS service.
+    */
+    'url' => 'https://s3.amazonaws.com',
+
+    /*
+    |--------------------------------------------------------------------------
+    | CDN Providers
+    |--------------------------------------------------------------------------
+    |
+	| Here are each of the CDN providers setup for your application.
+	| Of course, examples of configuring each provider platform that is
+	| supported by Laravel is shown below to make development simple.
     |
     */
+    'providers' => [
 
+        'aws' => [
 
-    'AWS-S3' => [
+            's3' => [
 
-            'credentials' =>
-                [
+                'credentials' => [
                     'key'    => '',
-                    'secret' => ''
-                ]
+                    'secret'    => '',
+                ],
 
-    ]
+            ],
+
+            'cloudfront' => [
+
+                'credentials' => [
+                    'key'    => '',
+                    'secret'    => '',
+                ],
+
+            ],
+
+            /*
+            | If you want all your 'included' assets to be uploaded to one bucket,
+            | then set your bucket name below.
+            |
+            | And if you have multiple buckets (each for a specific directory),
+            | then you need to specify each bucket and it's directories
+            |
+            | * Note: in case of multiple buckets remove the '*'.
+            |
+            */
+            'buckets' => [
+                  'your-main-bucket-name-here' => '*',
+        //        'your-js-bucket-name-here'  =>  ['public/js'],
+        //        'your-css-bucket-name-here'  =>  ['public/css'],
+            ],
+
+        ],
+
+        'cloudflare' => [
+            'access_key'    => '',
+            'secret_key'    => '',
+        ],
+
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Include
+    |--------------------------------------------------------------------------
+    |
+    | Specify which directories to be uploaded when running the
+    | [$ php artisan cdn:push] command
+    |
+    | Enter the full paths of directories (starting from the application root).
+    |
+    */
+    'include'    => [
+        'directories'   => ['public'],
+        'extensions'    => [''],
+        'patterns'      => [''],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Exclude
+    |--------------------------------------------------------------------------
+    |
+    | Specify what to exclude from the 'include' directories when uploading
+    | to the CDN.
+    |
+    | 'hidden' is a boolean to excludes "hidden" directories and files (starting with a dot)
+    |
+    */
+    'exclude'    => [
+        'directories'   => ['public/uploads'],
+        'files'         => ['README.md', 'LICENSE'],
+        'extensions'    => ['.txt'],
+        'patterns'      => ['404.*'],
+        'hidden'        => true,
+    ],
 
 
 
