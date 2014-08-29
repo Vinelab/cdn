@@ -83,7 +83,7 @@ class FinderTest extends TestCase {
     }
 
 
-    public function testRead()
+    public function testReadingAllowedDirectories()
     {
         $result = $this->p_finder->read($this->m_paths);
         assertEquals($result, $this->m_paths);

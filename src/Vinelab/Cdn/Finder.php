@@ -7,14 +7,23 @@
 use File;
 use Vinelab\Cdn\Contracts\FinderInterface;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
+
+use Symfony\Component\Console\Output\ConsoleOutput;
+
 use Vinelab\Cdn\Contracts\PathsInterface;
 use Illuminate\Support\Collection;
 
+
 class Finder extends SymfonyFinder implements FinderInterface{
 
-    public function __construct()
+    protected $console;
+
+    public function __construct(ConsoleOutput $console)
     {
         Parent::__construct();
+
+        $this->console = $console;
+
     }
 
 
@@ -34,8 +43,7 @@ class Finder extends SymfonyFinder implements FinderInterface{
         $this->excludeThis($paths);
 
         // terminal output for user
-        echo 'The following files will be uploaded:' . PHP_EOL;
-        echo '-------------------------------------' . PHP_EOL;
+        $this->console->writeln('<fg=black;bg=green>The following files will be uploaded to the CDN:</fg=black;bg=green>');
 
         // get all allowed paths and store them in an array
         $allowed_paths = [];
@@ -44,7 +52,7 @@ class Finder extends SymfonyFinder implements FinderInterface{
             $path = $file->getRealpath();
 
             // terminal output for user
-            echo  $path . PHP_EOL;
+            $this->console->writeln('<fg=green>'.$path.'</fg=green>');
 
             $allowed_paths[] = $path;
         }
