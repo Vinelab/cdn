@@ -7,73 +7,6 @@ class FinderTest extends TestCase {
     public function setUp()
     {
         parent::setUp();
-
-        // mocking the Paths class (the directory configurations holder and presenter)
-        $this->m_paths = M::mock('Vinelab\Cdn\Contracts\PathsInterface');
-        // defining the Paths class behavior when calling the read function which takes this Paths class as parameter
-        $this->m_paths
-            ->shouldReceive('getIncludedDirectories')
-            ->andReturn(['public', 'private'])
-
-            ->shouldReceive('getIncludedExtensions')
-            ->andReturn(['.php'])
-
-            ->shouldReceive('getIncludedPatterns')
-            ->andReturn(['*.js'])
-
-            ->shouldReceive('getExcludedDirectories')
-            ->andReturn(['README.md', 'LICENSE'])
-
-            ->shouldReceive('getExcludeHidden')
-            ->andReturn(true)
-
-            ->shouldReceive('getExcludedExtensions')
-            ->andReturn(['.txt'])
-
-            ->shouldReceive('getExcludedFiles')
-            ->andReturn(['test.php'])
-
-            ->shouldReceive('getExcludedPatterns')
-            ->andReturn(['404.*']);
-
-            $this->m_paths->shouldReceive('setAllowedPaths');
-
-        // making an object of the main class that im testing in this test class
-        // by ->makePartial() I am just mocking some extended functions only
-//        $this->p_finder = M::mock('Vinelab\Cdn\Finder[in,exclude,notName,files]');
-        $this->p_finder = M::mock('Vinelab\Cdn\Finder')->makePartial();
-
-        $this->p_finder
-            ->shouldReceive('in')
-            ->with($this->m_paths->getIncludedDirectories())
-            ->andReturn($this->p_finder)
-
-            ->shouldReceive('exclude')
-            ->with($this->m_paths->getExcludedDirectories())
-            ->andReturn($this->p_finder);
-
-        foreach($this->m_paths->getExcludedExtensions() as $extension){
-             $this->p_finder->shouldReceive('notName')
-            ->with('*' . $extension)
-            ->andReturn($this->p_finder);
-        }
-
-        foreach($this->m_paths->getExcludedPatterns() as $pattern){
-            $this->p_finder->shouldReceive('notName')
-                ->with($pattern)
-                ->andReturn($this->p_finder);
-        }
-
-        // mocking a returned object from  $this->files(). the files() returns an object of multiple SplFileInfo objects
-        $this->m_spl_file_info = M::mock('Symfony\Component\Finder\SplFileInfo')->makePartial();
-
-        $this->m_spl_file_info
-            ->shouldReceive('getRealpath')
-            ->andReturn('/var/www/html/VINELAB/CDN-Package/cdn-package/public/assets/js/vendor/bootstrap.min.js');
-
-        $this->p_finder
-            ->shouldReceive('files')
-            ->andReturn(new \Illuminate\Support\Collection([$this->m_spl_file_info]));
     }
 
     public function tearDown()
@@ -82,11 +15,25 @@ class FinderTest extends TestCase {
         parent::tearDown();
     }
 
-
     public function testReadingAllowedDirectories()
     {
-        $result = $this->p_finder->read($this->m_paths);
-        assertEquals($result, $this->m_paths);
+        $paths = new \Vinelab\Cdn\Paths;
+
+        $paths->init(array(
+                'include'    => [
+                    'directories'   => [__DIR__],
+                ]
+            ));
+
+        $ConsoleOutput = M::mock('Symfony\Component\Console\Output\ConsoleOutput');
+        $ConsoleOutput->shouldReceive('writeln')
+            ->atLeast(1);
+
+        $finder = new \Vinelab\Cdn\Finder($ConsoleOutput);
+
+        $result = $finder->read($paths);
+
+        assertEquals($result, $paths);
     }
 
 }

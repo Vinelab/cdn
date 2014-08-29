@@ -86,7 +86,7 @@ class Paths implements PathsInterface{
      *
      * @return $this (Paths)
      */
-    public function init($configurations)
+    public function init($configurations = array())
     {
         $this->parseAndFillConfiguration($configurations);
 

@@ -20,10 +20,9 @@ class Finder extends SymfonyFinder implements FinderInterface{
 
     public function __construct(ConsoleOutput $console)
     {
-        Parent::__construct();
-
         $this->console = $console;
 
+        parent::__construct();
     }
 
 
