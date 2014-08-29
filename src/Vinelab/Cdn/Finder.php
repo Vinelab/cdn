@@ -30,7 +30,38 @@ class Finder extends SymfonyFinder implements FinderInterface{
      */
     public function read(PathsInterface $paths)
     {
-        // include the included directories
+        $this->includeThis($paths);
+        $this->excludeThis($paths);
+
+        // terminal output for user
+        echo 'The following files will be uploaded:' . PHP_EOL;
+        echo '-------------------------------------' . PHP_EOL;
+
+        // get all allowed paths and store them in an array
+        $allowed_paths = [];
+        foreach ($this->files() as $file) {
+
+            $path = $file->getRealpath();
+
+            // terminal output for user
+            echo  $path . PHP_EOL;
+
+            $allowed_paths[] = $path;
+        }
+
+        // store all allowed paths in the $paths object as collection
+        $paths->setAllowedPaths(new Collection($allowed_paths));
+
+        return $paths;
+    }
+
+
+    /**
+     * @param PathsInterface $paths
+     */
+    private function includeThis(PathsInterface $paths){
+
+            // include the included directories
         $this->in($paths->getIncludedDirectories());
 
         // include files with this extensions
@@ -45,6 +76,13 @@ class Finder extends SymfonyFinder implements FinderInterface{
 
         // exclude ignored directories
         $this->exclude($paths->getExcludedDirectories());
+
+    }
+
+    /**
+     * @param PathsInterface $paths
+     */
+    private function excludeThis(PathsInterface $paths){
 
         // add or ignore hidden directories
         $this->ignoreDotFiles($paths->getExcludeHidden());
@@ -63,57 +101,7 @@ class Finder extends SymfonyFinder implements FinderInterface{
         foreach($paths->getExcludedPatterns() as $pattern){
             $this->notName($pattern);
         }
-
-        // printing user message
-        echo 'The following files will be uploaded:' . PHP_EOL;
-        echo '-------------------------------------' . PHP_EOL;
-
-        // get all allowed paths and store them in an array
-        $allowed_paths = [];
-
-        foreach ($this->files() as $file) {
-            $path = $file->getRealpath();
-            // print the result for the user
-            echo  $path . PHP_EOL;
-
-            $allowed_paths[] = $path;
-        }
-
-        // store all allowed paths in the $paths object as collection
-        $paths->setAllowedPaths(new Collection($allowed_paths));
-
-        return $paths;
     }
-
-
-
-//TODO: will be removed from this class
-    /**
-     * convert the array of files paths to an an array of the files path and it's URL.
-     * The url is built form the configuration provided in the config file
-     */
-    public function pathToUrlConverter()
-    {
-
-        /**
-         * read the array example:
-         * [
-         *    'public/assets/js/my-script.js'
-         *    'public/assets/css/my-style.css'
-         * ]
-         *
-         * if 'urls' is not empty, then multiple URL's is enabled
-         * thus check every file path if it belongs to any of the directories
-         * of the 'urls' and if it does then add the url next to it to be it's url.
-         * else if nothing found then add the 'default_url' to be its url
-         *
-         *
-         *
-         */
-
-    }
-
-
 
 
 }

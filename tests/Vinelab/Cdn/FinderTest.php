@@ -74,7 +74,6 @@ class FinderTest extends TestCase {
         $this->p_finder
             ->shouldReceive('files')
             ->andReturn(new \Illuminate\Support\Collection([$this->m_spl_file_info]));
-
     }
 
     public function tearDown()
@@ -84,14 +83,10 @@ class FinderTest extends TestCase {
     }
 
 
-    public function testRead(){
-
+    public function testRead()
+    {
         $result = $this->p_finder->read($this->m_paths);
         assertEquals($result, $this->m_paths);
-
     }
-
-
-
 
 }
