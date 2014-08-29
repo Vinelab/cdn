@@ -25,11 +25,11 @@ class FinderTest extends TestCase {
                 ]
             ));
 
-        $ConsoleOutput = M::mock('Symfony\Component\Console\Output\ConsoleOutput');
-        $ConsoleOutput->shouldReceive('writeln')
+        $console_output = M::mock('Symfony\Component\Console\Output\ConsoleOutput');
+        $console_output->shouldReceive('writeln')
             ->atLeast(1);
 
-        $finder = new \Vinelab\Cdn\Finder($ConsoleOutput);
+        $finder = new \Vinelab\Cdn\Finder($console_output);
 
         $result = $finder->read($paths);
 

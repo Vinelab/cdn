@@ -38,7 +38,13 @@ class Finder extends SymfonyFinder implements FinderInterface{
      */
     public function read(PathsInterface $paths)
     {
+        /**
+         * add the included directories and files
+         */
         $this->includeThis($paths);
+        /**
+         * exclude the ignored directories and files
+         */
         $this->excludeThis($paths);
 
         // terminal output for user
@@ -48,6 +54,7 @@ class Finder extends SymfonyFinder implements FinderInterface{
         $allowed_paths = [];
         foreach ($this->files() as $file) {
 
+            // get path of each the remaining files
             $path = $file->getRealpath();
 
             // terminal output for user
@@ -64,11 +71,13 @@ class Finder extends SymfonyFinder implements FinderInterface{
 
 
     /**
+     * add the included directories and files
+     *
      * @param PathsInterface $paths
      */
     private function includeThis(PathsInterface $paths){
 
-            // include the included directories
+        // include the included directories
         $this->in($paths->getIncludedDirectories());
 
         // include files with this extensions
@@ -87,6 +96,8 @@ class Finder extends SymfonyFinder implements FinderInterface{
     }
 
     /**
+     *  exclude the ignored directories and files
+     *
      * @param PathsInterface $paths
      */
     private function excludeThis(PathsInterface $paths){

@@ -4,8 +4,6 @@
 
 Content Delivery Network (CDN) Package  for Laravel 4
 
-
-
 >This package will upload assets to CDN, (using artisan command).
 The package has special helpers for including assets in code, the helpers withh automatically point to the CDN files.
 
@@ -49,31 +47,39 @@ in `app/config/cdn.php` or in case of an environment-based configuration `app/co
 Add the CDN credentials:
 
 ```php
-    'providers' => [
 
-        'aws-s3' => [
-            'access_key'    => '',
-            'secret_key'    => '',
-        ],
+        'aws' => [
 
+            's3' => [
+
+                'credentials' => [
+                    'access_key'    => '',
+                    'secret_key'    => '',
+                ],
+
+            ],
+
+```
+
+Specify which directories or/and files to be uploaded:
+
+```php
+    'include'    => [
+        'directories'   => ['public'],
+        'extensions'    => [''],
+        'patterns'      => [''],
     ],
 ```
 
-Specify which directories to be uploaded:
-
+Specify what to ignore from the 'include' directories:
 ```php
-  'include'    => ['public', 'somewhere'],
-```
-
-Specify what to exclude from the 'include' directories:
-```php
-   'exclude'    => [
+    'exclude'    => [
         'directories'   => ['public/uploads'],
         'files'         => ['README.md', 'LICENSE'],
         'extensions'    => ['.txt'],
-        'pattern'       => '404.*'
+        'patterns'      => ['404.*'],
+        'hidden'        => true,
     ],
-
 ```
 Set the CDN url:
 
@@ -99,4 +105,3 @@ Set your bucket/buckets name:
 php artisan cdn:push
 ```
 Simply just run this artisan command to upload all your `files` to the `CDN`.
-
