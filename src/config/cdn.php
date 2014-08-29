@@ -39,13 +39,21 @@ return [
         'aws' => [
 
             's3' => [
-                'access_key'    => '',
-                'secret_key'    => '',
+
+                'credentials' => [
+                    'access_key'    => '',
+                    'secret_key'    => '',
+                ],
+
             ],
 
             'cloudfront' => [
-                'access_key'    => '',
-                'secret_key'    => '',
+
+                'credentials' => [
+                    'access_key'    => '',
+                    'secret_key'    => '',
+                ],
+
             ],
 
             /*
