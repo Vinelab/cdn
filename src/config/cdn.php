@@ -41,7 +41,7 @@ return [
             's3' => [
 
                 'credentials' => [
-                    'access'    => '',
+                    'key'    => '',
                     'secret'    => '',
                 ],
 
@@ -50,7 +50,7 @@ return [
             'cloudfront' => [
 
                 'credentials' => [
-                    'access'    => '',
+                    'key'    => '',
                     'secret'    => '',
                 ],
 
