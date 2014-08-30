@@ -1,22 +1,18 @@
 
 # CDN Assets Manager 
 
+[![Build Status](https://travis-ci.org/thephpleague/statsd.png?branch=master)](https://travis-ci.org/Vinelab/cdn)
 
 Content Delivery Network (CDN) Package  for Laravel 4
 
 >This package will upload assets to CDN, (using artisan command).
 The package has special helpers for including assets in code, the helpers withh automatically point to the CDN files.
 
-
-## Quick Reference
-
- - [Installation](#installation)
- - [Configuration](#configuration)
- - [Usage](#usage)
-
 ----------
 
-## Installation
+## Install
+
+Via Composer
 
 Add the package to your `composer.json` and run `composer update`.
 
@@ -105,3 +101,20 @@ Set your bucket/buckets name:
 php artisan cdn:push
 ```
 Simply just run this artisan command to upload all your `files` to the `CDN`.
+
+
+## Testing
+
+``` bash
+$ phpunit
+```
+
+
+## Contributing
+
+Please see [CONTRIBUTING](https://github.com/Vinelab/cdn/blob/master/CONTRIBUTING.md) for details.
+
+
+## License
+
+The MIT License (MIT). Please see [License File](https://github.com/Vinelab/cdn/blob/master/LICENSE) for more information.
