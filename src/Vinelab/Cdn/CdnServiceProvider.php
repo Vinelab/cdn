@@ -48,8 +48,8 @@ class CdnServiceProvider extends ServiceProvider {
         );
 
         $this->app->bind(
-            'Vinelab\Cdn\Contracts\PathsInterface',
-            'Vinelab\Cdn\Paths'
+            'Vinelab\Cdn\Contracts\PathHolderInterface',
+            'Vinelab\Cdn\PathHolder'
         );
 
         $this->app->bind(

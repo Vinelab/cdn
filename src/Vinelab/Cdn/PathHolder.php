@@ -3,13 +3,13 @@
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
-use Vinelab\Cdn\Contracts\PathsInterface;
+use Vinelab\Cdn\Contracts\PathHolderInterface;
 
 /**
- * Class Paths used to parse and store all directories and paths related data and configurations
+ * Class PathHolder used to parse and hold all directories and paths related data and configurations
  * @package Vinelab\Cdn
  */
-class Paths implements PathsInterface{
+class PathHolder implements PathHolderInterface{
 
 
     /**
@@ -82,9 +82,9 @@ class Paths implements PathsInterface{
     public $allowed_paths;
 
     /**
-     * @param $configurations
+     * @param array $configurations
      *
-     * @return $this (Paths)
+     * @return $this
      */
     public function init($configurations = array())
     {

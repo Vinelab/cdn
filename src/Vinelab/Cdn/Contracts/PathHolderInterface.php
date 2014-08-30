@@ -4,7 +4,7 @@
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
-interface PathsInterface {
+interface PathHolderInterface {
 
     public function init($configurations);
     public function parseAndFillConfiguration($configurations);

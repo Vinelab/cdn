@@ -13,18 +13,23 @@ class AwsS3Provider extends Provider implements ProviderInterface{
 
     }
 
-    /**
-     * Connect to the CDN
-     *
-     * @param $credentials
-     *
-     * @internal param $providerName
-     */
-    public function connect($credentials){
+
+
+    public function upload(){
+
+        $this->connect();
+
+        // TODO: upload files to CDN
+
+    }
+
+
+
+    private function connect(){
 
         // TODO: connect to the CDN
-        var_dump('I will connect using: ');
-        var_dump($credentials);
+        var_dump('Connecting..');
+
 
     }
 

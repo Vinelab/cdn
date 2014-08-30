@@ -4,10 +4,8 @@
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
-use Vinelab\Cdn\Contracts\PathsInterface;
-
 interface FinderInterface {
 
-    public function read(PathsInterface $paths);
+    public function read(PathHolderInterface $paths);
 
 }

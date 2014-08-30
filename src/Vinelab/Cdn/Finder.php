@@ -10,7 +10,7 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
 
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-use Vinelab\Cdn\Contracts\PathsInterface;
+use Vinelab\Cdn\Contracts\PathHolderInterface;
 use Illuminate\Support\Collection;
 
 
@@ -31,21 +31,21 @@ class Finder extends SymfonyFinder implements FinderInterface{
      * in the included directories except all ignored
      * (directories, patterns, extensions and files)
      *
-     * @param Contracts\PathsInterface $paths
+     * @param Contracts\PathHolderInterface $path_holder
      *
      * @internal param $
-     * @return array
+     * @return \Vinelab\Cdn\Contracts\PathHolderInterface
      */
-    public function read(PathsInterface $paths)
+    public function read(PathHolderInterface $path_holder)
     {
         /**
          * add the included directories and files
          */
-        $this->includeThis($paths);
+        $this->includeThis($path_holder);
         /**
          * exclude the ignored directories and files
          */
-        $this->excludeThis($paths);
+        $this->excludeThis($path_holder);
 
         // terminal output for user
         $this->console->writeln('<fg=black;bg=green>The following files will be uploaded to the CDN:</fg=black;bg=green>');
@@ -63,60 +63,64 @@ class Finder extends SymfonyFinder implements FinderInterface{
             $allowed_paths[] = $path;
         }
 
-        // store all allowed paths in the $paths object as collection
-        $paths->setAllowedPaths(new Collection($allowed_paths));
+        // store all allowed paths in the $path_holder object as collection
+        $path_holder->setAllowedPaths(new Collection($allowed_paths));
 
-        return $paths;
+        return $path_holder;
     }
 
 
     /**
      * add the included directories and files
      *
-     * @param PathsInterface $paths
+     * @param Contracts\PathHolderInterface $path_holder
+     *
+     * @internal param $
      */
-    private function includeThis(PathsInterface $paths){
+    private function includeThis(PathHolderInterface $path_holder){
 
         // include the included directories
-        $this->in($paths->getIncludedDirectories());
+        $this->in($path_holder->getIncludedDirectories());
 
         // include files with this extensions
-        foreach($paths->getIncludedExtensions() as $extension){
+        foreach($path_holder->getIncludedExtensions() as $extension){
             $this->name('*'.$extension);
         }
 
         // include patterns
-        foreach($paths->getIncludedPatterns() as $pattern){
+        foreach($path_holder->getIncludedPatterns() as $pattern){
             $this->name($pattern);
         }
 
         // exclude ignored directories
-        $this->exclude($paths->getExcludedDirectories());
+        $this->exclude($path_holder->getExcludedDirectories());
 
     }
 
     /**
      *  exclude the ignored directories and files
      *
-     * @param PathsInterface $paths
+     * @param Contracts\PathHolderInterface $path_holder
+     *
+     * @internal param $
      */
-    private function excludeThis(PathsInterface $paths){
+    private function excludeThis(PathHolderInterface $path_holder){
 
         // add or ignore hidden directories
-        $this->ignoreDotFiles($paths->getExcludeHidden());
+        $this->ignoreDotFiles($path_holder->getExcludeHidden());
 
         // exclude ignored files
-        foreach($paths->getExcludedFiles() as $name){
+        foreach($path_holder->getExcludedFiles() as $name){
             $this->notName($name);
         }
 
         // exclude files with this extensions
-        foreach($paths->getExcludedExtensions() as $extension){
+        foreach($path_holder->getExcludedExtensions() as $extension){
             $this->notName('*'.$extension);
         }
 
         // exclude the regex pattern
-        foreach($paths->getExcludedPatterns() as $pattern){
+        foreach($path_holder->getExcludedPatterns() as $pattern){
             $this->notName($pattern);
         }
     }

@@ -6,6 +6,6 @@
 
 interface ProviderInterface{
 
-    public function connect($credentials);
+    public function upload();
 
 } 

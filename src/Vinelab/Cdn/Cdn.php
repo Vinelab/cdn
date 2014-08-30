@@ -7,7 +7,7 @@
 use \Illuminate\Config\Repository;
 use Vinelab\Cdn\Contracts\CdnInterface;
 use Vinelab\Cdn\Contracts\FinderInterface;
-use Vinelab\Cdn\Contracts\PathsInterface;
+use Vinelab\Cdn\Contracts\PathHolderInterface;
 
 /**
  * Class Cdn is the manager and base class
@@ -32,24 +32,24 @@ class Cdn implements CdnInterface{
     /**
      * The object that will hold the directories configurations and the paths data
      *
-     * @var Contracts\PathsInterface
+     * @var Contracts\PathHolderInterface
      */
-    protected $paths;
+    protected $path_holder;
 
     /**
      * @param \Illuminate\Config\Repository $config
-     * @param FinderInterface $finder
-     * @param Contracts\PathsInterface $paths
+     * @param Contracts\FinderInterface $finder
+     * @param Contracts\PathHolderInterface $path_holder
      *
      * @internal param $
      */
     public function __construct(Repository $config,
                                 FinderInterface $finder,
-                                PathsInterface $paths
+        PathHolderInterface $path_holder
                                 )
     {
         $this->finder   = $finder;
-        $this->paths    = $paths;
+        $this->path_holder    = $path_holder;
         $this->config   = $config;
     }
 
@@ -68,10 +68,10 @@ class Cdn implements CdnInterface{
         $configurations = $this->config->get('cdn::cdn');
 
         // build a path object that contains the directories related configurations
-        $this->paths = $this->paths->init($configurations);
+        $this->path_holder = $this->path_holder->init($configurations);
 
         // call the files finder to read files form the directories
-        $paths = $this->finder->read($this->paths);
+        $paths = $this->finder->read($this->path_holder);
 
         // TODO: to continue from here..
 //        dd($paths);
