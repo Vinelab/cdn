@@ -3,14 +3,15 @@
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
-use Vinelab\Cdn\Contracts\PathHolderInterface;
+use Vinelab\Cdn\Contracts\AssetHolderInterface;
 
 /**
- * Class PathHolder used to parse and hold all directories and paths related data and configurations
+ * Class AssetHolder used to parse and hold all assets and
+ * paths related data and configurations
+ *
  * @package Vinelab\Cdn
  */
-class PathHolder implements PathHolderInterface{
-
+class AssetHolder implements AssetHolderInterface{
 
     /**
      * default [include] configurations
@@ -82,7 +83,7 @@ class PathHolder implements PathHolderInterface{
     public $allowed_paths;
 
     /**
-     * build a path object that contains the directories related configurations
+     * build a Asset object that contains the assets related configurations
      *
      * @param array $configurations
      *
@@ -111,7 +112,6 @@ class PathHolder implements PathHolderInterface{
      * is missed will be overridden by a default attribute defined in this class.
      *
      * @param $configurations
-     *
      */
     public function parseAndFillConfiguration($configurations)
     {
@@ -134,6 +134,7 @@ class PathHolder implements PathHolderInterface{
     {
         return $this->included_extensions;
     }
+
     /**
      * @return Array
      */
@@ -141,6 +142,7 @@ class PathHolder implements PathHolderInterface{
     {
         return $this->included_patterns;
     }
+
     /**
      * @return Array
      */
@@ -148,6 +150,7 @@ class PathHolder implements PathHolderInterface{
     {
         return $this->excluded_directories;
     }
+
     /**
      * @return Array
      */
@@ -155,6 +158,7 @@ class PathHolder implements PathHolderInterface{
     {
         return $this->excluded_files;
     }
+
     /**
      * @return Array
      */
@@ -162,6 +166,7 @@ class PathHolder implements PathHolderInterface{
     {
         return $this->excluded_extensions;
     }
+
     /**
      * @return Array
      */

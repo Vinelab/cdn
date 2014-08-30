@@ -7,7 +7,7 @@
 use \Illuminate\Config\Repository;
 use Vinelab\Cdn\Contracts\CdnInterface;
 use Vinelab\Cdn\Contracts\FinderInterface;
-use Vinelab\Cdn\Contracts\PathHolderInterface;
+use Vinelab\Cdn\Contracts\AssetHolderInterface;
 use Vinelab\Cdn\Contracts\ProviderHolderInterface;
 
 /**
@@ -31,27 +31,28 @@ class Cdn implements CdnInterface{
     protected $finder;
 
     /**
-     * The object that will hold the directories configurations and the paths data
+     * The object that will hold the assets configurations
+     * and the paths of the assets
      *
-     * @var Contracts\PathHolderInterface
+     * @var Contracts\AssetHolderInterface
      */
-    protected $path_holder;
+    protected $asset_holder;
 
     /**
      * @param Repository $config
      * @param FinderInterface $finder
-     * @param PathHolderInterface $path_holder
+     * @param AssetHolderInterface $asset_holder
      * @param ProviderHolderInterface $provider_holder
      */
     public function __construct(Repository $config,
                                 FinderInterface $finder,
-                                PathHolderInterface $path_holder,
+                                AssetHolderInterface $asset_holder,
                                 ProviderHolderInterface $provider_holder
                                 )
     {
         $this->config               = $config;
         $this->finder               = $finder;
-        $this->path_holder          = $path_holder;
+        $this->asset_holder         = $asset_holder;
         $this->provider_holder      = $provider_holder;
 
     }
@@ -100,7 +101,7 @@ class Cdn implements CdnInterface{
      */
     private function getAssets($configurations)
     {
-        return $this->finder->read($this->path_holder->init($configurations));
+        return $this->finder->read($this->asset_holder->init($configurations));
     }
 
 
