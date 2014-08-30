@@ -8,6 +8,7 @@ use \Illuminate\Config\Repository;
 use Vinelab\Cdn\Contracts\CdnInterface;
 use Vinelab\Cdn\Contracts\FinderInterface;
 use Vinelab\Cdn\Contracts\PathHolderInterface;
+use Vinelab\Cdn\Contracts\ProviderHolderInterface;
 
 /**
  * Class Cdn is the manager and base class
@@ -37,20 +38,21 @@ class Cdn implements CdnInterface{
     protected $path_holder;
 
     /**
-     * @param \Illuminate\Config\Repository $config
-     * @param Contracts\FinderInterface $finder
-     * @param Contracts\PathHolderInterface $path_holder
-     *
-     * @internal param $
+     * @param Repository $config
+     * @param FinderInterface $finder
+     * @param PathHolderInterface $path_holder
+     * @param ProviderHolderInterface $provider_holder
      */
     public function __construct(Repository $config,
                                 FinderInterface $finder,
-        PathHolderInterface $path_holder
+                                PathHolderInterface $path_holder,
+                                ProviderHolderInterface $provider_holder
                                 )
     {
-        $this->finder   = $finder;
-        $this->path_holder    = $path_holder;
-        $this->config   = $config;
+        $this->config               = $config;
+        $this->finder               = $finder;
+        $this->path_holder          = $path_holder;
+        $this->provider_holder      = $provider_holder;
     }
 
 
