@@ -11,7 +11,7 @@ use Vinelab\Cdn\Contracts\PathHolderInterface;
 use Vinelab\Cdn\Contracts\ProviderHolderInterface;
 
 /**
- * Class Cdn is the manager and base class
+ * Class Cdn is the manager and the main class of this package
  * @package Vinelab\Cdn
  */
 class Cdn implements CdnInterface{
@@ -53,37 +53,56 @@ class Cdn implements CdnInterface{
         $this->finder               = $finder;
         $this->path_holder          = $path_holder;
         $this->provider_holder      = $provider_holder;
+
     }
 
 
     /**
      * Will be called from the Vinelab\Cdn\PushCommand class on Fire()
-     *
-     * It call the directory reader (to read allowed files for upload)
-     * It call ... (to generate a URL for each path)
-     * It call ... (to upload files to the CDN)
-     *
      */
     public function push(){
 
-        // get configurations from the config file
-        $configurations = $this->config->get('cdn::cdn');
+        // return the configurations from the config file
+        $configurations = $this->getConfig();
 
-        // build a path object that contains the directories related configurations
-        $this->path_holder = $this->path_holder->init($configurations);
-
-        // call the files finder to read files form the directories
-        $paths = $this->finder->read($this->path_holder);
+        // get files to upload
+        $assets = $this->getAssets($configurations);
 
         // TODO: to continue from here..
-//        dd($paths);
-
-
-//        $cdn_credentials = $this->config->get('cdn::cdn.providers.'.$this->default_provider);
-//        $this->web_service->connect($cdn_credentials);
-
-//        $this->establishConnection($default_provider);
+//        dd($assets);
 
     }
+
+
+    /**
+     * Check if the config file exist and return it or
+     * throw an exception
+     */
+    private function getConfig()
+    {
+        $configs = $this->config->get('cdn::cdn');
+
+        if(!$configs){
+            // TODO: throw an exception
+        }
+
+        return $configs;
+    }
+
+    /**
+     * Initialize an instance of the asset holder and pass it to the
+     * read function in the reader class, to return all the allowed
+     * assets for upload
+     *
+     * @param $configurations
+     *
+     * @return mixed
+     */
+    private function getAssets($configurations)
+    {
+        return $this->finder->read($this->path_holder->init($configurations));
+    }
+
+
 
 }

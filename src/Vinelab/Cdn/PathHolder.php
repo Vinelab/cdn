@@ -82,12 +82,14 @@ class PathHolder implements PathHolderInterface{
     public $allowed_paths;
 
     /**
+     * build a path object that contains the directories related configurations
+     *
      * @param array $configurations
      *
      * @return $this
      */
     public function init($configurations = array())
-    {
+        {
         $this->parseAndFillConfiguration($configurations);
 
         $this->included_directories  = $this->default_include['directories'];
