@@ -66,11 +66,11 @@ class Cdn implements CdnInterface{
         // return the configurations from the config file
         $configurations = $this->getConfig();
 
-        // get files to upload
-        $assets = $this->getAssets($configurations);
+        // search for assets based on the config file rules and return them to store
+        // all allowed paths (of assets) in the $asset_holder object as collection of paths
+        $this->asset_holder->setAssets($this->findAssets($configurations));
 
         // TODO: to continue from here..
-//        dd($assets);
 
     }
 
@@ -99,7 +99,7 @@ class Cdn implements CdnInterface{
      *
      * @return mixed
      */
-    private function getAssets($configurations)
+    private function findAssets($configurations)
     {
         return $this->finder->read($this->asset_holder->init($configurations));
     }

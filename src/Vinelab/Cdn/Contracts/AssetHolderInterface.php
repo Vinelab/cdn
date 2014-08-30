@@ -20,7 +20,7 @@ interface AssetHolderInterface {
 
     public function getExcludeHidden();
 
-    public function getAllowedPaths();
-    public function setAllowedPaths($allowed_paths);
+    public function getAssets();
+    public function setAssets($assets);
 
 } 

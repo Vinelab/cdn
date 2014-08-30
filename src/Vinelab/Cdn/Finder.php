@@ -5,12 +5,10 @@
  */
 
 use File;
-use Vinelab\Cdn\Contracts\FinderInterface;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
-
 use Symfony\Component\Console\Output\ConsoleOutput;
-
 use Vinelab\Cdn\Contracts\AssetHolderInterface;
+use Vinelab\Cdn\Contracts\FinderInterface;
 use Illuminate\Support\Collection;
 
 
@@ -50,8 +48,8 @@ class Finder extends SymfonyFinder implements FinderInterface{
         // terminal output for user
         $this->console->writeln('<fg=black;bg=green>The following files will be uploaded to the CDN:</fg=black;bg=green>');
 
-        // get all allowed paths and store them in an array
-        $allowed_paths = [];
+        // get all allowed paths (assets) and store them in an array
+        $assets = [];
         foreach ($this->files() as $file) {
 
             // get path of each the remaining files
@@ -60,13 +58,10 @@ class Finder extends SymfonyFinder implements FinderInterface{
             // terminal output for user
             $this->console->writeln('<fg=green>'.$path.'</fg=green>');
 
-            $allowed_paths[] = $path;
+            $assets[] = $path;
         }
 
-        // store all allowed paths in the $asset_holder object as collection
-        $asset_holder->setAllowedPaths(new Collection($allowed_paths));
-
-        return $asset_holder;
+        return new Collection($assets);
     }
 
 

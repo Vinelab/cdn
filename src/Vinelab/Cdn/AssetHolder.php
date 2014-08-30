@@ -76,11 +76,11 @@ class AssetHolder implements AssetHolderInterface{
     public $exclude_hidden;
 
     /*
-     * Allowed paths for upload (found in included_directories)
+     * Allowed assets for upload (found in included_directories)
      *
      * @var Collection
      */
-    public $allowed_paths;
+    public $assets;
 
     /**
      * build a Asset object that contains the assets related configurations
@@ -178,17 +178,17 @@ class AssetHolder implements AssetHolderInterface{
     /**
      * @return mixed
      */
-    public function getAllowedPaths()
+    public function getAssets()
     {
-        return $this->allowed_paths;
+        return $this->assets;
     }
 
     /**
-     * @param mixed $allowed_paths
+     * @param mixed $assets
      */
-    public function setAllowedPaths($allowed_paths)
+    public function setAssets($assets)
     {
-        $this->allowed_paths = $allowed_paths;
+        $this->assets = $assets;
     }
 
     /**
