@@ -26,6 +26,16 @@ class AwsS3Provider extends Provider implements ProviderInterface{
     protected $s3_client;
 
     /**
+     * @var string
+     */
+    protected $includes = '_aws';
+
+    /**
+     * @var string
+     */
+    protected $region = 'us-west-2';
+
+    /**
      * @param $credentials
      * @param $url
      * @param $buckets
@@ -34,7 +44,6 @@ class AwsS3Provider extends Provider implements ProviderInterface{
      */
     public function __construct($credentials, $url, $buckets)
     {
-
         $this->key = isset($credentials['key']) ? $credentials['key'] : null;
         $this->secret = isset($credentials['secret']) ? $credentials['secret'] : null;
 
@@ -44,6 +53,7 @@ class AwsS3Provider extends Provider implements ProviderInterface{
             throw new MissingConfigurationException("Missing Configuration");
         }
 
+        $this->buckets = $buckets; // TODO: work with this
     }
 
 
@@ -57,18 +67,11 @@ class AwsS3Provider extends Provider implements ProviderInterface{
         // Instantiate an S3 client
         // Instantiate the S3 client using your credential profile
         $this->s3_client = S3Client::factory(array(
-                'includes' => array('_aws'),
-                'services' => array(
-                    'default_settings' => array(
-                        'params' => array(
-                            'key'    => $this->key,
-                            'secret' => $this->secret,
-                            // OR: 'profile' => 'my_profile',
-//                        'region' => 'us-west-2'
-                        )
-                    )
-                )
-            ));
+                'key'    => $this->key,
+                'secret' => $this->secret,
+            )
+
+    );
 
     }
 
@@ -82,27 +85,29 @@ class AwsS3Provider extends Provider implements ProviderInterface{
         // connect before uploading
         $this->connect();
 
-        var_dump('Uploading..');
-
+        var_dump('Start uploader..');
 
         foreach($assets as $asset){
-            var_dump($asset);
-            sleep(1);
-        }
-        exit;
-        // Upload a publicly accessible file. The file size, file type, and MD5 hash
-        // are automatically calculated by the SDK.
-        try {
-            $this->s3_client->putObject(array(
-                    'Bucket' => 'my-bucket',
-                    'Key'    => 'my-object',
-                    'Body'   => fopen('/path/to/file', 'r'),
-                    'ACL'    => 'public-read',
-                ));
-        } catch (S3Exception $e) {
-            echo "There was an error uploading the file.\n";
-        }
 
+            var_dump('Uploading: ' . $asset->getRealpath());
+
+            // Upload a publicly accessible file. The file size, file type, and MD5 hash
+            // are automatically calculated by the SDK.
+            try {
+                $result = $this->s3_client->putObject(array(
+                        'Bucket' => key($this->buckets),
+                        'Key'    => $asset->getFileName(),
+                        'Body'   => fopen($asset->getRealpath(), 'r'),
+                        'ACL'    => 'public-read',
+                    ));
+
+                var_dump('Uploaded successfully to: ' . $result->get('ObjectURL'));
+
+            } catch (S3Exception $e) {
+                echo "There was an error uploading the file.\n";
+            }
+
+        }
     }
 
 

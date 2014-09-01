@@ -13,6 +13,7 @@
         "illuminate/support": "4.*",
         "symfony/finder": "2.6.*@dev",
         "symfony/console": "2.*",
+        "guzzlehttp/guzzle": "~4.0",
         "aws/aws-sdk-php": "2.6.*"
     },
     "require-dev": {

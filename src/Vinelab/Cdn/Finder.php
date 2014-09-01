@@ -48,17 +48,14 @@ class Finder extends SymfonyFinder implements FinderInterface{
         // terminal output for user
         $this->console->writeln('<fg=black;bg=green>The following files will be uploaded to the CDN:</fg=black;bg=green>');
 
-        // get all allowed paths (assets) and store them in an array
+        // get all allowed 'for upload' files objects (assets) and store them in an array
         $assets = [];
-        foreach ($this->files() as $file) {
-
-            // get path of each the remaining files
-            $path = $file->getRealpath();
-
+        foreach ($this->files() as $file)
+        {
             // terminal output for user
-            $this->console->writeln('<fg=green>'.$path.'</fg=green>');
+            $this->console->writeln('<fg=green>'.$file->getRealpath().'</fg=green>');
 
-            $assets[] = $path;
+            $assets[] = $file;
         }
 
         return new Collection($assets);

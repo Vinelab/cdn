@@ -41,8 +41,8 @@ return [
             's3' => [
 
                 'credentials' => [
-                    'key'       => 'keeeeeyyy',
-                    'secret'    => 'seeeecccc',
+                    'key'       => 'AKIAJQRCJ3IUQXVNM5KA',
+                    'secret'    => '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',
                 ],
 
 
