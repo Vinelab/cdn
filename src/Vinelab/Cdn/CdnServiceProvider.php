@@ -58,6 +58,11 @@ class CdnServiceProvider extends ServiceProvider {
         );
 
         $this->app->bind(
+            'Vinelab\Cdn\Contracts\ProviderFactoryInterface',
+            'Vinelab\Cdn\ProviderFactory'
+        );
+
+        $this->app->bind(
             'Vinelab\Cdn\Contracts\CdnFacadeProviderInterface',
             'Vinelab\Cdn\CdnFacadeProvider'
         );

@@ -8,7 +8,7 @@ use \Illuminate\Config\Repository;
 use Vinelab\Cdn\Contracts\CdnInterface;
 use Vinelab\Cdn\Contracts\FinderInterface;
 use Vinelab\Cdn\Contracts\AssetHolderInterface;
-use Vinelab\Cdn\Contracts\ProviderHolderInterface;
+use Vinelab\Cdn\Contracts\ProviderFactoryInterface;
 use Vinelab\Cdn\Exceptions\MissingConfigurationFileException;
 
 /**
@@ -43,35 +43,37 @@ class Cdn implements CdnInterface{
      * @param Repository $config
      * @param FinderInterface $finder
      * @param AssetHolderInterface $asset_holder
-     * @param ProviderHolderInterface $provider_holder
+     * @param \Vinelab\Cdn\Contracts\ProviderFactoryInterface $provider_factory
      */
     public function __construct(Repository $config,
                                 FinderInterface $finder,
                                 AssetHolderInterface $asset_holder,
-                                ProviderHolderInterface $provider_holder
-                                )
+                                ProviderFactoryInterface $provider_factory
+    )
     {
         $this->config               = $config;
         $this->finder               = $finder;
         $this->asset_holder         = $asset_holder;
-        $this->provider_holder      = $provider_holder;
+        $this->provider_factory      = $provider_factory;
     }
 
 
     /**
      * Will be called from the Vinelab\Cdn\PushCommand class on Fire()
      */
-    public function push(){
-
+    public function push()
+    {
         // return the configurations from the config file
         $configurations = $this->getConfig();
 
         // Initialize an instance of the asset holder
         // call the read function in the reader class, to return all the allowed
         // assets to store them in the instance of the asset holder as collection of paths
-        $this->asset_holder->setAssets($this->finder->read($this->asset_holder->init($configurations)));   // TODO: uncomment this lineeeeeeeee
+//        $this->asset_holder->setAssets($this->finder->read($this->asset_holder->init($configurations)));   // TODO: uncomment this lineeeeeeeee
 
-        $this->provider_holder->init($configurations);
+        // create a provider instance
+        $provider = $this->provider_factory->create($configurations);
+        dd($provider);
     }
 
 
