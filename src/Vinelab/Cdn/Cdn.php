@@ -55,7 +55,6 @@ class Cdn implements CdnInterface{
         $this->finder               = $finder;
         $this->asset_holder         = $asset_holder;
         $this->provider_holder      = $provider_holder;
-
     }
 
 
@@ -70,11 +69,9 @@ class Cdn implements CdnInterface{
         // Initialize an instance of the asset holder
         // call the read function in the reader class, to return all the allowed
         // assets to store them in the instance of the asset holder as collection of paths
-        $this->asset_holder->setAssets($this->finder->read($this->asset_holder->init($configurations)));
+        $this->asset_holder->setAssets($this->finder->read($this->asset_holder->init($configurations)));   // TODO: uncomment this lineeeeeeeee
 
-        // TODO: to continue from here..
-//        $this->provider_holder->upload($configurations);
-
+        $this->provider_holder->init($configurations);
     }
 
 
@@ -84,7 +81,7 @@ class Cdn implements CdnInterface{
      */
     private function getConfig()
     {
-        $configs = $this->config->get('cdn::cdnx');
+        $configs = $this->config->get('cdn::cdn');
 
         if(!$configs){
             throw new MissingConfigurationFileException('CDN Config file not found');

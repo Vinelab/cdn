@@ -41,43 +41,44 @@ return [
             's3' => [
 
                 'credentials' => [
-                    'key'    => '',
-                    'secret'    => '',
+                    'key'       => 'keeeeeyyy',
+                    'secret'    => 'seeeecccc',
+                ],
+
+
+                /*
+                | If you want all your 'included' assets to be uploaded to one bucket,
+                | then set your bucket name below.
+                |
+                | And if you have multiple buckets (each for a specific directory),
+                | then you need to specify each bucket and it's directories
+                |
+                | * Note: in case of multiple buckets remove the '*'.
+                |
+                */
+                'buckets' => [
+                    'your-main-bucket-name-here' => '*',
+                    //        'your-js-bucket-name-here'  =>  ['public/js'],
+                    //        'your-css-bucket-name-here'  =>  ['public/css'],
                 ],
 
             ],
 
-            'cloudfront' => [
-
-                'credentials' => [
-                    'key'    => '',
-                    'secret'    => '',
-                ],
-
-            ],
-
-            /*
-            | If you want all your 'included' assets to be uploaded to one bucket,
-            | then set your bucket name below.
-            |
-            | And if you have multiple buckets (each for a specific directory),
-            | then you need to specify each bucket and it's directories
-            |
-            | * Note: in case of multiple buckets remove the '*'.
-            |
-            */
-            'buckets' => [
-                  'your-main-bucket-name-here' => '*',
-        //        'your-js-bucket-name-here'  =>  ['public/js'],
-        //        'your-css-bucket-name-here'  =>  ['public/css'],
-            ],
+//            'cloudfront' => [
+//
+//                'credentials' => [
+//                    'key'       => '',
+//                    'secret'    => '',
+//                ],
+//
+//            ],
 
         ],
 
-        'cloudflare' => [
-            'access_key'    => '',
-            'secret_key'    => '',
-        ],
+//        'cloudflare' => [
+//            'key'       => '',
+//            'secret'    => '',
+//        ],
 
     ],
 

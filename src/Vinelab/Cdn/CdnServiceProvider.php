@@ -53,11 +53,6 @@ class CdnServiceProvider extends ServiceProvider {
         );
 
         $this->app->bind(
-            'Vinelab\Cdn\Contracts\ProviderHolderInterface',
-            'Vinelab\Cdn\ProviderHolder'
-        );
-
-        $this->app->bind(
             'Vinelab\Cdn\Contracts\FinderInterface',
             'Vinelab\Cdn\Finder'
         );

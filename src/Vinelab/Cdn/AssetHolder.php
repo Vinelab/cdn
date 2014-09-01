@@ -83,7 +83,7 @@ class AssetHolder implements AssetHolderInterface{
     public $assets;
 
     /**
-     * build a Asset object that contains the assets related configurations
+     * build a AssetHolder object that contains the assets related configurations
      *
      * @param array $configurations
      *
