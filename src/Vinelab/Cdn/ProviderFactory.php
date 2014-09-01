@@ -25,15 +25,18 @@ class ProviderFactory implements ProviderFactoryInterface{
      */
     public function create($configurations = array())
     {
+        // TODO: use merger as replacement for the isset
+
         // to work with short names in this function, I store the array in local vars
-        $default_provider   = $configurations['default'];
-        $url                = $configurations['url'];
-        $credentials        = $configurations['providers']['aws']['s3']['credentials'];
-        $buckets            = $configurations['providers']['aws']['s3']['buckets'];
+        $default_provider = $configurations['default'];
+        $url              = $configurations['url'];
 
         switch ($default_provider == 'aws.s3')
         {
             case 'aws.s3':
+
+                $credentials = $configurations['providers']['aws']['s3']['credentials'];
+                $buckets     = $configurations['providers']['aws']['s3']['buckets'];
 
                 return new AwsS3Provider($credentials, $url, $buckets);
                 break;

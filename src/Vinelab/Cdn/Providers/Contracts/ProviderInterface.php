@@ -6,6 +6,6 @@
 
 interface ProviderInterface{
 
-    public function upload();
+    public function upload($assets);
 
 } 

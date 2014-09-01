@@ -57,7 +57,8 @@ return [
                 |
                 */
                 'buckets' => [
-                    'your-main-bucket-name-here' => '*',
+//                    'your-main-bucket-name-here' => '*',
+                    'megabucketzon' => '*',
                     //        'your-js-bucket-name-here'  =>  ['public/js'],
                     //        'your-css-bucket-name-here'  =>  ['public/css'],
                 ],
