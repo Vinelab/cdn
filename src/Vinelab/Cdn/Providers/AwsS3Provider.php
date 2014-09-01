@@ -3,12 +3,16 @@
 /**
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
-use Vinelab\Cdn\Providers\Contracts\ProviderInterface;
+
 use Vinelab\Cdn\Exceptions\MissingConfigurationException;
-use Aws\S3\S3Client;
+use Vinelab\Cdn\Providers\Contracts\ProviderInterface;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Aws\S3\Exception\S3Exception;
-
-
+use Aws\S3\S3Client;
+/**
+ * Class AwsS3Provider
+ * @package Vinelab\Cdn\Provider
+ */
 class AwsS3Provider extends Provider implements ProviderInterface{
 
     /**
@@ -33,17 +37,21 @@ class AwsS3Provider extends Provider implements ProviderInterface{
     protected $acl = 'public-read';
 
     /**
-     * @param $credentials
-     * @param $url
-     * @param $buckets
-     *
-     * @throws \Vinelab\Cdn\Exceptions\MissingConfigurationException
+     * @param \Symfony\Component\Console\Output\ConsoleOutput $console
      */
-    public function __construct($credentials, $url, $buckets)
+    public function __construct(ConsoleOutput $console)
     {
+        parent::__construct();
+
+        $this->console = $console;
+    }
+
+    public function init($credentials, $url, $buckets)
+    {
+
         $this->key = isset($credentials['key']) ? $credentials['key'] : null;
         $this->secret = isset($credentials['secret']) ? $credentials['secret'] : null;
-        $this->buckets = isset($credentials['buckets']) ? $credentials['buckets'] : null;
+        $this->buckets = isset($buckets) ? $buckets : null;
 
         // check if any configuration is missed
         if( ! $this->key || ! $this->secret || ! $url || ! $buckets || ! count($buckets) > 1 )
@@ -51,16 +59,14 @@ class AwsS3Provider extends Provider implements ProviderInterface{
             throw new MissingConfigurationException("Missing Configuration");
         }
 
+        return $this;
     }
-
 
     /**
      * Connect to the CDN
      */
     public function connect()
     {
-        var_dump('Connecting..');
-
         // Instantiate an S3 client
         $this->s3_client = S3Client::factory( array(
 
@@ -70,7 +76,6 @@ class AwsS3Provider extends Provider implements ProviderInterface{
                 )
 
             );
-
     }
 
 
@@ -82,12 +87,14 @@ class AwsS3Provider extends Provider implements ProviderInterface{
         // connect before uploading
         $this->connect();
 
-        var_dump('Start uploader..');
+        // user terminal message
+        $this->console->writeln('<fg=red>Start Uploading...</fg=red>');
 
         // upload each asset file to the CDN
         foreach($assets as $file){
 
-            var_dump( 'Uploading: ' . $file->getRealpath() );
+            // user terminal message
+            $this->console->writeln('<fg=green>File:   ' . $file->getRealpath() . '</fg=green>');
 
             try {
                 $result = $this->s3_client->putObject( array(
@@ -98,14 +105,16 @@ class AwsS3Provider extends Provider implements ProviderInterface{
                         'ACL'       =>      $this->acl, // the permission of the file
 
                     ));
-
-                var_dump( 'Uploaded successfully to: ' . $result->get('ObjectURL') );
+                // user terminal message
+                $this->console->writeln('<fg=black;bg=green>URL:    ' . $result->get('ObjectURL')  . '</fg=black;bg=green>');
 
             } catch (S3Exception $e) {
                 echo "There was an error uploading this file ($file->getRealpath()).\n";
             }
 
         }
+        // user terminal message
+        $this->console->writeln('<fg=red>Upload completed successfully.</fg=red>');
     }
 
 

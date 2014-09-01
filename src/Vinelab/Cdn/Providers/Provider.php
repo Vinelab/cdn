@@ -4,6 +4,8 @@
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
+
 abstract class Provider{
 
     /**
@@ -19,6 +21,16 @@ abstract class Provider{
      */
     protected $url;
 
+    /**
+     * @var Instance of the console object
+     */
+    public $console;
+
+
+    public function __construct()
+    {
+
+    }
 
     abstract function connect();
 

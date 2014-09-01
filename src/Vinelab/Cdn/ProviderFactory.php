@@ -3,6 +3,7 @@
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
+use Illuminate\Support\Facades\App;
 use Vinelab\Cdn\Exceptions\UnsupportedProviderException;
 use Vinelab\Cdn\Contracts\ProviderFactoryInterface;
 use Vinelab\Cdn\Provider\AwsS3Provider;
@@ -38,7 +39,7 @@ class ProviderFactory implements ProviderFactoryInterface{
                 $credentials = $configurations['providers']['aws']['s3']['credentials'];
                 $buckets     = $configurations['providers']['aws']['s3']['buckets'];
 
-                return new AwsS3Provider($credentials, $url, $buckets);
+                return App::make('Vinelab\Cdn\Provider\AwsS3Provider')->init($credentials, $url, $buckets);
                 break;
 
             case 'cloudfront':
