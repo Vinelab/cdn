@@ -26,14 +26,11 @@ class AwsS3Provider extends Provider implements ProviderInterface{
     protected $s3_client;
 
     /**
+     * the type of permission on the files on the CDN
+     *
      * @var string
      */
-    protected $includes = '_aws';
-
-    /**
-     * @var string
-     */
-    protected $region = 'us-west-2';
+    protected $acl = 'public-read';
 
     /**
      * @param $credentials
@@ -46,6 +43,7 @@ class AwsS3Provider extends Provider implements ProviderInterface{
     {
         $this->key = isset($credentials['key']) ? $credentials['key'] : null;
         $this->secret = isset($credentials['secret']) ? $credentials['secret'] : null;
+        $this->buckets = isset($credentials['buckets']) ? $credentials['buckets'] : null;
 
         // check if any configuration is missed
         if( ! $this->key || ! $this->secret || ! $url || ! $buckets || ! count($buckets) > 1 )
@@ -53,7 +51,6 @@ class AwsS3Provider extends Provider implements ProviderInterface{
             throw new MissingConfigurationException("Missing Configuration");
         }
 
-        $this->buckets = $buckets; // TODO: work with this
     }
 
 
@@ -65,13 +62,14 @@ class AwsS3Provider extends Provider implements ProviderInterface{
         var_dump('Connecting..');
 
         // Instantiate an S3 client
-        // Instantiate the S3 client using your credential profile
-        $this->s3_client = S3Client::factory(array(
-                'key'    => $this->key,
-                'secret' => $this->secret,
-            )
+        $this->s3_client = S3Client::factory( array(
 
-    );
+                    'key'    => $this->key,
+                    'secret' => $this->secret,
+
+                )
+
+            );
 
     }
 
@@ -81,30 +79,30 @@ class AwsS3Provider extends Provider implements ProviderInterface{
      */
     public function upload($assets)
     {
-
         // connect before uploading
         $this->connect();
 
         var_dump('Start uploader..');
 
-        foreach($assets as $asset){
+        // upload each asset file to the CDN
+        foreach($assets as $file){
 
-            var_dump('Uploading: ' . $asset->getRealpath());
+            var_dump( 'Uploading: ' . $file->getRealpath() );
 
-            // Upload a publicly accessible file. The file size, file type, and MD5 hash
-            // are automatically calculated by the SDK.
             try {
-                $result = $this->s3_client->putObject(array(
-                        'Bucket' => key($this->buckets),
-                        'Key'    => $asset->getFileName(),
-                        'Body'   => fopen($asset->getRealpath(), 'r'),
-                        'ACL'    => 'public-read',
+                $result = $this->s3_client->putObject( array(
+
+                        'Bucket'    =>      key($this->buckets), // the bucket name
+                        'Key'       =>      $file->GetPathName(), // the path of the file on the server (CDN)
+                        'Body'      =>      fopen($file->getRealpath(), 'r'), // the path of the path locally
+                        'ACL'       =>      $this->acl, // the permission of the file
+
                     ));
 
-                var_dump('Uploaded successfully to: ' . $result->get('ObjectURL'));
+                var_dump( 'Uploaded successfully to: ' . $result->get('ObjectURL') );
 
             } catch (S3Exception $e) {
-                echo "There was an error uploading the file.\n";
+                echo "There was an error uploading this file ($file->getRealpath()).\n";
             }
 
         }
