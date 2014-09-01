@@ -20,7 +20,8 @@
     },
     "autoload": {
         "classmap": [
-            "tests/TestCase.php"
+            "tests/TestCase.php",
+            "src/Vinelab/Cdn/Exceptions"
         ],
         "psr-0": {
             "Vinelab\\Cdn\\": "src/"

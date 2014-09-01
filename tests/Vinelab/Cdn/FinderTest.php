@@ -1,5 +1,6 @@
 <?php namespace Vinelab\Cdn\Tests;
 
+use Illuminate\Support\Collection;
 use Mockery as M;
 
 class FinderTest extends TestCase {
@@ -17,9 +18,9 @@ class FinderTest extends TestCase {
 
     public function testReadingAllowedDirectories()
     {
-        $paths = new \Vinelab\Cdn\Paths;
+        $asset_holder = new \Vinelab\Cdn\AssetHolder;
 
-        $paths->init(array(
+        $asset_holder->init(array(
                 'include'    => [
                     'directories'   => [__DIR__],
                 ]
@@ -31,9 +32,8 @@ class FinderTest extends TestCase {
 
         $finder = new \Vinelab\Cdn\Finder($console_output);
 
-        $result = $finder->read($paths);
-
-        assertEquals($result, $paths);
+        $result = $finder->read($asset_holder);
+        assertEquals($result, new Collection);
     }
 
 }

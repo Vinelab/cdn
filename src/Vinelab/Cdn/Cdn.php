@@ -9,6 +9,7 @@ use Vinelab\Cdn\Contracts\CdnInterface;
 use Vinelab\Cdn\Contracts\FinderInterface;
 use Vinelab\Cdn\Contracts\AssetHolderInterface;
 use Vinelab\Cdn\Contracts\ProviderHolderInterface;
+use Vinelab\Cdn\Exceptions\MissingConfigurationFileException;
 
 /**
  * Class Cdn is the manager and the main class of this package
@@ -66,11 +67,13 @@ class Cdn implements CdnInterface{
         // return the configurations from the config file
         $configurations = $this->getConfig();
 
-        // search for assets based on the config file rules and return them to store
-        // all allowed paths (of assets) in the $asset_holder object as collection of paths
-        $this->asset_holder->setAssets($this->findAssets($configurations));
+        // Initialize an instance of the asset holder
+        // call the read function in the reader class, to return all the allowed
+        // assets to store them in the instance of the asset holder as collection of paths
+        $this->asset_holder->setAssets($this->finder->read($this->asset_holder->init($configurations)));
 
         // TODO: to continue from here..
+//        $this->provider_holder->upload($configurations);
 
     }
 
@@ -81,28 +84,15 @@ class Cdn implements CdnInterface{
      */
     private function getConfig()
     {
-        $configs = $this->config->get('cdn::cdn');
+        $configs = $this->config->get('cdn::cdnx');
 
         if(!$configs){
-            // TODO: throw an exception
+            throw new MissingConfigurationFileException('CDN Config file not found');
         }
 
         return $configs;
     }
 
-    /**
-     * Initialize an instance of the asset holder and pass it to the
-     * read function in the reader class, to return all the allowed
-     * assets for upload
-     *
-     * @param $configurations
-     *
-     * @return mixed
-     */
-    private function findAssets($configurations)
-    {
-        return $this->finder->read($this->asset_holder->init($configurations));
-    }
 
 
 
