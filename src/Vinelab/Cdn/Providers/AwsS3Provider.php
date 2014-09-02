@@ -120,7 +120,6 @@ class AwsS3Provider extends Provider implements ProviderInterface{
             ->transferCommands($this->threshold)
             ->autoFlushAt($this->threshold)
             ->build();
-
     }
 
 

@@ -63,8 +63,8 @@ class CdnServiceProvider extends ServiceProvider {
         );
 
         $this->app->bind(
-            'Vinelab\Cdn\Contracts\CdnFacadeProviderInterface',
-            'Vinelab\Cdn\CdnFacadeProvider'
+            'Vinelab\Cdn\Contracts\CdnFacadeInterface',
+            'Vinelab\Cdn\CdnFacade'
         );
 
 
@@ -85,19 +85,17 @@ class CdnServiceProvider extends ServiceProvider {
         // facade bindings:
         //-----------------
 
-        // Register 'CdnFacadeProvider' instance container to our CdnFacadeProvider object
+        // Register 'CdnFacade' instance container to our CdnFacade object
         $this->app['cdn'] = $this->app->share(function()
             {
-                // first parameter 'the main class that contain the facade functions'
-                return $this->app->make('Vinelab\Cdn\CdnFacadeProvider');
+                return $this->app->make('Vinelab\Cdn\CdnFacade');
             });
 
         // Shortcut so developers don't need to add an Alias in app/config/app.php
         $this->app->booting(function()
             {
-                // the first parameter the Facade 'Word'. The second parameter 'the extra facade class'
                 $loader = \Illuminate\Foundation\AliasLoader::getInstance();
-                $loader->alias('Cdn', 'Vinelab\Cdn\Facades\CdnFacadeProvider');
+                $loader->alias('Cdn', 'Vinelab\Cdn\Facades\CdnFacadeAccessor');
             });
 
 

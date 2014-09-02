@@ -40,7 +40,7 @@ class ProviderFactory implements ProviderFactoryInterface{
                 $credentials = $configurations['providers']['aws']['s3']['credentials'];
                 $buckets     = $configurations['providers']['aws']['s3']['buckets'];
                 $acl         = $configurations['providers']['aws']['s3']['acl'];
-                $threshold         = $configurations['threshold'];
+                $threshold   = $configurations['threshold'];
 
                 return App::make('Vinelab\Cdn\Provider\AwsS3Provider')->init($credentials, $url, $buckets, $acl, $threshold);
                 break;

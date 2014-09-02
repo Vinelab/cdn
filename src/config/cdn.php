@@ -52,8 +52,8 @@ return [
             's3' => [
 
                 'credentials' => [
-                    'key'       => 'AKIAIUFQIM4L4543PZQAX', // fake
-                    'secret'    => 'zoj7gqvvlvJV9lDGAn9mgAiwik55UlizjTgCWwgJB', // fake
+                    'key'       => 'AKIAIUFQIM4L4543PZQAX',
+                    'secret'    => 'zoj7gqvvlvJV9lDGAn9mgAiwik55UlizjTgCWwgJB',
                 ],
 
 
