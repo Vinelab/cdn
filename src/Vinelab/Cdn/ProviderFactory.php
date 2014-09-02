@@ -42,7 +42,7 @@ class ProviderFactory implements ProviderFactoryInterface{
                 $acl         = $configurations['providers']['aws']['s3']['acl'];
                 $threshold   = $configurations['threshold'];
 
-                return App::make('Vinelab\Cdn\Provider\AwsS3Provider')->init($credentials, $url, $buckets, $acl, $threshold);
+                return App::make('Vinelab\Cdn\Providers\AwsS3Provider')->init($credentials, $url, $buckets, $acl, $threshold);
                 break;
 
             case 'cloudfront':

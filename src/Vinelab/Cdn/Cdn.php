@@ -76,6 +76,7 @@ class Cdn implements CdnInterface{
 
         // create a provider instance
         $provider = $this->provider_factory->create($configurations);
+
         $provider->upload($this->asset_holder->getAssets());
     }
 

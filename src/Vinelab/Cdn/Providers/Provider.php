@@ -1,4 +1,4 @@
-<?php namespace Vinelab\Cdn\Provider;
+<?php namespace Vinelab\Cdn\Providers;
 
 /**
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
