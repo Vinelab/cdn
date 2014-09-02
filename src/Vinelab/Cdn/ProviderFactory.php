@@ -50,7 +50,7 @@ class ProviderFactory implements ProviderFactoryInterface{
                 break;
 
             default:
-                throw new UnsupportedProviderException("CDN provider not ($this->provider_name) supported");
+                throw new UnsupportedProviderException("CDN provider ($this->provider_name) not supported");
         }
 
     }
