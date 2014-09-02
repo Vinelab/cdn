@@ -18,11 +18,26 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Set the CDN url. (without the bucket name)
+    | URL Protocol
     |--------------------------------------------------------------------------
     |
+    | Specify the URL protocol (https) Hyper Text Transfer Protocol Secure
+    | or (http) Hyper Text Transfer Protocol.
+    |
+    | default is: https
+    |
     */
-    'url' => 'https://s3.amazonaws.com',
+    'protocol' => 'https',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Set the CDN domain.
+    |--------------------------------------------------------------------------
+    |
+    | Set your CDN domain, [without the bucket name] and [without the protocol].
+    |
+    */
+    'domain' => 's3.amazonaws.com',
 
 
     /*
@@ -30,7 +45,9 @@ return [
     | The upload threshold
     |--------------------------------------------------------------------------
     |
-    | the upload threshold by default = 10
+    | Define the upload threshold.
+    |
+    | default = 10
     |
     */
     'threshold' => 10,
@@ -52,8 +69,8 @@ return [
             's3' => [
 
                 'credentials' => [
-                    'key'       => '',
-                    'secret'    => '',
+                    'key'       => 'AKIAIUFQIM4L4543PZQA',
+                    'secret'    => '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',
                 ],
 
 

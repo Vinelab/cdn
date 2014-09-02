@@ -31,7 +31,11 @@ class ProviderFactory implements ProviderFactoryInterface{
 
         // to work with short names in this function, I store the array in local vars
         $default_provider = $configurations['default'];
-        $url              = $configurations['url'];
+        $protocol         = $configurations['protocol'];
+        $domain           = $configurations['domain'];
+
+        // compose the url from the protocol and the domain
+        $url = $protocol . '://' . $domain;
 
         switch ($default_provider == 'aws.s3')
         {
