@@ -31,6 +31,7 @@ class ProviderFactory implements ProviderFactoryInterface{
 
         // to work with short names in this function, I store the array in local vars
         $default_provider = $configurations['default'];
+        $threshold        = $configurations['threshold'];
         $protocol         = $configurations['protocol'];
         $domain           = $configurations['domain'];
 
@@ -44,7 +45,6 @@ class ProviderFactory implements ProviderFactoryInterface{
                 $credentials = $configurations['providers']['aws']['s3']['credentials'];
                 $buckets     = $configurations['providers']['aws']['s3']['buckets'];
                 $acl         = $configurations['providers']['aws']['s3']['acl'];
-                $threshold   = $configurations['threshold'];
 
                 return App::make('Vinelab\Cdn\Providers\AwsS3Provider')->init($credentials, $url, $buckets, $acl, $threshold);
                 break;
