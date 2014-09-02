@@ -7,8 +7,10 @@
 use Vinelab\Cdn\Exceptions\MissingConfigurationException;
 use Vinelab\Cdn\Providers\Contracts\ProviderInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Guzzle\Batch\BatchBuilder;
 use Aws\S3\Exception\S3Exception;
 use Aws\S3\S3Client;
+
 /**
  * Class AwsS3Provider
  * @package Vinelab\Cdn\Provider
@@ -16,11 +18,11 @@ use Aws\S3\S3Client;
 class AwsS3Provider extends Provider implements ProviderInterface{
 
     /**
-     * @var Array
+     * @var array
      */
     protected $buckets;
     /**
-     * @var Boolean
+     * @var boolean
      */
     protected $multiple_buckets;
 
@@ -37,26 +39,62 @@ class AwsS3Provider extends Provider implements ProviderInterface{
     protected $acl = 'public-read';
 
     /**
+     * @var integer
+     */
+    protected $threshold = 10;
+
+    /**
+     * @var Instance of Guzzle\Batch\BatchBuilder
+     */
+    protected $batch;
+
+    /**
      * @param \Symfony\Component\Console\Output\ConsoleOutput $console
      */
     public function __construct(ConsoleOutput $console)
     {
-        parent::__construct();
-
         $this->console = $console;
     }
 
-    public function init($credentials, $url, $buckets)
+    /**
+     * assign configurations to the class and check if required fields exist
+     *
+     * @param $credentials
+     * @param $url
+     * @param $buckets
+     * @param $acl
+     * @param $threshold
+     *
+     * @throws \Vinelab\Cdn\Exceptions\MissingConfigurationException
+     * @return $this
+     */
+    public function init($credentials, $url, $buckets, $acl, $threshold)
     {
-
+        // required fields
         $this->key = isset($credentials['key']) ? $credentials['key'] : null;
         $this->secret = isset($credentials['secret']) ? $credentials['secret'] : null;
         $this->buckets = isset($buckets) ? $buckets : null;
+        // optional fields
+        $this->acl = isset($acl) ? $acl : $this->acl;
+        $this->threshold = isset($threshold) ? $threshold : $this->threshold;
 
-        // check if any configuration is missed
+        // check if any required field is missed
         if( ! $this->key || ! $this->secret || ! $url || ! $buckets || ! count($buckets) > 1 )
         {
-            throw new MissingConfigurationException("Missing Configuration");
+            $fields = ['(key)' => $this->key,
+                       '(secret)' => $this->secret,
+                       '(url)' => $url,
+                       '(bucket)' => key($buckets),
+                       'missed' => ' '
+                      ];
+            // check which field is missed
+            foreach ($fields as $key => $value) {
+                if (empty($value)){
+                    $fields['missed'] .= $key;
+                }
+            }
+
+            throw new MissingConfigurationException("Missing Configurations:" . $fields['missed'] );
         }
 
         return $this;
@@ -76,6 +114,13 @@ class AwsS3Provider extends Provider implements ProviderInterface{
                 )
 
             );
+
+
+        $this->batch = BatchBuilder::factory()
+            ->transferCommands($this->threshold)
+            ->autoFlushAt($this->threshold)
+            ->build();
+
     }
 
 
@@ -91,28 +136,36 @@ class AwsS3Provider extends Provider implements ProviderInterface{
         $this->console->writeln('<fg=red>Start Uploading...</fg=red>');
 
         // upload each asset file to the CDN
-        foreach($assets as $file){
-
+        foreach($assets as $file)
+        {
             // user terminal message
             $this->console->writeln('<fg=green>File:   ' . $file->getRealpath() . '</fg=green>');
 
             try {
-                $result = $this->s3_client->putObject( array(
+                $this->batch->add($this->s3_client->getCommand('PutObject', [
 
-                        'Bucket'    =>      key($this->buckets), // the bucket name
-                        'Key'       =>      $file->GetPathName(), // the path of the file on the server (CDN)
-                        'Body'      =>      fopen($file->getRealpath(), 'r'), // the path of the path locally
-                        'ACL'       =>      $this->acl, // the permission of the file
+                            'Bucket'    =>      key($this->buckets), // the bucket name
+                            'Key'       =>      $file->GetPathName(), // the path of the file on the server (CDN)
+                            'Body'      =>      fopen($file->getRealpath(), 'r'), // the path of the path locally
+                            'ACL'       =>      $this->acl, // the permission of the file
 
-                    ));
-                // user terminal message
-                $this->console->writeln('<fg=black;bg=green>URL:    ' . $result->get('ObjectURL')  . '</fg=black;bg=green>');
-
+                        ]));
             } catch (S3Exception $e) {
                 echo "There was an error uploading this file ($file->getRealpath()).\n";
             }
 
         }
+
+        // Execute batch.
+        $commands = $this->batch->flush();
+
+        foreach($commands as $command)
+        {
+            $result = $command->getResult();
+            // user terminal message
+            $this->console->writeln('<fg=black;bg=green>URL:    ' . $result->get('ObjectURL')  . '</fg=black;bg=green>');
+        }
+
         // user terminal message
         $this->console->writeln('<fg=red>Upload completed successfully.</fg=red>');
     }

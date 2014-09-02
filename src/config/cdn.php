@@ -24,6 +24,17 @@ return [
     */
     'url' => 'https://s3.amazonaws.com',
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | The upload threshold
+    |--------------------------------------------------------------------------
+    |
+    | the upload threshold by default = 10
+    |
+    */
+    'threshold' => 10,
+
     /*
     |--------------------------------------------------------------------------
     | CDN Providers
@@ -41,8 +52,8 @@ return [
             's3' => [
 
                 'credentials' => [
-                    'key'       => 'AKIAJQRCJ3IUQXVNM5KA',
-                    'secret'    => '3n410bAID+TTahMq7g+FVn2WV2FWpDt48xldsBNO',
+                    'key'       => 'AKIAIUFQIM4L4543PZQAX', // fake
+                    'secret'    => 'zoj7gqvvlvJV9lDGAn9mgAiwik55UlizjTgCWwgJB', // fake
                 ],
 
 
@@ -62,6 +73,16 @@ return [
                     //        'your-js-bucket-name-here'  =>  ['public/js'],
                     //        'your-css-bucket-name-here'  =>  ['public/css'],
                 ],
+
+                /*
+                | The Access Control Lists.
+                | Amazon S3 supports a set of predefined grants, known as canned ACLs.
+                | Each canned ACL has a predefined a set of grantees and permissions.
+                | The following list is a set of canned ACLs and the associated
+                | predefined grants: private, public-read, public-read-write, authenticated-read
+                | bucket-owner-read, bucket-owner-full-control, log-delivery-write
+                */
+                'acl' => 'public-read'
 
             ],
 
@@ -113,7 +134,7 @@ return [
     */
     'exclude'    => [
         'directories'   => ['public/uploads'],
-        'files'         => ['README.md', 'LICENSE'],
+        'files'         => [''],
         'extensions'    => ['.txt'],
         'patterns'      => ['404.*'],
         'hidden'        => true,

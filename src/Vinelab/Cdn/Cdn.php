@@ -22,7 +22,7 @@ class Cdn implements CdnInterface{
      *
      * @var \Illuminate\Config\Repository
      */
-    protected $config;
+    protected $configurations;
 
     /**
      * An instance of the finder class
@@ -40,21 +40,23 @@ class Cdn implements CdnInterface{
     protected $asset_holder;
 
     /**
-     * @param Repository $config
+     * @param \Illuminate\Config\Repository $configurations
      * @param FinderInterface $finder
      * @param AssetHolderInterface $asset_holder
      * @param \Vinelab\Cdn\Contracts\ProviderFactoryInterface $provider_factory
+     *
+     * @internal param \Illuminate\Config\Repository $configurations
      */
-    public function __construct(Repository $config,
+    public function __construct(Repository $configurations,
                                 FinderInterface $finder,
                                 AssetHolderInterface $asset_holder,
                                 ProviderFactoryInterface $provider_factory
     )
     {
-        $this->config               = $config;
+        $this->configurations       = $configurations;
         $this->finder               = $finder;
         $this->asset_holder         = $asset_holder;
-        $this->provider_factory      = $provider_factory;
+        $this->provider_factory     = $provider_factory;
     }
 
 
@@ -64,9 +66,9 @@ class Cdn implements CdnInterface{
     public function push()
     {
         // return the configurations from the config file
-        $configurations = $this->getConfig();
+        $configurations = $this->getConfigurations();
 
-        // Initialize an instance of the asset holder to read the configurations
+        // Initialize an instance of the asset holder to read the config    urations
         // then call the read(), to return all the allowed assets as a collection of files objects
         $assets = $this->finder->read($this->asset_holder->init($configurations));
         // store the returned assets in the instance of the asset holder as collection of paths
@@ -82,15 +84,15 @@ class Cdn implements CdnInterface{
      * Check if the config file exist and return it or
      * throw an exception
      */
-    private function getConfig()
+    private function getConfigurations()
     {
-        $configs = $this->config->get('cdn::cdn');
+        $configurations = $this->configurations->get('cdn::cdn');
 
-        if(!$configs){
-            throw new MissingConfigurationFileException('CDN Config file not found');
+        if(!$configurations){
+            throw new MissingConfigurationFileException('CDN Configurations file not found');
         }
 
-        return $configs;
+        return $configurations;
     }
 
 

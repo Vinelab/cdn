@@ -12,12 +12,13 @@ use Vinelab\Cdn\Provider\AwsS3Provider;
  * Read configurations then create and return the Provider object
  * @package Vinelab\Cdn
  */
+
 class ProviderFactory implements ProviderFactoryInterface{
 
 
     /**
-     * Create and return an instance of the corresponding provider class
-     * after reading the configurations of the default provider
+     * Create and return an instance of the corresponding
+     * Provider concrete according to the configuration
      *
      * @param array $configurations
      *
@@ -38,8 +39,10 @@ class ProviderFactory implements ProviderFactoryInterface{
 
                 $credentials = $configurations['providers']['aws']['s3']['credentials'];
                 $buckets     = $configurations['providers']['aws']['s3']['buckets'];
+                $acl         = $configurations['providers']['aws']['s3']['acl'];
+                $threshold         = $configurations['threshold'];
 
-                return App::make('Vinelab\Cdn\Provider\AwsS3Provider')->init($credentials, $url, $buckets);
+                return App::make('Vinelab\Cdn\Provider\AwsS3Provider')->init($credentials, $url, $buckets, $acl, $threshold);
                 break;
 
             case 'cloudfront':
@@ -48,7 +51,6 @@ class ProviderFactory implements ProviderFactoryInterface{
 
             default:
                 throw new UnsupportedProviderException("CDN provider not ($this->provider_name) supported");
-                return null;
         }
 
     }

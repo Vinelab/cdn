@@ -4,20 +4,20 @@
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
-use Symfony\Component\Console\Output\ConsoleOutputInterface;
+use Vinelab\Cdn\Providers\Contracts\ProviderInterface;
 
-abstract class Provider{
+abstract class Provider implements ProviderInterface{
 
     /**
-     * @var String
+     * @var string
      */
     protected $key;
     /**
-     * @var String
+     * @var string
      */
     protected $secret;
     /**
-     * @var String
+     * @var string
      */
     protected $url;
 
@@ -26,13 +26,6 @@ abstract class Provider{
      */
     public $console;
 
-
-    public function __construct()
-    {
-
-    }
-
-    abstract function connect();
 
     abstract function upload($assets);
 
