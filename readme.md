@@ -96,12 +96,19 @@ Set your bucket/buckets name:
 
 ## Usage
 
+> upload your assets to the `CDN` by simply running this `artisan` command:
 
 ```shell
 php artisan cdn:push
 ```
-Simply just run this artisan command to upload all your `files` to the `CDN`.
 
+> then use the following facade helper function in your `iews`
+
+```html
+    {{Cdn::asset('public/index.php')}}
+    {{Cdn::asset('public/assets/js/main.js')}}
+    {{Cdn::asset('public/assets/css/main.css')}}
+```
 
 ## Testing
 
