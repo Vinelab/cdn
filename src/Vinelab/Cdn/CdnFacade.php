@@ -53,7 +53,9 @@ class CdnFacade implements CdnFacadeInterface{
      */
     public function asset($path)
     {
-        return $this->provider->urlGenerator($path);
+        // remove slashes from begging and ending of the path then call the
+        // url generator of the provider
+        return $this->provider->urlGenerator(rtrim(ltrim($path, '/'), '/'));
     }
 
     /**
