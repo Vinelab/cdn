@@ -31,10 +31,10 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Set the CDN domain.
+    | Set the CDN url.
     |--------------------------------------------------------------------------
     |
-    | Set your CDN domain, [without the bucket name] and [without the protocol].
+    | Set your CDN url, [without the bucket name] and [without the protocol].
     |
     */
     'domain' => 's3.amazonaws.com',

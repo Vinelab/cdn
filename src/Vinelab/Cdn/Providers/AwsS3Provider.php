@@ -17,6 +17,44 @@ use Aws\S3\S3Client;
  */
 class AwsS3Provider extends Provider implements ProviderInterface{
 
+
+    /**
+     * @var string
+     */
+    protected $domain;
+
+    /**
+     * @var string
+     */
+    protected $protocol;
+
+    /**
+     * @var string
+     */
+    protected $url;
+
+    /**
+     * @var string
+     */
+    protected $key;
+
+    /**
+     * @var string
+     */
+    protected $secret;
+
+    /**
+     * the type of permission on the files on the CDN
+     *
+     * @var string
+     */
+    protected $acl = 'public-read';
+
+    /**
+     * @var integer
+     */
+    protected $threshold = 10;
+
     /**
      * @var array
      */
@@ -31,17 +69,7 @@ class AwsS3Provider extends Provider implements ProviderInterface{
      */
     protected $s3_client;
 
-    /**
-     * the type of permission on the files on the CDN
-     *
-     * @var string
-     */
-    protected $acl = 'public-read';
 
-    /**
-     * @var integer
-     */
-    protected $threshold = 10;
 
     /**
      * @var Instance of Guzzle\Batch\BatchBuilder
@@ -59,63 +87,37 @@ class AwsS3Provider extends Provider implements ProviderInterface{
     /**
      * assign configurations to the class and check if required fields exist
      *
-     * @param $credentials
-     * @param $url
-     * @param $buckets
-     * @param $acl
-     * @param $threshold
+     * @param $supplier
      *
-     * @throws \Vinelab\Cdn\Exceptions\MissingConfigurationException
      * @return $this
      */
-    public function init($credentials, $url, $buckets, $acl, $threshold)
+    public function init($supplier)
     {
-        // required fields
-        $this->key = isset($credentials['key']) ? $credentials['key'] : null;
-        $this->secret = isset($credentials['secret']) ? $credentials['secret'] : null;
-        $this->buckets = isset($buckets) ? $buckets : null;
-        // optional fields
-        $this->acl = isset($acl) ? $acl : $this->acl;
-        $this->threshold = isset($threshold) ? $threshold : $this->threshold;
-
-        // check if any required field is missed
-        if( ! $this->key || ! $this->secret || ! $url || ! $buckets || ! count($buckets) > 1 )
-        {
-            $fields = ['(key)' => $this->key,
-                       '(secret)' => $this->secret,
-                       '(url)' => $url,
-                       '(bucket)' => key($buckets),
-                       'missed' => ' '
-                      ];
-            // check which field is missed
-            foreach ($fields as $key => $value) {
-                if (empty($value)){
-                    $fields['missed'] .= $key;
-                }
-            }
-
-            throw new MissingConfigurationException("Missing Configurations:" . $fields['missed'] );
-        }
+        $this->domain       = $supplier['domain'];
+        $this->protocol     = $supplier['protocol'];
+        $this->url          = $supplier['url'];
+        $this->key          = $supplier['key'];
+        $this->secret       = $supplier['secret'];
+        $this->acl          = $supplier['acl'];
+        $this->threshold    = $supplier['threshold'];
+        $this->buckets      = $supplier['buckets'];
 
         return $this;
     }
 
     /**
-     * Connect to the CDN
+     * Create a cdn instance and create a batch builder instance
      */
     public function connect()
     {
         // Instantiate an S3 client
         $this->s3_client = S3Client::factory( array(
-
                     'key'    => $this->key,
                     'secret' => $this->secret,
-
                 )
-
             );
 
-
+        // Initialize the batch builder
         $this->batch = BatchBuilder::factory()
             ->transferCommands($this->threshold)
             ->autoFlushAt($this->threshold)
@@ -137,6 +139,7 @@ class AwsS3Provider extends Provider implements ProviderInterface{
         // upload each asset file to the CDN
         foreach($assets as $file)
         {
+
             // user terminal message
             $this->console->writeln('<fg=green>File:   ' . $file->getRealpath() . '</fg=green>');
 
@@ -170,5 +173,50 @@ class AwsS3Provider extends Provider implements ProviderInterface{
     }
 
 
+    public function urlGenerator($path)
+    {   // todo: clean every value before building the url
+        return $this->protocol . '://' . key($this->buckets) . '.' . $this->domain . '/' . $path;
+    }
 
-} 
+    /**
+     * @return string
+     */
+    public function getDomain()
+    {
+        return $this->domain;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProtocol()
+    {
+        return $this->protocol;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * @param string $url
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+    }
+
+    /**
+     * @return array
+     */
+    public function getBuckets()
+    {
+        return $this->buckets;
+    }
+
+
+}

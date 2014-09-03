@@ -72,7 +72,7 @@ class Cdn implements CdnInterface{
         // store the returned assets in the instance of the asset holder as collection of paths
         $this->asset_holder->setAssets($assets);
 
-        // create a provider instance
+        // return an instance of the corresponding Provider concrete according to the configuration
         $provider = $this->provider_factory->create($configurations);
 
         $provider->upload($this->asset_holder->getAssets());

@@ -1,6 +1,7 @@
 <?php namespace Vinelab\Cdn;
 
-use Vinelab\Cdn\Exceptions\UnsupportedProviderException;
+use Vinelab\Cdn\Exceptions\MissingConfigurationFileException;
+use Vinelab\Cdn\Contracts\ProviderFactoryInterface;
 use Vinelab\Cdn\Contracts\CdnFacadeInterface;
 use \Illuminate\Config\Repository;
 
@@ -10,7 +11,10 @@ use \Illuminate\Config\Repository;
 
 class CdnFacade implements CdnFacadeInterface{
 
-    protected $provider_name;
+    /**
+     * @var instance of the default's provider object
+     */
+    protected $provider;
 
     /**
      * this array will hold all the info that generate the CDN url
@@ -29,10 +33,13 @@ class CdnFacade implements CdnFacadeInterface{
 
     /**
      * @param Repository $configurations
+     * @param ProviderFactoryInterface $provider_factory
      */
-    public function __construct(Repository $configurations)
+    public function __construct(Repository $configurations,
+                                ProviderFactoryInterface $provider_factory)
     {
-        $this->configurations = $configurations;
+        $this->configurations       = $configurations;
+        $this->provider_factory     = $provider_factory;
 
         $this->init();
     }
@@ -48,45 +55,39 @@ class CdnFacade implements CdnFacadeInterface{
      */
     public function asset($path)
     {
-        // todo: clean every value before building the url
-        return $this->url_builder['protocol'] . '://' . $this->url_builder['bucket'] . '.' . $this->url_builder['domain'] . '/' . $path;
+        return $this->provider->urlGenerator($path);
     }
 
     /**
-     * Initialize this class by reading the configurations
-     * from the config file
+     * Read the configuration file and initialize an object
+     * of the corresponding provider according to the default configuration
+     *
      */
     private function init()
     {
-        $this->provider_name = $this->configurations->get('cdn::cdn.default');
+        // return the configurations from the config file
+        $configurations = $this->getConfigurations();
 
-        switch($this->provider_name)
-        {
-            case 'aws.s3':
-                    $this->awsS3Initializer();
-                break;
-
-            default:
-                throw new UnsupportedProviderException("CDN provider ($this->provider_name) not supported");
-
-        }
-
+        // return an instance of the corresponding Provider concrete according to the configuration
+        $this->provider = $this->provider_factory->create($configurations);
     }
 
 
-    private function awsS3Initializer()
+
+// TODO: remove this function to a HELPER class to be used b
+    /**
+     * Check if the config file exist and return it or
+     * throw an exception
+     */
+    private function getConfigurations()
     {
-        $protocol = $this->configurations->get('cdn::cdn.protocol');
-        $domain = $this->configurations->get('cdn::cdn.domain');
+        $configurations = $this->configurations->get('cdn::cdn');
 
-        $buckets = $this->configurations->get('cdn::cdn.providers.aws.s3.buckets');
-        // TODO: validate not empty
-        $this->url_builder = [
-                'protocol' => $protocol,
-                'domain' => $domain,
-                'bucket' => key($buckets),
-        ];
+        if(!$configurations){
+            throw new MissingConfigurationFileException('CDN Configurations file not found');
+        }
 
+        return $configurations;
     }
 
 }
