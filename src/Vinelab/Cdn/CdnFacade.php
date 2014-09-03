@@ -1,9 +1,8 @@
 <?php namespace Vinelab\Cdn;
 
-use Vinelab\Cdn\Exceptions\MissingConfigurationFileException;
 use Vinelab\Cdn\Contracts\ProviderFactoryInterface;
 use Vinelab\Cdn\Contracts\CdnFacadeInterface;
-use \Illuminate\Config\Repository;
+use Vinelab\Cdn\Contracts\CdnHelperInterface;
 
 /**
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
@@ -21,23 +20,24 @@ class CdnFacade implements CdnFacadeInterface{
     protected $provider;
 
     /**
-     * An object of the 'Repository' class that allows reading the laravel config files
-     *
-     * @var \Illuminate\Config\Repository
+     * @var instance of the CdnHelper class
      */
-    protected $configurations;
+    protected $helper;
 
     /**
      * Calls the provider initializer
      *
-     * @param Repository $configurations
      * @param ProviderFactoryInterface $provider_factory
+     * @param Contracts\CdnHelperInterface $helper
+     *
+     * @internal param \Vinelab\Cdn\Repository $configurations
      */
-    public function __construct(Repository $configurations,
-                                ProviderFactoryInterface $provider_factory)
+    public function __construct(ProviderFactoryInterface $provider_factory,
+                                CdnHelperInterface $helper
+    )
     {
-        $this->configurations       = $configurations;
         $this->provider_factory     = $provider_factory;
+        $this->helper               = $helper;
 
         $this->init();
     }
@@ -67,28 +67,12 @@ class CdnFacade implements CdnFacadeInterface{
     private function init()
     {
         // return the configurations from the config file
-        $configurations = $this->getConfigurations();
+        $configurations = $this->helper->getConfigurations();
 
         // return an instance of the corresponding Provider concrete according to the configuration
         $this->provider = $this->provider_factory->create($configurations);
     }
 
 
-
-// TODO: remove this function to a HELPER class to be used b
-    /**
-     * Check if the config file exist and return it or
-     * throw an exception
-     */
-    private function getConfigurations()
-    {
-        $configurations = $this->configurations->get('cdn::cdn');
-
-        if(!$configurations){
-            throw new MissingConfigurationFileException('CDN Configurations file not found');
-        }
-
-        return $configurations;
-    }
 
 }

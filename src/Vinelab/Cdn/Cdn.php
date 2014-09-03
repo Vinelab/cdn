@@ -4,12 +4,12 @@
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
-use \Illuminate\Config\Repository;
+
 use Vinelab\Cdn\Contracts\CdnInterface;
 use Vinelab\Cdn\Contracts\FinderInterface;
+use Vinelab\Cdn\Contracts\CdnHelperInterface;
 use Vinelab\Cdn\Contracts\AssetHolderInterface;
 use Vinelab\Cdn\Contracts\ProviderFactoryInterface;
-use Vinelab\Cdn\Exceptions\MissingConfigurationFileException;
 
 /**
  * Class Cdn is the manager and the main class of this package
@@ -17,12 +17,6 @@ use Vinelab\Cdn\Exceptions\MissingConfigurationFileException;
  */
 class Cdn implements CdnInterface{
 
-    /**
-     * An object of the 'Repository' class that allows reading the laravel config files
-     *
-     * @var \Illuminate\Config\Repository
-     */
-    protected $configurations;
 
     /**
      * An instance of the finder class
@@ -40,21 +34,23 @@ class Cdn implements CdnInterface{
     protected $asset_holder;
 
     /**
-     * @param Repository $configurations
      * @param FinderInterface $finder
      * @param AssetHolderInterface $asset_holder
      * @param ProviderFactoryInterface $provider_factory
+     * @param CdnHelperInterface $helper
+     *
+     * @internal param \Vinelab\Cdn\Repository $configurations
      */
-    public function __construct(Repository $configurations,
-                                FinderInterface $finder,
+    public function __construct(FinderInterface $finder,
                                 AssetHolderInterface $asset_holder,
-                                ProviderFactoryInterface $provider_factory
+                                ProviderFactoryInterface $provider_factory,
+                                CdnHelperInterface $helper
     )
     {
-        $this->configurations       = $configurations;
         $this->finder               = $finder;
         $this->asset_holder         = $asset_holder;
         $this->provider_factory     = $provider_factory;
+        $this->helper               = $helper;
     }
 
 
@@ -64,7 +60,7 @@ class Cdn implements CdnInterface{
     public function push()
     {
         // return the configurations from the config file
-        $configurations = $this->getConfigurations();
+        $configurations = $this->helper->getConfigurations();
 
         // Initialize an instance of the asset holder to read the config    urations
         // then call the read(), to return all the allowed assets as a collection of files objects
@@ -77,24 +73,5 @@ class Cdn implements CdnInterface{
 
         $provider->upload($this->asset_holder->getAssets());
     }
-
-
-    /**
-     * Check if the config file exist and return it or
-     * throw an exception
-     */
-    private function getConfigurations()
-    {
-        $configurations = $this->configurations->get('cdn::cdn');
-
-        if(!$configurations){
-            throw new MissingConfigurationFileException('CDN Configurations file not found');
-        }
-
-        return $configurations;
-    }
-
-
-
 
 }
