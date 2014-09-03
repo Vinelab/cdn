@@ -1,7 +1,7 @@
 <?php namespace Vinelab\Cdn;
 
 /**
- * @author Mahmoud Zalt <inbox@mahmoudzalt.com>
+ * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
 use \Illuminate\Config\Repository;
