@@ -15,7 +15,7 @@ use Vinelab\Cdn\Contracts\CdnHelperInterface;
 class CdnFacade implements CdnFacadeInterface{
 
     /**
-     * @var instance of the default's provider object
+     * @var instance of the default provider object
      */
     protected $provider;
 

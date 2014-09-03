@@ -10,7 +10,6 @@ use Vinelab\Cdn\Exceptions\MissingConfigurationFileException;
 
 class CdnHelper implements CdnHelperInterface{
 
-
     /**
      * An object of the 'Repository' class that allows reading the laravel config files
      *
