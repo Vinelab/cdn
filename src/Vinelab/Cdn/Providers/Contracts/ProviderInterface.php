@@ -6,6 +6,8 @@
 
 interface ProviderInterface{
 
+    public function init($configurations);
+
     public function upload($assets);
 
     public function urlGenerator($path);

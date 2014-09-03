@@ -40,10 +40,10 @@ class ProviderFactory implements ProviderFactoryInterface{
             switch ($provider == 'aws.s3')
             {
                 case 'aws.s3':
-                    // first call the provider supplier function to render the configuration and return an array of the
-                    // relevant configurations for this provider then create an instance of this provider,
-                    // finally call the init function of this provider object to read and process the configuration
-                    return App::make('Vinelab\Cdn\Providers\AwsS3Provider')->init($this->awsS3Supplier($configurations));
+
+                    // create an instance of aws s3 provider, then
+                    // call the init function to read and parse the configuration
+                    return App::make('Vinelab\Cdn\Providers\AwsS3Provider')->init($configurations);
                     break;
 
                 case 'cloudfront':
@@ -60,79 +60,6 @@ class ProviderFactory implements ProviderFactoryInterface{
         }
     }
 
-
-    /**
-     * Read the configuration and prepare an array with the relevant configurations
-     * for the (AWS S3) provider.
-     *
-     * @param $configurations
-     *
-     * @throws MissingConfigurationException
-     * @return array
-     */
-    public function awsS3Supplier($configurations)
-    {
-
-        // Aws s3 default configurations
-        $default = [
-            'protocol' => 'https',
-            'domain' => null,
-            'threshold' => 10,
-            'providers' => [
-                'aws' => [
-                    's3' => [
-                        'credentials' => [
-                            'key'       => null,
-                            'secret'    => null,
-                        ],
-                        'buckets' => null,
-                        'acl' => 'public-read',
-                    ]
-                ]
-            ],
-        ];
-
-        // merge the received config array with the default configurations array to
-        // fill missed keys with null or default values.
-        $default = array_merge($default, $configurations);
-
-        // search for any null or empty field to throw an exception
-        $missing = '';
-        foreach ( $default as $key => $value) {
-            // Fix: needs to check for the sub arrays also
-            if (empty($value) || $value == null || $value == '')
-            {
-                $missing .= $key;
-            }
-        }
-
-        if($missing)
-            throw new MissingConfigurationException("Missing Configurations:" . $missing );
-
-        // TODO: to be removed to a function of common configurations between call providers
-        $threshold   = $default['threshold'];
-        $protocol    = $default['protocol'];
-        $domain      = $default['domain'];
-
-        // aws s3 specific configurations
-        $key         = $default['providers']['aws']['s3']['credentials']['key'];
-        $secret      = $default['providers']['aws']['s3']['credentials']['secret'];
-        $buckets     = $default['providers']['aws']['s3']['buckets'];
-        $acl         = $default['providers']['aws']['s3']['acl'];
-
-        $supplier = [
-            'domain' => $domain,
-            'protocol' => $protocol,
-            'url' => $protocol . '://' . $domain,  // compose the url from the protocol and the domain
-            'key' => $key,
-            'secret' => $secret,
-            'acl' => $acl,
-            'threshold' => $threshold,
-            'buckets' => $buckets,
-        ];
-
-        return $supplier;
-    }
 
 
 }

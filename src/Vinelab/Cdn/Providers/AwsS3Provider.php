@@ -17,6 +17,23 @@ use Aws\S3\S3Client;
  */
 class AwsS3Provider extends Provider implements ProviderInterface{
 
+    protected $default = [
+        'protocol' => 'https',
+        'domain' => null,
+        'threshold' => 10,
+        'providers' => [
+            'aws' => [
+                's3' => [
+                    'credentials' => [
+                        'key'       => null,
+                        'secret'    => null,
+                    ],
+                    'buckets' => null,
+                    'acl' => 'public-read',
+                ]
+            ]
+        ],
+    ];
 
     /**
      * @var string
@@ -87,12 +104,14 @@ class AwsS3Provider extends Provider implements ProviderInterface{
     /**
      * Assign configurations to the properties and return itself
      *
-     * @param $supplier
+     * @param $configurations
      *
      * @return $this
      */
-    public function init($supplier)
+    public function init($configurations)
     {
+        $supplier = $this->parse($configurations);
+
         $this->domain       = $supplier['domain'];
         $this->protocol     = $supplier['protocol'];
         $this->url          = $supplier['url'];
@@ -105,10 +124,70 @@ class AwsS3Provider extends Provider implements ProviderInterface{
         return $this;
     }
 
+
+
+
+
+    /**
+     * Read the configuration and prepare an array with the relevant configurations
+     * for the (AWS S3) provider.
+     *
+     * @param $configurations
+     *
+     * @throws MissingConfigurationException
+     * @return array
+     */
+    private function parse($configurations)
+    {
+        // merge the received config array with the default configurations array to
+        // fill missed keys with null or default values.
+        $this->default = array_merge($this->default, $configurations);
+
+        // search for any null or empty field to throw an exception
+        $missing = '';
+        foreach ( $this->default as $key => $value) {
+            // Fix: needs to check for the sub arrays also
+            if (empty($value) || $value == null || $value == '')
+            {
+                $missing .= $key;
+            }
+        }
+
+        if($missing)
+            throw new MissingConfigurationException("Missing Configurations:" . $missing );
+
+        // TODO: to be removed to a function of common configurations between call providers
+        $threshold   = $this->default['threshold'];
+        $protocol    = $this->default['protocol'];
+        $domain      = $this->default['domain'];
+
+        // aws s3 specific configurations
+        $key         = $this->default['providers']['aws']['s3']['credentials']['key'];
+        $secret      = $this->default['providers']['aws']['s3']['credentials']['secret'];
+        $buckets     = $this->default['providers']['aws']['s3']['buckets'];
+        $acl         = $this->default['providers']['aws']['s3']['acl'];
+
+        $supplier = [
+            'domain' => $domain,
+            'protocol' => $protocol,
+            'url' => $protocol . '://' . $domain,  // compose the url from the protocol and the domain
+            'key' => $key,
+            'secret' => $secret,
+            'acl' => $acl,
+            'threshold' => $threshold,
+            'buckets' => $buckets,
+        ];
+
+        return $supplier;
+    }
+
+
+
+
     /**
      * Create a cdn instance and create a batch builder instance
      */
-    public function connect()
+    private function connect()
     {
         // Instantiate an S3 client
         $this->s3_client = S3Client::factory( array(
