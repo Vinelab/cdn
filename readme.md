@@ -40,21 +40,19 @@ in `app/config/cdn.php` or in case of an environment-based configuration `app/co
 'default' => 'aws-s3',
 ```
 
-Add the CDN credentials:
+Add the CDN details:
 
 ```php
-
         'aws' => [
 
             's3' => [
 
                 'credentials' => [
-                    'access_key'    => '',
-                    'secret_key'    => '',
+                    'key'    => '',
+                    'secret'    => '',
                 ],
 
             ],
-
 ```
 
 Specify which directories or/and files to be uploaded:
@@ -71,16 +69,22 @@ Specify what to ignore from the 'include' directories:
 ```php
     'exclude'    => [
         'directories'   => ['public/uploads'],
-        'files'         => ['README.md', 'LICENSE'],
-        'extensions'    => ['.txt'],
-        'patterns'      => ['404.*'],
+        'files'         => [''],
+        'extensions'    => [''],
+        'patterns'      => [''],
         'hidden'        => true,
     ],
 ```
-Set the CDN url:
+Set the URL protocol:
 
 ```php
-    'url' => 'https://s3.amazonaws.com',
+    'protocol' => 'https',
+```
+
+Set the CDN domain:
+
+```php
+    'domain' => 's3.amazonaws.com',
 ```
 
 Set your bucket/buckets name:
@@ -93,6 +97,11 @@ Set your bucket/buckets name:
     ],
 ```
 
+Set an upload threshold:
+
+```php
+    'threshold' => 10,
+```
 
 ## Usage
 
