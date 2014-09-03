@@ -33,11 +33,11 @@ class ProviderFactory implements ProviderFactoryInterface{
     public function create($configurations = array())
     {
         // get the default provider name
-        $default_provider = $configurations['default'];
+        $provider = isset($configurations['default']) ? $configurations['default'] : null;
 
-        if( $default_provider )
+        if( $provider )
         {
-            switch ($default_provider == 'aws.s3')
+            switch ($provider == 'aws.s3')
             {
                 case 'aws.s3':
                     // first call the provider supplier function to render the configuration and return an array of the
