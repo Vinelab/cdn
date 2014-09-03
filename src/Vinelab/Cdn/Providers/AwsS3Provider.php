@@ -277,6 +277,7 @@ class AwsS3Provider extends Provider implements ProviderInterface{
      */
     public function getProtocol()
     {
+        // make sure every protocol is formatted correctly (xxx://)
         return rtrim(rtrim($this->protocol, "/"), ":") . '://';
     }
 
