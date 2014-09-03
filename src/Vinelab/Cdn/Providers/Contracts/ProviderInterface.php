@@ -8,6 +8,8 @@ interface ProviderInterface{
 
     public function upload($assets);
 
+    public function urlGenerator($path);
+
     public function getDomain();
 
     public function getProtocol();
@@ -15,6 +17,5 @@ interface ProviderInterface{
     public function getUrl();
 
     public function getBuckets();
-
 
 } 

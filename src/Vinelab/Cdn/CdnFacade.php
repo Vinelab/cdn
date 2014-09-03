@@ -9,20 +9,16 @@ use \Illuminate\Config\Repository;
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
+/**
+ * Class CdnFacade
+ * @package Vinelab\Cdn
+ */
 class CdnFacade implements CdnFacadeInterface{
 
     /**
      * @var instance of the default's provider object
      */
     protected $provider;
-
-    /**
-     * this array will hold all the info that generate the CDN url
-     * depend on each CDN provider
-     *
-     * @var array
-     */
-    protected $url_builder;
 
     /**
      * An object of the 'Repository' class that allows reading the laravel config files
@@ -32,6 +28,8 @@ class CdnFacade implements CdnFacadeInterface{
     protected $configurations;
 
     /**
+     * Calls the provider initializer
+     *
      * @param Repository $configurations
      * @param ProviderFactoryInterface $provider_factory
      */
@@ -59,8 +57,9 @@ class CdnFacade implements CdnFacadeInterface{
     }
 
     /**
-     * Read the configuration file and initialize an object
-     * of the corresponding provider according to the default configuration
+     * Read the configuration file and pass it to the provider factory
+     * to return an object of the default provider specified in the
+     * config file
      *
      */
     private function init()

@@ -48,12 +48,12 @@ class AwsS3Provider extends Provider implements ProviderInterface{
      *
      * @var string
      */
-    protected $acl = 'public-read';
+    protected $acl;
 
     /**
      * @var integer
      */
-    protected $threshold = 10;
+    protected $threshold;
 
     /**
      * @var array
@@ -85,7 +85,7 @@ class AwsS3Provider extends Provider implements ProviderInterface{
     }
 
     /**
-     * assign configurations to the class and check if required fields exist
+     * Assign configurations to the properties and return itself
      *
      * @param $supplier
      *
@@ -159,7 +159,7 @@ class AwsS3Provider extends Provider implements ProviderInterface{
         }
 
         // Execute batch.
-        $commands = $this->batch->flush();
+        $commands = $this->batch-> flush();
 
         foreach($commands as $command)
         {
@@ -172,10 +172,17 @@ class AwsS3Provider extends Provider implements ProviderInterface{
         $this->console->writeln('<fg=red>Upload completed successfully.</fg=red>');
     }
 
-
+    /**
+     * This function will be called from the CdnFacade class when
+     * someone use this {{ Cdn::asset('') }} facade helper
+     *
+     * @param $path
+     *
+     * @return string
+     */
     public function urlGenerator($path)
-    {   // todo: clean every value before building the url
-        return $this->protocol . '://' . key($this->buckets) . '.' . $this->domain . '/' . $path;
+    {
+        return $this->getProtocol() . key($this->getBuckets()) . '.' . $this->getDomain() . $path;
     }
 
     /**
@@ -183,7 +190,7 @@ class AwsS3Provider extends Provider implements ProviderInterface{
      */
     public function getDomain()
     {
-        return $this->domain;
+        return rtrim($this->domain, "/") . '/';
     }
 
     /**
@@ -191,7 +198,7 @@ class AwsS3Provider extends Provider implements ProviderInterface{
      */
     public function getProtocol()
     {
-        return $this->protocol;
+        return rtrim(rtrim($this->protocol, "/"), ":") . '://';
     }
 
     /**
@@ -217,6 +224,5 @@ class AwsS3Provider extends Provider implements ProviderInterface{
     {
         return $this->buckets;
     }
-
 
 }

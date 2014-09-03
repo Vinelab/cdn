@@ -1,4 +1,5 @@
 <?php namespace Vinelab\Cdn;
+
 /**
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
@@ -10,12 +11,13 @@ use Vinelab\Cdn\Contracts\ProviderFactoryInterface;
 use Vinelab\Cdn\Provider\AwsS3Provider;
 
 /**
- * Read configurations then create and return the Provider object
+ * This class is responsible of creating objects from the default
+ * provider found in the config file.
+ *
+ * Class ProviderFactory
  * @package Vinelab\Cdn
  */
-
 class ProviderFactory implements ProviderFactoryInterface{
-
 
     /**
      * Create and return an instance of the corresponding
@@ -25,10 +27,12 @@ class ProviderFactory implements ProviderFactoryInterface{
      *
      * @throws Exceptions\UnsupportedProviderException
      * @throws Exceptions\MissingConfigurationException
-     * @return null|AwsS3Provider
+     * @return
+     * @internal param $
      */
     public function create($configurations = array())
     {
+        // get the default provider name
         $default_provider = $configurations['default'];
 
         if( $default_provider )
@@ -36,7 +40,9 @@ class ProviderFactory implements ProviderFactoryInterface{
             switch ($default_provider == 'aws.s3')
             {
                 case 'aws.s3':
-
+                    // first call the provider supplier function to render the configuration and return an array of the
+                    // relevant configurations for this provider then create an instance of this provider,
+                    // finally call the init function of this provider object to read and process the configuration
                     return App::make('Vinelab\Cdn\Providers\AwsS3Provider')->init($this->awsS3Supplier($configurations));
                     break;
 
@@ -56,8 +62,8 @@ class ProviderFactory implements ProviderFactoryInterface{
 
 
     /**
-     * Read the configuration and prepare an array for with
-     * all the info need by it's provider (AWS S3 Provider)
+     * Read the configuration and prepare an array with the relevant configurations
+     * for the (AWS S3) provider.
      *
      * @param $configurations
      *
@@ -103,7 +109,7 @@ class ProviderFactory implements ProviderFactoryInterface{
         if($missing)
             throw new MissingConfigurationException("Missing Configurations:" . $missing );
 
-
+        // TODO: to be removed to a function of common configurations between call providers
         $threshold   = $default['threshold'];
         $protocol    = $default['protocol'];
         $domain      = $default['domain'];
