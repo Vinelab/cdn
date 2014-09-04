@@ -6,6 +6,10 @@
 
 use Vinelab\Cdn\Providers\Contracts\ProviderInterface;
 
+/**
+ * Class Provider
+ * @package Vinelab\Cdn\Providers
+ */
 abstract class Provider implements ProviderInterface{
 
     /**
@@ -26,7 +30,5 @@ abstract class Provider implements ProviderInterface{
      */
     public $console;
 
-
     abstract function upload($assets);
-
 } 
