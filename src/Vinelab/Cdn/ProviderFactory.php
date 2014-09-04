@@ -4,11 +4,11 @@
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
-use Illuminate\Support\Facades\App;
-use Vinelab\Cdn\Exceptions\UnsupportedProviderException;
 use Vinelab\Cdn\Exceptions\MissingConfigurationException;
+use Vinelab\Cdn\Exceptions\UnsupportedProviderException;
 use Vinelab\Cdn\Contracts\ProviderFactoryInterface;
 use Vinelab\Cdn\Provider\AwsS3Provider;
+use Illuminate\Support\Facades\App;
 
 /**
  * This class is responsible of creating objects from the default
@@ -25,41 +25,31 @@ class ProviderFactory implements ProviderFactoryInterface{
      *
      * @param array $configurations
      *
+     * @return mixed
      * @throws Exceptions\UnsupportedProviderException
      * @throws Exceptions\MissingConfigurationException
-     * @return
-     * @internal param $
      */
     public function create($configurations = array())
     {
         // get the default provider name
         $provider = isset($configurations['default']) ? $configurations['default'] : null;
 
-        if( $provider )
-        {
-            switch ($provider == 'aws.s3')
-            {
+        if ($provider) {
+            switch ($provider == 'aws.s3') {
                 case 'aws.s3':
-
                     // create an instance of aws s3 provider, then
                     // call the init function to read and parse the configuration
                     return App::make('Vinelab\Cdn\Providers\AwsS3Provider')->init($configurations);
                     break;
-
                 case 'cloudfront':
                     // ...
                     break;
-
                 default:
                     throw new UnsupportedProviderException("CDN provider ($this->provider_name) is not supported");
             }
-        }
-        else
-        {
+        } else {
             throw new MissingConfigurationException("Missing Configurations: Default Provider");
         }
     }
-
-
 
 }
