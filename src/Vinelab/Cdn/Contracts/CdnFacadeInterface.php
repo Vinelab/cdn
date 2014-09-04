@@ -4,8 +4,8 @@
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
-interface CdnFacadeProviderInterface {
+interface CdnFacadeInterface {
 
-    public function load();
+    public function asset($path);
 
 } 

@@ -4,23 +4,17 @@
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
-use \Illuminate\Config\Repository;
 use Vinelab\Cdn\Contracts\CdnInterface;
 use Vinelab\Cdn\Contracts\FinderInterface;
-use Vinelab\Cdn\Contracts\PathsInterface;
+use Vinelab\Cdn\Contracts\CdnHelperInterface;
+use Vinelab\Cdn\Contracts\AssetInterface;
+use Vinelab\Cdn\Contracts\ProviderFactoryInterface;
 
 /**
- * Class Cdn is the manager and base class
+ * Class Cdn is the manager and the main class of this package
  * @package Vinelab\Cdn
  */
 class Cdn implements CdnInterface{
-
-    /**
-     * An object of the 'Repository' class that allows reading the laravel config files
-     *
-     * @var \Illuminate\Config\Repository
-     */
-    protected $config;
 
     /**
      * An instance of the finder class
@@ -30,58 +24,52 @@ class Cdn implements CdnInterface{
     protected $finder;
 
     /**
-     * The object that will hold the directories configurations and the paths data
+     * The object that will hold the assets configurations
+     * and the paths of the assets
      *
-     * @var Contracts\PathsInterface
+     * @var Contracts\AssetInterface
      */
-    protected $paths;
+    protected $asset_holder;
 
     /**
-     * @param \Illuminate\Config\Repository $config
      * @param FinderInterface $finder
-     * @param Contracts\PathsInterface $paths
+     * @param AssetInterface $asset_holder
+     * @param ProviderFactoryInterface $provider_factory
+     * @param CdnHelperInterface $helper
      *
-     * @internal param $
+     * @internal param \Vinelab\Cdn\Repository $configurations
      */
-    public function __construct(Repository $config,
-                                FinderInterface $finder,
-                                PathsInterface $paths
-                                )
-    {
-        $this->finder   = $finder;
-        $this->paths    = $paths;
-        $this->config   = $config;
+    public function __construct(
+        FinderInterface $finder,
+        AssetInterface $asset_holder,
+        ProviderFactoryInterface $provider_factory,
+        CdnHelperInterface $helper
+    ) {
+        $this->finder               = $finder;
+        $this->asset_holder         = $asset_holder;
+        $this->provider_factory     = $provider_factory;
+        $this->helper               = $helper;
     }
 
 
     /**
      * Will be called from the Vinelab\Cdn\PushCommand class on Fire()
-     *
-     * It call the directory reader (to read allowed files for upload)
-     * It call ... (to generate a URL for each path)
-     * It call ... (to upload files to the CDN)
-     *
      */
-    public function push(){
+    public function push()
+    {
+        // return the configurations from the config file
+        $configurations = $this->helper->getConfigurations();
 
-        // get configurations from the config file
-        $configurations = $this->config->get('cdn::cdn');
+        // Initialize an instance of the asset holder to read the config    urations
+        // then call the read(), to return all the allowed assets as a collection of files objects
+        $assets = $this->finder->read($this->asset_holder->init($configurations));
+        // store the returned assets in the instance of the asset holder as collection of paths
+        $this->asset_holder->setAssets($assets);
 
-        // build a path object that contains the directories related configurations
-        $this->paths = $this->paths->init($configurations);
+        // return an instance of the corresponding Provider concrete according to the configuration
+        $provider = $this->provider_factory->create($configurations);
 
-        // call the files finder to read files form the directories
-        $paths = $this->finder->read($this->paths);
-
-        // TODO: to continue from here..
-//        dd($paths);
-
-
-//        $cdn_credentials = $this->config->get('cdn::cdn.providers.'.$this->default_provider);
-//        $this->web_service->connect($cdn_credentials);
-
-//        $this->establishConnection($default_provider);
-
+        $provider->upload($this->asset_holder->getAssets());
     }
 
 }

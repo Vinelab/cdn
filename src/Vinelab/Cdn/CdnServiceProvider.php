@@ -1,7 +1,7 @@
 <?php namespace Vinelab\Cdn;
 
 /**
- * @author Mahmoud Zalt <inbox@mahmoudzalt.com>
+ * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
 use Illuminate\Support\ServiceProvider;
@@ -48,8 +48,8 @@ class CdnServiceProvider extends ServiceProvider {
         );
 
         $this->app->bind(
-            'Vinelab\Cdn\Contracts\PathsInterface',
-            'Vinelab\Cdn\Paths'
+            'Vinelab\Cdn\Contracts\AssetInterface',
+            'Vinelab\Cdn\Asset'
         );
 
         $this->app->bind(
@@ -58,10 +58,19 @@ class CdnServiceProvider extends ServiceProvider {
         );
 
         $this->app->bind(
-            'Vinelab\Cdn\Contracts\CdnFacadeProviderInterface',
-            'Vinelab\Cdn\CdnFacadeProvider'
+            'Vinelab\Cdn\Contracts\ProviderFactoryInterface',
+            'Vinelab\Cdn\ProviderFactory'
         );
 
+        $this->app->bind(
+            'Vinelab\Cdn\Contracts\CdnFacadeInterface',
+            'Vinelab\Cdn\CdnFacade'
+        );
+
+        $this->app->bind(
+            'Vinelab\Cdn\Contracts\CdnHelperInterface',
+            'Vinelab\Cdn\CdnHelper'
+        );
 
 
 
@@ -80,19 +89,17 @@ class CdnServiceProvider extends ServiceProvider {
         // facade bindings:
         //-----------------
 
-        // Register 'CdnFacadeProvider' instance container to our CdnFacadeProvider object
+        // Register 'CdnFacade' instance container to our CdnFacade object
         $this->app['cdn'] = $this->app->share(function()
             {
-                // first parameter 'the main class that contain the facade functions'
-                return $this->app->make('Vinelab\Cdn\CdnFacadeProvider');
+                return $this->app->make('Vinelab\Cdn\CdnFacade');
             });
 
         // Shortcut so developers don't need to add an Alias in app/config/app.php
         $this->app->booting(function()
             {
-                // the first parameter the Facade 'Word'. The second parameter 'the extra facade class'
                 $loader = \Illuminate\Foundation\AliasLoader::getInstance();
-                $loader->alias('Cdn', 'Vinelab\Cdn\Facades\CdnFacadeProvider');
+                $loader->alias('Cdn', 'Vinelab\Cdn\Facades\CdnFacadeAccessor');
             });
 
 

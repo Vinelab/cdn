@@ -4,20 +4,27 @@
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
-use File;
-use Vinelab\Cdn\Contracts\FinderInterface;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
-
 use Symfony\Component\Console\Output\ConsoleOutput;
-
-use Vinelab\Cdn\Contracts\PathsInterface;
+use Vinelab\Cdn\Contracts\AssetInterface;
+use Vinelab\Cdn\Contracts\FinderInterface;
 use Illuminate\Support\Collection;
+use File;
 
-
+/**
+ * Class Finder
+ * @package Vinelab\Cdn
+ */
 class Finder extends SymfonyFinder implements FinderInterface{
 
+    /**
+     * @var \Symfony\Component\Console\Output\ConsoleOutput
+     */
     protected $console;
 
+    /**
+     * @param ConsoleOutput $console
+     */
     public function __construct(ConsoleOutput $console)
     {
         $this->console = $console;
@@ -27,99 +34,90 @@ class Finder extends SymfonyFinder implements FinderInterface{
 
 
     /**
-     * Build and return an array of the full paths of files found
-     * in the included directories except all ignored
+     * return a collection of arrays of assets paths found
+     * in the included directories, except all ignored
      * (directories, patterns, extensions and files)
      *
-     * @param Contracts\PathsInterface $paths
+     * @param AssetInterface $asset_holder
      *
-     * @internal param $
-     * @return array
+     * @return Collection
      */
-    public function read(PathsInterface $paths)
+    public function read(AssetInterface $asset_holder)
     {
         /**
          * add the included directories and files
          */
-        $this->includeThis($paths);
+        $this->includeThis($asset_holder);
         /**
          * exclude the ignored directories and files
          */
-        $this->excludeThis($paths);
+        $this->excludeThis($asset_holder);
 
-        // terminal output for user
-        $this->console->writeln('<fg=black;bg=green>The following files will be uploaded to the CDN:</fg=black;bg=green>');
+        // user terminal message
+        $this->console->writeln('<fg=red>Files to upload:</fg=red>');
 
-        // get all allowed paths and store them in an array
-        $allowed_paths = [];
+        // get all allowed 'for upload' files objects (assets) and store them in an array
+        $assets = [];
         foreach ($this->files() as $file) {
+            // user terminal message
+            $this->console->writeln('<fg=cyan>'.$file->getRealpath().'</fg=cyan>');
 
-            // get path of each the remaining files
-            $path = $file->getRealpath();
-
-            // terminal output for user
-            $this->console->writeln('<fg=green>'.$path.'</fg=green>');
-
-            $allowed_paths[] = $path;
+            $assets[] = $file;
         }
 
-        // store all allowed paths in the $paths object as collection
-        $paths->setAllowedPaths(new Collection($allowed_paths));
-
-        return $paths;
+        return new Collection($assets);
     }
 
 
     /**
-     * add the included directories and files
+     * Add the included directories and files
      *
-     * @param PathsInterface $paths
+     * @param AssetInterface $asset_holder
      */
-    private function includeThis(PathsInterface $paths){
+    private function includeThis(AssetInterface $asset_holder)
+    {
 
         // include the included directories
-        $this->in($paths->getIncludedDirectories());
+        $this->in($asset_holder->getIncludedDirectories());
 
         // include files with this extensions
-        foreach($paths->getIncludedExtensions() as $extension){
+        foreach ($asset_holder->getIncludedExtensions() as $extension) {
             $this->name('*'.$extension);
         }
 
         // include patterns
-        foreach($paths->getIncludedPatterns() as $pattern){
+        foreach ($asset_holder->getIncludedPatterns() as $pattern) {
             $this->name($pattern);
         }
 
         // exclude ignored directories
-        $this->exclude($paths->getExcludedDirectories());
-
+        $this->exclude($asset_holder->getExcludedDirectories());
     }
 
     /**
-     *  exclude the ignored directories and files
+     * exclude the ignored directories and files
      *
-     * @param PathsInterface $paths
+     * @param AssetInterface $asset_holder
      */
-    private function excludeThis(PathsInterface $paths){
-
+    private function excludeThis(AssetInterface $asset_holder)
+    {
         // add or ignore hidden directories
-        $this->ignoreDotFiles($paths->getExcludeHidden());
+        $this->ignoreDotFiles($asset_holder->getExcludeHidden());
 
         // exclude ignored files
-        foreach($paths->getExcludedFiles() as $name){
+        foreach( $asset_holder->getExcludedFiles() as $name) {
             $this->notName($name);
         }
 
         // exclude files with this extensions
-        foreach($paths->getExcludedExtensions() as $extension){
-            $this->notName('*'.$extension);
+        foreach ($asset_holder->getExcludedExtensions() as $extension) {
+            $this->notName('*' . $extension);
         }
 
         // exclude the regex pattern
-        foreach($paths->getExcludedPatterns() as $pattern){
+        foreach ($asset_holder->getExcludedPatterns() as $pattern) {
             $this->notName($pattern);
         }
     }
-
 
 }

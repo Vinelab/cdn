@@ -4,8 +4,8 @@
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
-interface FinderInterface {
+interface ProviderFactoryInterface {
 
-    public function read(AssetInterface $paths);
+    public function create($configurations);
 
 }

@@ -6,6 +6,18 @@
 
 interface ProviderInterface{
 
-    public function connect($credentials);
+    public function init($configurations);
+
+    public function upload($assets);
+
+    public function urlGenerator($path);
+
+    public function getDomain();
+
+    public function getProtocol();
+
+    public function getUrl();
+
+    public function getBuckets();
 
 } 

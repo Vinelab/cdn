@@ -3,14 +3,15 @@
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
-use Vinelab\Cdn\Contracts\PathsInterface;
+use Vinelab\Cdn\Contracts\AssetInterface;
 
 /**
- * Class Paths used to parse and store all directories and paths related data and configurations
+ * Class Asset used to parse and hold all assets and
+ * paths related data and configurations
+ *
  * @package Vinelab\Cdn
  */
-class Paths implements PathsInterface{
-
+class Asset implements AssetInterface{
 
     /**
      * default [include] configurations
@@ -75,16 +76,18 @@ class Paths implements PathsInterface{
     public $exclude_hidden;
 
     /*
-     * Allowed paths for upload (found in included_directories)
+     * Allowed assets for upload (found in included_directories)
      *
      * @var Collection
      */
-    public $allowed_paths;
+    public $assets;
 
     /**
-     * @param $configurations
+     * build a Asset object that contains the assets related configurations
      *
-     * @return $this (Paths)
+     * @param array $configurations
+     *
+     * @return $this
      */
     public function init($configurations = array())
     {
@@ -109,12 +112,13 @@ class Paths implements PathsInterface{
      * is missed will be overridden by a default attribute defined in this class.
      *
      * @param $configurations
-     *
      */
     public function parseAndFillConfiguration($configurations)
     {
-        $this->default_include = isset($configurations['include']) ? array_merge($this->default_include, $configurations['include']) : $this->default_include;
-        $this->default_exclude = isset($configurations['exclude']) ? array_merge($this->default_exclude, $configurations['exclude']) : $this->default_exclude;
+        $this->default_include = isset($configurations['include']) ?
+            array_merge($this->default_include, $configurations['include']) : $this->default_include;
+        $this->default_exclude = isset($configurations['exclude']) ?
+            array_merge($this->default_exclude, $configurations['exclude']) : $this->default_exclude;
     }
 
     /**
@@ -132,6 +136,7 @@ class Paths implements PathsInterface{
     {
         return $this->included_extensions;
     }
+
     /**
      * @return Array
      */
@@ -139,6 +144,7 @@ class Paths implements PathsInterface{
     {
         return $this->included_patterns;
     }
+
     /**
      * @return Array
      */
@@ -146,6 +152,7 @@ class Paths implements PathsInterface{
     {
         return $this->excluded_directories;
     }
+
     /**
      * @return Array
      */
@@ -153,6 +160,7 @@ class Paths implements PathsInterface{
     {
         return $this->excluded_files;
     }
+
     /**
      * @return Array
      */
@@ -160,6 +168,7 @@ class Paths implements PathsInterface{
     {
         return $this->excluded_extensions;
     }
+
     /**
      * @return Array
      */
@@ -171,17 +180,17 @@ class Paths implements PathsInterface{
     /**
      * @return mixed
      */
-    public function getAllowedPaths()
+    public function getAssets()
     {
-        return $this->allowed_paths;
+        return $this->assets;
     }
 
     /**
-     * @param mixed $allowed_paths
+     * @param mixed $assets
      */
-    public function setAllowedPaths($allowed_paths)
+    public function setAssets($assets)
     {
-        $this->allowed_paths = $allowed_paths;
+        $this->assets = $assets;
     }
 
     /**
@@ -191,6 +200,5 @@ class Paths implements PathsInterface{
     {
         return $this->exclude_hidden;
     }
-
 
 }

@@ -18,11 +18,39 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Set the CDN url. (without the bucket name)
+    | URL Protocol
     |--------------------------------------------------------------------------
     |
+    | Specify the URL protocol (https) Hyper Text Transfer Protocol Secure
+    | or (http) Hyper Text Transfer Protocol.
+    |
+    | default is: https
+    |
     */
-    'url' => 'https://s3.amazonaws.com',
+    'protocol' => 'https',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Set the CDN url.
+    |--------------------------------------------------------------------------
+    |
+    | Set your CDN url, [without the bucket name] and [without the protocol].
+    |
+    */
+    'domain' => 's3.amazonaws.com',
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | The upload threshold
+    |--------------------------------------------------------------------------
+    |
+    | Define the upload threshold.
+    |
+    | default = 10
+    |
+    */
+    'threshold' => 10,
 
     /*
     |--------------------------------------------------------------------------
@@ -41,43 +69,55 @@ return [
             's3' => [
 
                 'credentials' => [
-                    'key'    => '',
-                    'secret'    => '',
+                    'key'       => 'AKIAIUFQIM4L4543PZQA',
+                    'secret'    => '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',
                 ],
 
-            ],
 
-            'cloudfront' => [
-
-                'credentials' => [
-                    'key'    => '',
-                    'secret'    => '',
+                /*
+                | If you want all your 'included' assets to be uploaded to one bucket,
+                | then set your bucket name below.
+                |
+                | And if you have multiple buckets (each for a specific directory),
+                | then you need to specify each bucket and it's directories
+                |
+                | * Note: in case of multiple buckets remove the '*'.
+                |
+                */
+                'buckets' => [
+//                    'your-main-bucket-name-here' => '*',
+                    'megabucketzon' => '*',
+                    //        'your-js-bucket-name-here'  =>  ['public/js'],
+                    //        'your-css-bucket-name-here'  =>  ['public/css'],
                 ],
 
+                /*
+                | The Access Control Lists.
+                | Amazon S3 supports a set of predefined grants, known as canned ACLs.
+                | Each canned ACL has a predefined a set of grantees and permissions.
+                | The following list is a set of canned ACLs and the associated
+                | predefined grants: private, public-read, public-read-write, authenticated-read
+                | bucket-owner-read, bucket-owner-full-control, log-delivery-write
+                */
+                'acl' => 'public-read'
+
             ],
 
-            /*
-            | If you want all your 'included' assets to be uploaded to one bucket,
-            | then set your bucket name below.
-            |
-            | And if you have multiple buckets (each for a specific directory),
-            | then you need to specify each bucket and it's directories
-            |
-            | * Note: in case of multiple buckets remove the '*'.
-            |
-            */
-            'buckets' => [
-                  'your-main-bucket-name-here' => '*',
-        //        'your-js-bucket-name-here'  =>  ['public/js'],
-        //        'your-css-bucket-name-here'  =>  ['public/css'],
-            ],
+//            'cloudfront' => [
+//
+//                'credentials' => [
+//                    'key'       => '',
+//                    'secret'    => '',
+//                ],
+//
+//            ],
 
         ],
 
-        'cloudflare' => [
-            'access_key'    => '',
-            'secret_key'    => '',
-        ],
+//        'cloudflare' => [
+//            'key'       => '',
+//            'secret'    => '',
+//        ],
 
     ],
 
@@ -111,7 +151,7 @@ return [
     */
     'exclude'    => [
         'directories'   => ['public/uploads'],
-        'files'         => ['README.md', 'LICENSE'],
+        'files'         => [''],
         'extensions'    => ['.txt'],
         'patterns'      => ['404.*'],
         'hidden'        => true,

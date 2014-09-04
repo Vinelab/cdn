@@ -1,10 +1,34 @@
-<?php namespace Vinelab\Cdn\Provider;
+<?php namespace Vinelab\Cdn\Providers;
 
 /**
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
-abstract class Provider{
+use Vinelab\Cdn\Providers\Contracts\ProviderInterface;
 
+/**
+ * Class Provider
+ * @package Vinelab\Cdn\Providers
+ */
+abstract class Provider implements ProviderInterface{
 
+    /**
+     * @var string
+     */
+    protected $key;
+    /**
+     * @var string
+     */
+    protected $secret;
+    /**
+     * @var string
+     */
+    protected $url;
+
+    /**
+     * @var Instance of the console object
+     */
+    public $console;
+
+    abstract function upload($assets);
 } 

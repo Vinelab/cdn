@@ -4,7 +4,7 @@
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
-interface PathsInterface {
+interface AssetInterface {
 
     public function init($configurations);
     public function parseAndFillConfiguration($configurations);
@@ -20,7 +20,7 @@ interface PathsInterface {
 
     public function getExcludeHidden();
 
-    public function getAllowedPaths();
-    public function setAllowedPaths($allowed_paths);
+    public function getAssets();
+    public function setAssets($assets);
 
 } 
