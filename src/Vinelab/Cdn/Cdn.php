@@ -4,7 +4,6 @@
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
-
 use Vinelab\Cdn\Contracts\CdnInterface;
 use Vinelab\Cdn\Contracts\FinderInterface;
 use Vinelab\Cdn\Contracts\CdnHelperInterface;
@@ -16,7 +15,6 @@ use Vinelab\Cdn\Contracts\ProviderFactoryInterface;
  * @package Vinelab\Cdn
  */
 class Cdn implements CdnInterface{
-
 
     /**
      * An instance of the finder class
@@ -41,12 +39,12 @@ class Cdn implements CdnInterface{
      *
      * @internal param \Vinelab\Cdn\Repository $configurations
      */
-    public function __construct(FinderInterface $finder,
-                                AssetInterface $asset_holder,
-                                ProviderFactoryInterface $provider_factory,
-                                CdnHelperInterface $helper
-    )
-    {
+    public function __construct(
+        FinderInterface $finder,
+        AssetInterface $asset_holder,
+        ProviderFactoryInterface $provider_factory,
+        CdnHelperInterface $helper
+    ) {
         $this->finder               = $finder;
         $this->asset_holder         = $asset_holder;
         $this->provider_factory     = $provider_factory;
