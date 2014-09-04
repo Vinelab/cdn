@@ -4,18 +4,27 @@
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
-use File;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Vinelab\Cdn\Contracts\AssetInterface;
 use Vinelab\Cdn\Contracts\FinderInterface;
 use Illuminate\Support\Collection;
+use File;
 
-
+/**
+ * Class Finder
+ * @package Vinelab\Cdn
+ */
 class Finder extends SymfonyFinder implements FinderInterface{
 
+    /**
+     * @var \Symfony\Component\Console\Output\ConsoleOutput
+     */
     protected $console;
 
+    /**
+     * @param ConsoleOutput $console
+     */
     public function __construct(ConsoleOutput $console)
     {
         $this->console = $console;
@@ -25,14 +34,13 @@ class Finder extends SymfonyFinder implements FinderInterface{
 
 
     /**
-     * Build and return an array of the full paths of assets found
-     * in the included directories except all ignored
+     * return a collection of arrays of assets paths found
+     * in the included directories, except all ignored
      * (directories, patterns, extensions and files)
      *
-     * @param Contracts\AssetInterface $asset_holder
+     * @param AssetInterface $asset_holder
      *
-     * @internal param $
-     * @return \Vinelab\Cdn\Contracts\AssetInterface
+     * @return Collection
      */
     public function read(AssetInterface $asset_holder)
     {
@@ -50,8 +58,7 @@ class Finder extends SymfonyFinder implements FinderInterface{
 
         // get all allowed 'for upload' files objects (assets) and store them in an array
         $assets = [];
-        foreach ($this->files() as $file)
-        {
+        foreach ($this->files() as $file) {
             // user terminal message
             $this->console->writeln('<fg=cyan>'.$file->getRealpath().'</fg=cyan>');
 
@@ -63,59 +70,54 @@ class Finder extends SymfonyFinder implements FinderInterface{
 
 
     /**
-     * add the included directories and files
+     * Add the included directories and files
      *
-     * @param Contracts\AssetInterface $asset_holder
-     *
-     * @internal param $
+     * @param AssetInterface $asset_holder
      */
-    private function includeThis(AssetInterface $asset_holder){
+    private function includeThis(AssetInterface $asset_holder)
+    {
 
         // include the included directories
         $this->in($asset_holder->getIncludedDirectories());
 
         // include files with this extensions
-        foreach($asset_holder->getIncludedExtensions() as $extension){
+        foreach ($asset_holder->getIncludedExtensions() as $extension) {
             $this->name('*'.$extension);
         }
 
         // include patterns
-        foreach($asset_holder->getIncludedPatterns() as $pattern){
+        foreach ($asset_holder->getIncludedPatterns() as $pattern) {
             $this->name($pattern);
         }
 
         // exclude ignored directories
         $this->exclude($asset_holder->getExcludedDirectories());
-
     }
 
     /**
-     *  exclude the ignored directories and files
+     * exclude the ignored directories and files
      *
-     * @param Contracts\AssetInterface $asset_holder
-     *
-     * @internal param $
+     * @param AssetInterface $asset_holder
      */
-    private function excludeThis(AssetInterface $asset_holder){
-
+    private function excludeThis(AssetInterface $asset_holder)
+    {
         // add or ignore hidden directories
         $this->ignoreDotFiles($asset_holder->getExcludeHidden());
 
         // exclude ignored files
-        foreach($asset_holder->getExcludedFiles() as $name){
+        foreach( $asset_holder->getExcludedFiles() as $name) {
             $this->notName($name);
         }
 
         // exclude files with this extensions
-        foreach($asset_holder->getExcludedExtensions() as $extension){
-            $this->notName('*'.$extension);
+        foreach ($asset_holder->getExcludedExtensions() as $extension) {
+            $this->notName('*' . $extension);
         }
 
         // exclude the regex pattern
-        foreach($asset_holder->getExcludedPatterns() as $pattern){
+        foreach ($asset_holder->getExcludedPatterns() as $pattern) {
             $this->notName($pattern);
         }
     }
-
 
 }
