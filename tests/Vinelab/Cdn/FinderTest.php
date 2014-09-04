@@ -18,7 +18,7 @@ class FinderTest extends TestCase {
 
     public function testReadingAllowedDirectories()
     {
-        $asset_holder = new \Vinelab\Cdn\AssetHolder;
+        $asset_holder = new \Vinelab\Cdn\Asset;
 
         $asset_holder->init(array(
                 'include'    => [

@@ -6,6 +6,6 @@
 
 interface FinderInterface {
 
-    public function read(AssetHolderInterface $paths);
+    public function read(AssetInterface $paths);
 
 }

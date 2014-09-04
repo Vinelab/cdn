@@ -7,7 +7,7 @@
 use File;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use Vinelab\Cdn\Contracts\AssetHolderInterface;
+use Vinelab\Cdn\Contracts\AssetInterface;
 use Vinelab\Cdn\Contracts\FinderInterface;
 use Illuminate\Support\Collection;
 
@@ -29,12 +29,12 @@ class Finder extends SymfonyFinder implements FinderInterface{
      * in the included directories except all ignored
      * (directories, patterns, extensions and files)
      *
-     * @param Contracts\AssetHolderInterface $asset_holder
+     * @param Contracts\AssetInterface $asset_holder
      *
      * @internal param $
-     * @return \Vinelab\Cdn\Contracts\AssetHolderInterface
+     * @return \Vinelab\Cdn\Contracts\AssetInterface
      */
-    public function read(AssetHolderInterface $asset_holder)
+    public function read(AssetInterface $asset_holder)
     {
         /**
          * add the included directories and files
@@ -65,11 +65,11 @@ class Finder extends SymfonyFinder implements FinderInterface{
     /**
      * add the included directories and files
      *
-     * @param Contracts\AssetHolderInterface $asset_holder
+     * @param Contracts\AssetInterface $asset_holder
      *
      * @internal param $
      */
-    private function includeThis(AssetHolderInterface $asset_holder){
+    private function includeThis(AssetInterface $asset_holder){
 
         // include the included directories
         $this->in($asset_holder->getIncludedDirectories());
@@ -92,11 +92,11 @@ class Finder extends SymfonyFinder implements FinderInterface{
     /**
      *  exclude the ignored directories and files
      *
-     * @param Contracts\AssetHolderInterface $asset_holder
+     * @param Contracts\AssetInterface $asset_holder
      *
      * @internal param $
      */
-    private function excludeThis(AssetHolderInterface $asset_holder){
+    private function excludeThis(AssetInterface $asset_holder){
 
         // add or ignore hidden directories
         $this->ignoreDotFiles($asset_holder->getExcludeHidden());

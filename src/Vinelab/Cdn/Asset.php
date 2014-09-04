@@ -3,15 +3,15 @@
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
-use Vinelab\Cdn\Contracts\AssetHolderInterface;
+use Vinelab\Cdn\Contracts\AssetInterface;
 
 /**
- * Class AssetHolder used to parse and hold all assets and
+ * Class Asset used to parse and hold all assets and
  * paths related data and configurations
  *
  * @package Vinelab\Cdn
  */
-class AssetHolder implements AssetHolderInterface{
+class Asset implements AssetInterface{
 
     /**
      * default [include] configurations
@@ -83,7 +83,7 @@ class AssetHolder implements AssetHolderInterface{
     public $assets;
 
     /**
-     * build a AssetHolder object that contains the assets related configurations
+     * build a Asset object that contains the assets related configurations
      *
      * @param array $configurations
      *

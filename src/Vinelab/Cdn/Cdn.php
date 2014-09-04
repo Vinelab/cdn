@@ -8,7 +8,7 @@
 use Vinelab\Cdn\Contracts\CdnInterface;
 use Vinelab\Cdn\Contracts\FinderInterface;
 use Vinelab\Cdn\Contracts\CdnHelperInterface;
-use Vinelab\Cdn\Contracts\AssetHolderInterface;
+use Vinelab\Cdn\Contracts\AssetInterface;
 use Vinelab\Cdn\Contracts\ProviderFactoryInterface;
 
 /**
@@ -29,20 +29,20 @@ class Cdn implements CdnInterface{
      * The object that will hold the assets configurations
      * and the paths of the assets
      *
-     * @var Contracts\AssetHolderInterface
+     * @var Contracts\AssetInterface
      */
     protected $asset_holder;
 
     /**
      * @param FinderInterface $finder
-     * @param AssetHolderInterface $asset_holder
+     * @param AssetInterface $asset_holder
      * @param ProviderFactoryInterface $provider_factory
      * @param CdnHelperInterface $helper
      *
      * @internal param \Vinelab\Cdn\Repository $configurations
      */
     public function __construct(FinderInterface $finder,
-                                AssetHolderInterface $asset_holder,
+                                AssetInterface $asset_holder,
                                 ProviderFactoryInterface $provider_factory,
                                 CdnHelperInterface $helper
     )
