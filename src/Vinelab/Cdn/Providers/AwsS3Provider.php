@@ -202,12 +202,10 @@ class AwsS3Provider extends Provider implements ProviderInterface{
         $this->connect();
 
         // user terminal message
-        $this->console->writeln('<fg=red>Start Uploading...</fg=red>');
+        $this->console->writeln('<fg=yellow>Uploading in progress...</fg=yellow>');
 
         // upload each asset file to the CDN
         foreach ($assets as $file) {
-            // user terminal message
-            $this->console->writeln('<fg=green>File:   ' . $file->getRealpath() . '</fg=green>');
 
             try {
                 $this->batch->add($this->s3_client->getCommand('PutObject', [
@@ -231,11 +229,11 @@ class AwsS3Provider extends Provider implements ProviderInterface{
         foreach ($commands as $command) {
             $result = $command->getResult();
             // user terminal message
-            $this->console->writeln('<fg=black;bg=green>URL:    ' . $result->get('ObjectURL') . '</fg=black;bg=green>');
+            $this->console->writeln('<fg=magenta>URL: ' . $result->get('ObjectURL') . '</fg=magenta>');
         }
 
         // user terminal message
-        $this->console->writeln('<fg=red>Upload completed successfully.</fg=red>');
+        $this->console->writeln('<fg=green>Upload completed successfully.</fg=green>');
     }
 
     /**
