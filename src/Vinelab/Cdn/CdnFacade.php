@@ -1,12 +1,12 @@
 <?php namespace Vinelab\Cdn;
 
-use Vinelab\Cdn\Contracts\ProviderFactoryInterface;
-use Vinelab\Cdn\Contracts\CdnFacadeInterface;
-use Vinelab\Cdn\Contracts\CdnHelperInterface;
-
 /**
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
+
+use Vinelab\Cdn\Contracts\ProviderFactoryInterface;
+use Vinelab\Cdn\Contracts\CdnFacadeInterface;
+use Vinelab\Cdn\Contracts\CdnHelperInterface;
 
 /**
  * Class CdnFacade
@@ -32,10 +32,10 @@ class CdnFacade implements CdnFacadeInterface{
      *
      * @internal param \Vinelab\Cdn\Repository $configurations
      */
-    public function __construct(ProviderFactoryInterface $provider_factory,
-                                CdnHelperInterface $helper
-    )
-    {
+    public function __construct(
+        ProviderFactoryInterface $provider_factory,
+        CdnHelperInterface $helper
+    ) {
         $this->provider_factory     = $provider_factory;
         $this->helper               = $helper;
 
