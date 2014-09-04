@@ -8,6 +8,12 @@ use \Illuminate\Config\Repository;
 use Vinelab\Cdn\Contracts\CdnHelperInterface;
 use Vinelab\Cdn\Exceptions\MissingConfigurationFileException;
 
+/**
+ * Helper class containing shared functions
+ *
+ * Class CdnHelper
+ * @package Vinelab\Cdn
+ */
 class CdnHelper implements CdnHelperInterface{
 
     /**
@@ -22,7 +28,7 @@ class CdnHelper implements CdnHelperInterface{
      */
     public function __construct(Repository $configurations)
     {
-        $this->configurations       = $configurations;
+        $this->configurations = $configurations;
     }
 
     /**
@@ -33,7 +39,7 @@ class CdnHelper implements CdnHelperInterface{
     {
         $configurations = $this->configurations->get('cdn::cdn');
 
-        if(!$configurations){
+        if ( ! $configurations) {
             throw new MissingConfigurationFileException('CDN Configurations file not found');
         }
 
