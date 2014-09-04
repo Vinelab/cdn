@@ -1,80 +1,119 @@
 
-# CDN Assets Manager 
+# CDN Assets Manager
 
 [![Build Status](https://travis-ci.org/thephpleague/statsd.png?branch=master)](https://travis-ci.org/Vinelab/cdn)
 
-Content Delivery Network (CDN) Package  for Laravel 4
+Content Delivery Network Package for Laravel 4
 
->This package will upload assets to CDN, (using artisan command).
-The package has special helpers for including assets in code, the helpers withh automatically point to the CDN files.
-
+Upload static assets of your choice to a CDN and have the file paths replaced with full URLs.
 ----------
 
 ## Install
 
-Via Composer
+### Via Composer
 
-Add the package to your `composer.json` and run `composer update`.
+- Add the package to your `composer.json` and run `composer update`
 
-```json
-{
-    "require": {
-        "vinelab/cdn": "*"
+    ```json
+    {
+        "require": {
+            "vinelab/cdn": "*"
+        }
     }
-}
-```
+    ```
 
-Add the service provider in `app/config/app.php`:
+- Add the service provider to `app/config/app.php`:
 
-```php
-'Vinelab\Cdn\CdnServiceProvider',
-```
+    ```php
+    'providers' => array(
+        '...',
+        'Vinelab\Cdn\CdnServiceProvider',
+        '...'
+    ),
+    ```
 
 The service provider will register all the required classes for this package and will also alias
 the `Cdn` class to `CdnFacadeProvider` so you can simply use the `Cdn` facade anywhere in your app.
 
 ## Configuration
-in `app/config/cdn.php` or in case of an environment-based configuration `app/config/[env]/cdn.php`.
 
+Publish the default config using `php artisan config:publish vinelab/cdn` and check it out at `app/config/packages/vinelab/cdn/cdn.php`
+
+In case you would like to have environment-based configuration `app/config/packages/vinelab/cdn/[ENV]/cdn.php`
+
+### Providers
+
+Supported Providers:
+
+- Amazon Web Services - S3 (Default)
+
+#### Default Provider
 ```php
 'default' => 'aws-s3',
 ```
 
-Add the CDN details:
+#### CDN Provider Setup
 
 ```php
-        'aws' => [
+    'aws' => [
 
-            's3' => [
+        's3' => [
 
-                'credentials' => [
-                    'key'    => '',
-                    'secret'    => '',
-                ],
-
+            'credentials' => [
+                'key'    => '',
+                'secret'    => '',
             ],
-```
 
-Specify which directories or/and files to be uploaded:
-
-```php
-    'include'    => [
-        'directories'   => ['public'],
-        'extensions'    => [''],
-        'patterns'      => [''],
+            'buckets' => [
+                'my-backup-bucket' => '*',
+            ]
+        ]
     ],
 ```
 
-Specify what to ignore from the 'include' directories:
+##### Multiple Buckets
+
+```php
+'buckets' => [
+
+    'my-default-bucket' => '*',
+    'js-bucket' => ['public/js'],
+    'css-bucket' => ['public/css'],
+    '...'
+]
+
+```
+
+### Files & Directories
+
+#### Include
+
+Specify directories, extensions, files and patterns to be uploaded.
+
+    ```php
+        'include'    => [
+            'directories'   => ['public/dist'],
+            'extensions'    => ['.js', '.css', '.yxz'],
+            'patterns'      => ['**/*.coffee'],
+        ],
+    ```
+
+#### Exclude
+
+Specify what to be ignored.
+
 ```php
     'exclude'    => [
         'directories'   => ['public/uploads'],
         'files'         => [''],
-        'extensions'    => [''],
-        'patterns'      => [''],
-        'hidden'        => true,
+        'extensions'    => ['.TODO', '.txt'],
+        'patterns'      => ['src/*', '.idea/*'],
+        'hidden'        => true, // ignore hidden files
     ],
 ```
+
+#### URL
+
 Set the URL protocol:
 
 ```php
@@ -87,17 +126,11 @@ Set the CDN domain:
     'domain' => 's3.amazonaws.com',
 ```
 
-Set your bucket/buckets name:
+#### Threshold
+Determines how many files to be uploaded concurrently.
 
-```php
-    'buckets' => [
-        'your-main-bucket-name-here' => '*',
-//      'your-js-bucket-name-here'   =>  ['public/js'],
-//      'your-css-bucket-name-here'  =>  ['public/css'],
-    ],
-```
-
-Set an upload threshold:
+> Will clear the buffer when the `threshold` has been reached, be careful when setting this to a high value
+not to exceed what you have allowed in your PHP configuration.
 
 ```php
     'threshold' => 10,
@@ -105,26 +138,24 @@ Set an upload threshold:
 
 ## Usage
 
-> Upload your assets to the `CDN` by simply running this `artisan` command:
+### Push
 
-```shell
-php artisan cdn:push
-```
+Upload your assets with `php artisan cdn:push`
 
-> Then use the following facade helper function in your `views`
+### Load Assets
 
-```html
+Since the service provider of this package aliases itself as the facade `Cdn` you may use it as such:
+
+```blade
     {{Cdn::asset('public/index.php')}}
+    // https://s3.amazonaws.com/my-default-bucket/public/index.php
+
     {{Cdn::asset('public/assets/js/main.js')}}
+    // https://s3.amazonaws.com/js-bucket/public/assets/js/main.js
+
     {{Cdn::asset('public/assets/css/main.css')}}
+    // https://s3.amazonaws.com/css-bucket/public/assets/css/main.css
 ```
-
-## Testing
-
-``` bash
-$ phpunit
-```
-
 
 ## Contributing
 
