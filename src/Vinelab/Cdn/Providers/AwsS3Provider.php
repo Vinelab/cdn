@@ -86,8 +86,6 @@ class AwsS3Provider extends Provider implements ProviderInterface{
      */
     protected $s3_client;
 
-
-
     /**
      * @var Instance of Guzzle\Batch\BatchBuilder
      */
@@ -124,10 +122,6 @@ class AwsS3Provider extends Provider implements ProviderInterface{
         return $this;
     }
 
-
-
-
-
     /**
      * Read the configuration and prepare an array with the relevant configurations
      * for the (AWS S3) provider.
@@ -145,44 +139,40 @@ class AwsS3Provider extends Provider implements ProviderInterface{
 
         // search for any null or empty field to throw an exception
         $missing = '';
-        foreach ( $this->default as $key => $value) {
+        foreach ($this->default as $key => $value) {
             // Fix: needs to check for the sub arrays also
-            if (empty($value) || $value == null || $value == '')
-            {
+            if (empty($value) || $value == null || $value == '') {
                 $missing .= $key;
             }
         }
 
-        if($missing)
-            throw new MissingConfigurationException("Missing Configurations:" . $missing );
+        if ($missing)
+            throw new MissingConfigurationException("Missing Configurations:" . $missing);
 
         // TODO: to be removed to a function of common configurations between call providers
-        $threshold   = $this->default['threshold'];
-        $protocol    = $this->default['protocol'];
-        $domain      = $this->default['domain'];
+        $threshold  = $this->default['threshold'];
+        $protocol   = $this->default['protocol'];
+        $domain     = $this->default['domain'];
 
         // aws s3 specific configurations
-        $key         = $this->default['providers']['aws']['s3']['credentials']['key'];
-        $secret      = $this->default['providers']['aws']['s3']['credentials']['secret'];
-        $buckets     = $this->default['providers']['aws']['s3']['buckets'];
-        $acl         = $this->default['providers']['aws']['s3']['acl'];
+        $key        = $this->default['providers']['aws']['s3']['credentials']['key'];
+        $secret     = $this->default['providers']['aws']['s3']['credentials']['secret'];
+        $buckets    = $this->default['providers']['aws']['s3']['buckets'];
+        $acl        = $this->default['providers']['aws']['s3']['acl'];
 
         $supplier = [
-            'domain' => $domain,
-            'protocol' => $protocol,
-            'url' => $protocol . '://' . $domain,  // compose the url from the protocol and the domain
-            'key' => $key,
-            'secret' => $secret,
-            'acl' => $acl,
+            'domain'    => $domain,
+            'protocol'  => $protocol,
+            'url'       => $protocol . '://' . $domain,  // compose the url from the protocol and the domain
+            'key'       => $key,
+            'secret'    => $secret,
+            'acl'       => $acl,
             'threshold' => $threshold,
-            'buckets' => $buckets,
+            'buckets'   => $buckets,
         ];
 
         return $supplier;
     }
-
-
-
 
     /**
      * Create a cdn instance and create a batch builder instance
@@ -191,8 +181,8 @@ class AwsS3Provider extends Provider implements ProviderInterface{
     {
         // Instantiate an S3 client
         $this->s3_client = S3Client::factory( array(
-                    'key'    => $this->key,
-                    'secret' => $this->secret,
+                    'key'       => $this->key,
+                    'secret'    => $this->secret,
                 )
             );
 
@@ -202,7 +192,6 @@ class AwsS3Provider extends Provider implements ProviderInterface{
             ->autoFlushAt($this->threshold)
             ->build();
     }
-
 
     /**
      * Upload assets
@@ -216,21 +205,19 @@ class AwsS3Provider extends Provider implements ProviderInterface{
         $this->console->writeln('<fg=red>Start Uploading...</fg=red>');
 
         // upload each asset file to the CDN
-        foreach($assets as $file)
-        {
-
+        foreach ($assets as $file) {
             // user terminal message
             $this->console->writeln('<fg=green>File:   ' . $file->getRealpath() . '</fg=green>');
 
             try {
                 $this->batch->add($this->s3_client->getCommand('PutObject', [
 
-                            'Bucket'    =>      key($this->buckets), // the bucket name
-                            'Key'       =>      $file->GetPathName(), // the path of the file on the server (CDN)
-                            'Body'      =>      fopen($file->getRealpath(), 'r'), // the path of the path locally
-                            'ACL'       =>      $this->acl, // the permission of the file
+                    'Bucket'    => key($this->buckets), // the bucket name
+                    'Key'       => $file->GetPathName(), // the path of the file on the server (CDN)
+                    'Body'      => fopen($file->getRealpath(), 'r'), // the path of the path locally
+                    'ACL'       => $this->acl, // the permission of the file
 
-                        ]));
+                ]));
             } catch (S3Exception $e) {
                 echo "There was an error uploading this file ($file->getRealpath()).\n";
             }
@@ -238,13 +225,13 @@ class AwsS3Provider extends Provider implements ProviderInterface{
         }
 
         // Execute batch.
-        $commands = $this->batch-> flush();
+        $commands = $this->batch->flush();
 
-        foreach($commands as $command)
-        {
+        // Fix: in small threshold output is not available (batch related thing)
+        foreach ($commands as $command) {
             $result = $command->getResult();
             // user terminal message
-            $this->console->writeln('<fg=black;bg=green>URL:    ' . $result->get('ObjectURL')  . '</fg=black;bg=green>');
+            $this->console->writeln('<fg=black;bg=green>URL:    ' . $result->get('ObjectURL') . '</fg=black;bg=green>');
         }
 
         // user terminal message
