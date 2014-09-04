@@ -90,7 +90,7 @@ class Asset implements AssetInterface{
      * @return $this
      */
     public function init($configurations = array())
-        {
+    {
         $this->parseAndFillConfiguration($configurations);
 
         $this->included_directories  = $this->default_include['directories'];
@@ -115,8 +115,10 @@ class Asset implements AssetInterface{
      */
     public function parseAndFillConfiguration($configurations)
     {
-        $this->default_include = isset($configurations['include']) ? array_merge($this->default_include, $configurations['include']) : $this->default_include;
-        $this->default_exclude = isset($configurations['exclude']) ? array_merge($this->default_exclude, $configurations['exclude']) : $this->default_exclude;
+        $this->default_include = isset($configurations['include']) ?
+            array_merge($this->default_include, $configurations['include']) : $this->default_include;
+        $this->default_exclude = isset($configurations['exclude']) ?
+            array_merge($this->default_exclude, $configurations['exclude']) : $this->default_exclude;
     }
 
     /**
@@ -198,6 +200,5 @@ class Asset implements AssetInterface{
     {
         return $this->exclude_hidden;
     }
-
 
 }
