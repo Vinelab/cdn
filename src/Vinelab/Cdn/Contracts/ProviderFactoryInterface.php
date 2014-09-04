@@ -7,4 +7,5 @@
 interface ProviderFactoryInterface {
 
     public function create($configurations);
+
 }
