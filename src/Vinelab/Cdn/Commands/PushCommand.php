@@ -4,11 +4,10 @@
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
-use Illuminate\Console\Command;
-
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 use Vinelab\Cdn\Contracts\CdnInterface;
+use Illuminate\Console\Command;
 
 class PushCommand extends Command {
 
@@ -75,6 +74,5 @@ class PushCommand extends Command {
 //			array('example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null),
 		);
 	}
-
 
 }
