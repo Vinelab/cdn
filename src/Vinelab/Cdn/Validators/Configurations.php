@@ -8,10 +8,8 @@ use Vinelab\Cdn\Exceptions\MissingConfigurationException;
 use Vinelab\Cdn\Validators\Contracts\ConfigurationsInterface;
 
 /**
- * Helper class containing shared functions
- *
- * Class CdnHelper
- * @package Vinelab\Cdn
+ * Class Configurations
+ * @package Vinelab\Cdn\Validators
  */
 class Configurations implements ConfigurationsInterface{
 
