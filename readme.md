@@ -2,7 +2,7 @@
 # CDN Assets Manager
 
 [![Build Status](https://travis-ci.org/thephpleague/statsd.png?branch=master)](https://travis-ci.org/Vinelab/cdn)
-
+[![Total Downloads](https://poser.pugx.org/league/statsd/downloads.png)](https://packagist.org/packages/vinelab/cdn)
 Content Delivery Network Package for Laravel 4
 
 Upload static assets of your choice to a CDN and have the file paths replaced with full URLs.
@@ -90,13 +90,13 @@ Supported Providers:
 
 Specify directories, extensions, files and patterns to be uploaded.
 
-    ```php
-        'include'    => [
-            'directories'   => ['public/dist'],
-            'extensions'    => ['.js', '.css', '.yxz'],
-            'patterns'      => ['**/*.coffee'],
-        ],
-    ```
+```php
+    'include'    => [
+        'directories'   => ['public/dist'],
+        'extensions'    => ['.js', '.css', '.yxz'],
+        'patterns'      => ['**/*.coffee'],
+    ],
+```
 
 #### Exclude
 
