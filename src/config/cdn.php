@@ -17,26 +17,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | URL Protocol
+    | CDN URL
     |--------------------------------------------------------------------------
     |
-    | Specify the URL protocol (https) Hyper Text Transfer Protocol Secure
-    | or (http) Hyper Text Transfer Protocol.
-    |
-    | default is: https
+    | Set your CDN url, [without the bucket name]
     |
     */
-    'protocol' => 'https',
-
-    /*
-    |--------------------------------------------------------------------------
-    | CDN Domain.
-    |--------------------------------------------------------------------------
-    |
-    | Set your CDN url, [without the bucket name] and [without the protocol].
-    |
-    */
-    'domain' => 's3.amazonaws.com',
+    'url' => 'https://s3.amazonaws.com',
 
     /*
     |--------------------------------------------------------------------------
@@ -69,8 +56,8 @@ return [
             's3' => [
 
                 'credentials' => [
-                    'key'       => 'your-key-here',
-                    'secret'    => 'your-secret-here',
+                    'key'       => '',
+                    'secret'    => '',
                 ],
 
                 /*
@@ -88,7 +75,7 @@ return [
                 |
                 */
                 'buckets' => [
-                    'your-bucket-name-here' => '*',
+                    'bucket-name-here' => '*',
                     //        'your-js-bucket-name-here'  =>  ['public/js'],
                     //        'your-css-bucket-name-here'  =>  ['public/css'],
                 ],
@@ -155,10 +142,10 @@ return [
     |
     */
     'exclude'    => [
-        'directories'   => ['public/uploads'],
+        'directories'   => [''],
         'files'         => [''],
-        'extensions'    => ['.txt'],
-        'patterns'      => ['404.*'],
+        'extensions'    => [''],
+        'patterns'      => [''],
         'hidden'        => true,
     ],
 

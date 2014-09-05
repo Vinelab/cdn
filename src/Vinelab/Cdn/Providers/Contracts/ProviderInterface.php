@@ -12,9 +12,9 @@ interface ProviderInterface{
 
     public function urlGenerator($path);
 
-    public function getDomain();
+    public function getUrlDomain();
 
-    public function getProtocol();
+    public function getUrlScheme();
 
     public function getUrl();
 
