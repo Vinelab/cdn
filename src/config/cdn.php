@@ -1,20 +1,19 @@
 <?php
 
-// IMPORTANT! Beware remove any of the configuration parameters would break functionality
-
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default CDN provider name
+    | Default CDN provider
     |--------------------------------------------------------------------------
     |
     | Here you may specify which of the CDN providers below you wish
 	| to use as your default provider for all CDN work.
     |
+    | Supported provider: Amazon S3 (aws.s3)
+    |
     */
     'default' => 'aws.s3',
-
 
     /*
     |--------------------------------------------------------------------------
@@ -31,7 +30,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Set the CDN url.
+    | CDN Domain.
     |--------------------------------------------------------------------------
     |
     | Set your CDN url, [without the bucket name] and [without the protocol].
@@ -39,22 +38,23 @@ return [
     */
     'domain' => 's3.amazonaws.com',
 
-
     /*
     |--------------------------------------------------------------------------
-    | The upload threshold
+    | Threshold
     |--------------------------------------------------------------------------
     |
-    | Define the upload threshold.
+    | Define the number of files to allow in the queue before a flush.
+    | Automatically flush the batch when the size of the queue reaches
+    | the defined threshold value.
     |
-    | default = 10
+    | Default = 10
     |
     */
     'threshold' => 10,
 
     /*
     |--------------------------------------------------------------------------
-    | CDN Providers
+    | CDN Supported Providers
     |--------------------------------------------------------------------------
     |
 	| Here are each of the CDN providers setup for your application.
@@ -69,30 +69,35 @@ return [
             's3' => [
 
                 'credentials' => [
-                    'key'       => '',
-                    'secret'    => '',
+                    'key'       => 'your-key-here',
+                    'secret'    => 'your-secret-here',
                 ],
 
-
                 /*
-                | If you want all your 'included' assets to be uploaded to one bucket,
-                | then set your bucket name below.
+                |--------------------------------------------------------------------------
+                | CDN Bucket
+                |--------------------------------------------------------------------------
+                |
+                | If you want all your assets to be uploaded to one bucket,
+                | then set your bucket name below. 'your-bucket-name-here'
                 |
                 | And if you have multiple buckets (each for a specific directory),
-                | then you need to specify each bucket and it's directories
+                | then you need to specify each bucket and it's directories.
                 |
-                | * Note: in case of multiple buckets remove the '*'.
+                | * Note: in case of multiple buckets remove the '*'
                 |
                 */
                 'buckets' => [
-//                    'your-main-bucket-name-here' => '*',
-                    'megabucketzon' => '*',
+                    'your-bucket-name-here' => '*',
                     //        'your-js-bucket-name-here'  =>  ['public/js'],
                     //        'your-css-bucket-name-here'  =>  ['public/css'],
                 ],
 
                 /*
-                | The Access Control Lists.
+                |--------------------------------------------------------------------------
+                | Access Control Lists (ACL)
+                |--------------------------------------------------------------------------
+                |
                 | Amazon S3 supports a set of predefined grants, known as canned ACLs.
                 | Each canned ACL has a predefined a set of grantees and permissions.
                 | The following list is a set of canned ACLs and the associated
@@ -123,7 +128,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Include
+    | Files to Include
     |--------------------------------------------------------------------------
     |
     | Specify which directories to be uploaded when running the
@@ -140,7 +145,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Exclude
+    | Files to Exclude
     |--------------------------------------------------------------------------
     |
     | Specify what to exclude from the 'include' directories when uploading
@@ -156,8 +161,5 @@ return [
         'patterns'      => ['404.*'],
         'hidden'        => true,
     ],
-
-
-
 
 ];
