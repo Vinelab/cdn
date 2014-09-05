@@ -4,6 +4,7 @@
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
+use Vinelab\Cdn\Validators\Contracts\ConfigurationsInterface;
 use Vinelab\Cdn\Providers\Contracts\ProviderInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Vinelab\Cdn\Contracts\CdnHelperInterface;
@@ -12,11 +13,19 @@ use Guzzle\Batch\BatchBuilder;
 use Aws\S3\S3Client;
 
 /**
+ * Amazon (AWS) S3
+ *
  * Class AwsS3Provider
  * @package Vinelab\Cdn\Provider
  */
 class AwsS3Provider extends Provider implements ProviderInterface{
 
+    /**
+     * All the configurations needed by this class with the
+     * optional configurations default values
+     *
+     * @var array
+     */
     protected $default = [
         'protocol' => 'https',
         'domain' => null,
@@ -36,9 +45,11 @@ class AwsS3Provider extends Provider implements ProviderInterface{
     ];
 
     /**
+     * Required configurations (must exist in the config file)
+     *
      * @var array
      */
-    protected $required_configurations = ['key', 'secret', 'buckets', 'domain'];
+    protected $rules = ['key', 'secret', 'buckets', 'domain'];
 
     /**
      * @var string
@@ -102,15 +113,23 @@ class AwsS3Provider extends Provider implements ProviderInterface{
     protected $cdn_helper;
 
     /**
+     * @var \Vinelab\Cdn\Validators\Contracts\ConfigurationsInterface
+     */
+    protected $configurations;
+
+    /**
      * @param \Symfony\Component\Console\Output\ConsoleOutput $console
+     * @param \Vinelab\Cdn\Validators\Contracts\ConfigurationsInterface $configurations
      * @param \Vinelab\Cdn\Contracts\CdnHelperInterface $cdn_helper
      */
     public function __construct(
-        ConsoleOutput $console,
-        CdnHelperInterface $cdn_helper
+        ConsoleOutput           $console,
+        ConfigurationsInterface $configurations,
+        CdnHelperInterface      $cdn_helper
     ) {
-        $this->console = $console;
-        $this->cdn_helper = $cdn_helper;
+        $this->console          = $console;
+        $this->configurations   = $configurations;
+        $this->cdn_helper       = $cdn_helper;
     }
 
     /**
@@ -173,7 +192,7 @@ class AwsS3Provider extends Provider implements ProviderInterface{
         ];
 
         // check if any required configuration is missed
-        $this->cdn_helper->validate($supplier, $this->required_configurations);
+        $this->configurations->validate($supplier, $this->rules);
 
         return $supplier;
     }
