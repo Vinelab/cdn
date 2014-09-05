@@ -72,7 +72,10 @@ class CdnServiceProvider extends ServiceProvider {
             'Vinelab\Cdn\CdnHelper'
         );
 
-
+        $this->app->bind(
+            'Vinelab\Cdn\Validators\Contracts\ConfigurationsInterface',
+            'Vinelab\Cdn\Validators\Configurations'
+        );
 
         // register the commands:
         //-----------------------
