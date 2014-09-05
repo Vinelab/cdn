@@ -8,4 +8,6 @@ interface CdnHelperInterface{
 
     public function getConfigurations();
 
+    public function validate($configuration, $required);
+
 }

@@ -4,11 +4,11 @@
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
-use Vinelab\Cdn\Exceptions\MissingConfigurationException;
 use Vinelab\Cdn\Providers\Contracts\ProviderInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use Guzzle\Batch\BatchBuilder;
+use Vinelab\Cdn\Contracts\CdnHelperInterface;
 use Aws\S3\Exception\S3Exception;
+use Guzzle\Batch\BatchBuilder;
 use Aws\S3\S3Client;
 
 /**
@@ -34,6 +34,11 @@ class AwsS3Provider extends Provider implements ProviderInterface{
             ]
         ],
     ];
+
+    /**
+     * @var array
+     */
+    protected $required_configurations = ['key', 'secret', 'buckets', 'domain'];
 
     /**
      * @var string
@@ -92,11 +97,20 @@ class AwsS3Provider extends Provider implements ProviderInterface{
     protected $batch;
 
     /**
-     * @param \Symfony\Component\Console\Output\ConsoleOutput $console
+     * @var Vinelab\Cdn\Contracts\CdnHelperInterface
      */
-    public function __construct(ConsoleOutput $console)
-    {
+    protected $cdn_helper;
+
+    /**
+     * @param \Symfony\Component\Console\Output\ConsoleOutput $console
+     * @param \Vinelab\Cdn\Contracts\CdnHelperInterface $cdn_helper
+     */
+    public function __construct(
+        ConsoleOutput $console,
+        CdnHelperInterface $cdn_helper
+    ) {
         $this->console = $console;
+        $this->cdn_helper = $cdn_helper;
     }
 
     /**
@@ -128,7 +142,6 @@ class AwsS3Provider extends Provider implements ProviderInterface{
      *
      * @param $configurations
      *
-     * @throws MissingConfigurationException
      * @return array
      */
     private function parse($configurations)
@@ -136,18 +149,6 @@ class AwsS3Provider extends Provider implements ProviderInterface{
         // merge the received config array with the default configurations array to
         // fill missed keys with null or default values.
         $this->default = array_merge($this->default, $configurations);
-
-        // search for any null or empty field to throw an exception
-        $missing = '';
-        foreach ($this->default as $key => $value) {
-            // Fix: needs to check for the sub arrays also
-            if (empty($value) || $value == null || $value == '') {
-                $missing .= $key;
-            }
-        }
-
-        if ($missing)
-            throw new MissingConfigurationException("Missing Configurations:" . $missing);
 
         // TODO: to be removed to a function of common configurations between call providers
         $threshold  = $this->default['threshold'];
@@ -170,6 +171,9 @@ class AwsS3Provider extends Provider implements ProviderInterface{
             'threshold' => $threshold,
             'buckets'   => $buckets,
         ];
+
+        // check if any required configuration is missed
+        $this->cdn_helper->validate($supplier, $this->required_configurations);
 
         return $supplier;
     }
