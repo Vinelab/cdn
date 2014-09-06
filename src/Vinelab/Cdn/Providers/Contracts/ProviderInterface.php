@@ -12,12 +12,8 @@ interface ProviderInterface{
 
     public function urlGenerator($path);
 
-    public function getUrlDomain();
-
-    public function getUrlScheme();
-
     public function getUrl();
 
-    public function getBuckets();
+    public function getBucket();
 
 } 

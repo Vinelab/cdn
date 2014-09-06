@@ -148,13 +148,13 @@ Since the service provider of this package aliases itself as the facade `Cdn` yo
 
 ```blade
     {{Cdn::asset('public/index.php')}}
-    // https://s3.amazonaws.com/my-default-bucket/public/index.php
+    // https://default-bucket.s3.amazonaws.com/public/index.php
 
     {{Cdn::asset('public/assets/js/main.js')}}
-    // https://s3.amazonaws.com/js-bucket/public/assets/js/main.js
+    // https://js-bucket.s3.amazonaws.com/public/assets/js/main.js
 
     {{Cdn::asset('public/assets/css/main.css')}}
-    // https://s3.amazonaws.com/css-bucket/public/assets/css/main.css
+    // https://css-bucket.s3.amazonaws.com/public/assets/css/main.css
 ```
 
 ## Contributing

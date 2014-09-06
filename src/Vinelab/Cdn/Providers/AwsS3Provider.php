@@ -27,8 +27,7 @@ class AwsS3Provider extends Provider implements ProviderInterface{
      * @var array
      */
     protected $default = [
-        'url_scheme' => null,
-        'url_domain' => null,
+        'url' => null,
         'threshold' => 10,
         'providers' => [
             'aws' => [
@@ -49,17 +48,12 @@ class AwsS3Provider extends Provider implements ProviderInterface{
      *
      * @var array
      */
-    protected $rules = ['key', 'secret', 'buckets', 'url_scheme', 'url_domain'];
+    protected $rules = ['key', 'secret', 'buckets', 'url'];
 
     /**
      * @var string
      */
-    protected $url_domain;
-
-    /**
-     * @var string
-     */
-    protected $url_scheme;
+    protected $url;
 
     /**
      * @var string
@@ -103,7 +97,7 @@ class AwsS3Provider extends Provider implements ProviderInterface{
     protected $batch;
 
     /**
-     * @var Vinelab\Cdn\Contracts\CdnHelperInterface
+     * @var \Vinelab\Cdn\Contracts\CdnHelperInterface
      */
     protected $cdn_helper;
 
@@ -138,8 +132,7 @@ class AwsS3Provider extends Provider implements ProviderInterface{
     {
         $supplier = $this->parse($configurations);
 
-        $this->url_domain   = $supplier['url_domain'];
-        $this->url_scheme   = $supplier['url_scheme'];
+        $this->url          = $supplier['url'];
         $this->key          = $supplier['key'];
         $this->secret       = $supplier['secret'];
         $this->acl          = $supplier['acl'];
@@ -165,10 +158,7 @@ class AwsS3Provider extends Provider implements ProviderInterface{
 
         // TODO: to be removed to a function of common configurations between call providers
         $threshold  = $this->default['threshold'];
-        $url        = parse_url($this->default['url']);
-
-        $url_scheme = $url['scheme'];
-        $url_domain = $url['host'];
+        $url        = $this->default['url'];
 
         // aws s3 specific configurations
         $key        = $this->default['providers']['aws']['s3']['credentials']['key'];
@@ -177,8 +167,7 @@ class AwsS3Provider extends Provider implements ProviderInterface{
         $acl        = $this->default['providers']['aws']['s3']['acl'];
 
         $supplier = [
-            'url_domain'=> $url_domain,
-            'url_scheme'=> $url_scheme,
+            'url'       => $url,
             'key'       => $key,
             'secret'    => $secret,
             'acl'       => $acl,
@@ -213,6 +202,8 @@ class AwsS3Provider extends Provider implements ProviderInterface{
 
     /**
      * Upload assets
+     *
+     * @param $assets
      */
     public function upload($assets)
     {
@@ -264,24 +255,9 @@ class AwsS3Provider extends Provider implements ProviderInterface{
      */
     public function urlGenerator($path)
     {
-        return $this->getUrlScheme() . key($this->getBuckets()) . '.' . $this->getUrlDomain() . $path;
-    }
+        $url = $this->cdn_helper->parseUrl($this->getUrl());
 
-    /**
-     * @return string
-     */
-    public function getUrlDomain()
-    {
-        return rtrim($this->url_domain, "/") . '/';
-    }
-
-    /**
-     * @return string
-     */
-    public function getUrlScheme()
-    {
-        // make sure every url_scheme is formatted correctly (xxx://)
-        return rtrim(rtrim($this->url_scheme, "/"), ":") . '://';
+        return $url['scheme'] . '://' . $this->getBucket() . '.' . $url['host'] . '/' . $path;
     }
 
     /**
@@ -289,23 +265,16 @@ class AwsS3Provider extends Provider implements ProviderInterface{
      */
     public function getUrl()
     {
-        return $this->url;
+        return rtrim($this->url, "/") . '/';
     }
 
-    /**
-     * @param string $url
-     */
-    public function setUrl($url)
-    {
-        $this->url = $url;
-    }
 
     /**
      * @return array
      */
-    public function getBuckets()
+    public function getBucket()
     {
-        return $this->buckets;
+        return rtrim(key($this->buckets), "/");
     }
 
 }
