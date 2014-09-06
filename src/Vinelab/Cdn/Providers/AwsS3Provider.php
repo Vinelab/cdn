@@ -51,40 +51,11 @@ class AwsS3Provider extends Provider implements ProviderInterface{
     protected $rules = ['key', 'secret', 'buckets', 'url'];
 
     /**
-     * @var string
-     */
-    protected $url;
-
-    /**
-     * @var string
-     */
-    protected $key;
-
-    /**
-     * @var string
-     */
-    protected $secret;
-
-    /**
-     * the type of permission on the files on the CDN
+     * this array holds the parsed configuration to be used across the class
      *
-     * @var string
+     * @var Array
      */
-    protected $acl;
-
-    /**
-     * @var integer
-     */
-    protected $threshold;
-
-    /**
-     * @var array
-     */
-    protected $buckets;
-    /**
-     * @var boolean
-     */
-    protected $multiple_buckets;
+    protected $supplier;
 
     /**
      * @var Instance of Aws\S3\S3Client
@@ -122,7 +93,8 @@ class AwsS3Provider extends Provider implements ProviderInterface{
     }
 
     /**
-     * Assign configurations to the properties and return itself
+     * Read the configuration and prepare an array with the relevant configurations
+     * for the (AWS S3) provider. and return itself
      *
      * @param $configurations
      *
@@ -130,56 +102,27 @@ class AwsS3Provider extends Provider implements ProviderInterface{
      */
     public function init($configurations)
     {
-        $supplier = $this->parse($configurations);
-
-        $this->url          = $supplier['url'];
-        $this->key          = $supplier['key'];
-        $this->secret       = $supplier['secret'];
-        $this->acl          = $supplier['acl'];
-        $this->threshold    = $supplier['threshold'];
-        $this->buckets      = $supplier['buckets'];
-
-        return $this;
-    }
-
-    /**
-     * Read the configuration and prepare an array with the relevant configurations
-     * for the (AWS S3) provider.
-     *
-     * @param $configurations
-     *
-     * @return array
-     */
-    private function parse($configurations)
-    {
         // merge the received config array with the default configurations array to
         // fill missed keys with null or default values.
         $this->default = array_merge($this->default, $configurations);
 
-        // TODO: to be removed to a function of common configurations between call providers
-        $threshold  = $this->default['threshold'];
-        $url        = $this->default['url'];
-
-        // aws s3 specific configurations
-        $key        = $this->default['providers']['aws']['s3']['credentials']['key'];
-        $secret     = $this->default['providers']['aws']['s3']['credentials']['secret'];
-        $buckets    = $this->default['providers']['aws']['s3']['buckets'];
-        $acl        = $this->default['providers']['aws']['s3']['acl'];
-
         $supplier = [
-            'url'       => $url,
-            'key'       => $key,
-            'secret'    => $secret,
-            'acl'       => $acl,
-            'threshold' => $threshold,
-            'buckets'   => $buckets,
+            'provider_url'          => $this->default['url'],
+            'threshold'             => $this->default['threshold'],
+            'credential_key'        => $this->default['providers']['aws']['s3']['credentials']['key'],
+            'credential_secret'     => $this->default['providers']['aws']['s3']['credentials']['secret'],
+            'buckets'               => $this->default['providers']['aws']['s3']['buckets'],
+            'acl'                   => $this->default['providers']['aws']['s3']['acl'],
         ];
 
         // check if any required configuration is missed
         $this->configurations->validate($supplier, $this->rules);
 
-        return $supplier;
+        $this->supplier = $supplier;
+
+        return $this;
     }
+
 
     /**
      * Create a cdn instance and create a batch builder instance
@@ -188,8 +131,8 @@ class AwsS3Provider extends Provider implements ProviderInterface{
     {
         // Instantiate an S3 client
         $this->s3_client = S3Client::factory( array(
-                    'key'       => $this->key,
-                    'secret'    => $this->secret,
+                    'key'       => $this->credential_key,
+                    'secret'    => $this->credential_secret,
                 )
             );
 
@@ -219,8 +162,8 @@ class AwsS3Provider extends Provider implements ProviderInterface{
             try {
                 $this->batch->add($this->s3_client->getCommand('PutObject', [
 
-                    'Bucket'    => key($this->buckets), // the bucket name
-                    'Key'       => $file->GetPathName(), // the path of the file on the server (CDN)
+                    'Bucket'    => $this->getBucket(), // the bucket name
+                    'Key'       => $file->getPathName(), // the path of the file on the server (CDN)
                     'Body'      => fopen($file->getRealpath(), 'r'), // the path of the path locally
                     'ACL'       => $this->acl, // the permission of the file
 
@@ -265,7 +208,7 @@ class AwsS3Provider extends Provider implements ProviderInterface{
      */
     public function getUrl()
     {
-        return rtrim($this->url, "/") . '/';
+        return rtrim($this->provider_url, "/") . '/';
     }
 
 
@@ -274,7 +217,25 @@ class AwsS3Provider extends Provider implements ProviderInterface{
      */
     public function getBucket()
     {
-        return rtrim(key($this->buckets), "/");
+        // this step is very important, "always assign returned array from
+        // magical function to a local variable if you need to modify it's
+        // state or apply any php function on it." because the returned is
+        // a copy of the original variable. this prevent this error:
+        // Indirect modification of overloaded property
+        // Vinelab\Cdn\Providers\AwsS3Provider::$buckets has no effect
+        $bucket = $this->buckets;
+
+        return rtrim(key($bucket), "/");
+    }
+
+    /**
+     * @param $attr
+     *
+     * @return Mix | null
+     */
+    public function __get($attr)
+    {
+        return isset($this->supplier[$attr]) ? $this->supplier[$attr] : null;
     }
 
 }
