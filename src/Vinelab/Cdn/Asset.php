@@ -117,6 +117,7 @@ class Asset implements AssetInterface{
     {
         $this->default_include = isset($configurations['include']) ?
             array_merge($this->default_include, $configurations['include']) : $this->default_include;
+
         $this->default_exclude = isset($configurations['exclude']) ?
             array_merge($this->default_exclude, $configurations['exclude']) : $this->default_exclude;
     }
