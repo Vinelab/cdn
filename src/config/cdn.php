@@ -76,7 +76,7 @@ return [
                 */
                 'buckets' => [
                     'bucket-name-here' => '*',
-                    //        'your-js-bucket-name-here'  =>  ['public/js'],
+                    //        'your-js-bucket-name-here'   =>  ['public/js'],
                     //        'your-css-bucket-name-here'  =>  ['public/css'],
                 ],
 
@@ -126,8 +126,8 @@ return [
     */
     'include'    => [
         'directories'   => ['public'],
-        'extensions'    => [''],
-        'patterns'      => [''],
+        'extensions'    => [],
+        'patterns'      => [],
     ],
 
     /*
@@ -142,10 +142,10 @@ return [
     |
     */
     'exclude'    => [
-        'directories'   => [''],
-        'files'         => [''],
-        'extensions'    => [''],
-        'patterns'      => [''],
+        'directories'   => [],
+        'files'         => [],
+        'extensions'    => [],
+        'patterns'      => [],
         'hidden'        => true,
     ],
 

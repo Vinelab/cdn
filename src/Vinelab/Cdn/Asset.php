@@ -20,8 +20,8 @@ class Asset implements AssetInterface{
      */
     private $default_include = [
         'directories'   => ['public'],
-        'extensions'    => [''],
-        'patterns'      => [''],
+        'extensions'    => [],
+        'patterns'      => [],
     ];
 
     /**
@@ -30,10 +30,10 @@ class Asset implements AssetInterface{
      * @var array
      */
     private $default_exclude =  [
-        'directories'   => [''],
-        'files'         => [''],
-        'extensions'    => [''],
-        'patterns'      => [''],
+        'directories'   => [],
+        'files'         => [],
+        'extensions'    => [],
+        'patterns'      => [],
         'hidden'        => true,
     ];
 
