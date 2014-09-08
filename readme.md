@@ -5,6 +5,7 @@
 [![Latest Unstable Version](https://poser.pugx.org/vinelab/cdn/v/unstable.svg)](https://packagist.org/packages/vinelab/cdn)
 [![Total Downloads](https://poser.pugx.org/vinelab/cdn/downloads.svg)](https://packagist.org/packages/vinelab/cdn)
 [![License](https://poser.pugx.org/vinelab/cdn/license.svg)](https://packagist.org/packages/vinelab/cdn)
+[![Build Status](https://travis-ci.org/thephpleague/statsd.png?branch=master)](https://travis-ci.org/Vinelab/cdn)
 
 Content Delivery Network Package for Laravel 4
 
