@@ -110,7 +110,8 @@ class Finder extends SymfonyFinder implements FinderInterface{
         }
 
         // exclude files (if exist) with this extensions
-        if ( ! empty($asset_holder->getExcludedExtensions()))
+        $excluded_extensions = $asset_holder->getExcludedExtensions();
+        if ( ! empty($excluded_extensions))
         {
             foreach ($asset_holder->getExcludedExtensions() as $extension) {
                 $this->notName('*' . $extension);
