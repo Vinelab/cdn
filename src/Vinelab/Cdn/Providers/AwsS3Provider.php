@@ -140,6 +140,7 @@ class AwsS3Provider extends Provider implements ProviderInterface{
         $this->batch = BatchBuilder::factory()
             ->transferCommands($this->threshold)
             ->autoFlushAt($this->threshold)
+            ->keepHistory()
             ->build();
     }
 
@@ -174,11 +175,10 @@ class AwsS3Provider extends Provider implements ProviderInterface{
 
         }
 
-        // Execute batch.
-        $commands = $this->batch->flush();
+        $commands = $this->batch->getHistory();
 
-        // Fix: in small threshold output is not available (batch related thing)
         foreach ($commands as $command) {
+
             $result = $command->getResult();
             // user terminal message
             $this->console->writeln('<fg=magenta>URL: ' . $result->get('ObjectURL') . '</fg=magenta>');
