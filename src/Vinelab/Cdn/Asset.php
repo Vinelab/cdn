@@ -20,8 +20,8 @@ class Asset implements AssetInterface{
      */
     private $default_include = [
         'directories'   => ['public'],
-        'extensions'    => [''],
-        'patterns'      => [''],
+        'extensions'    => [],
+        'patterns'      => [],
     ];
 
     /**
@@ -30,10 +30,10 @@ class Asset implements AssetInterface{
      * @var array
      */
     private $default_exclude =  [
-        'directories'   => [''],
-        'files'         => [''],
-        'extensions'    => [''],
-        'patterns'      => [''],
+        'directories'   => [],
+        'files'         => [],
+        'extensions'    => [],
+        'patterns'      => [],
         'hidden'        => true,
     ];
 
@@ -117,6 +117,7 @@ class Asset implements AssetInterface{
     {
         $this->default_include = isset($configurations['include']) ?
             array_merge($this->default_include, $configurations['include']) : $this->default_include;
+
         $this->default_exclude = isset($configurations['exclude']) ?
             array_merge($this->default_exclude, $configurations['exclude']) : $this->default_exclude;
     }

@@ -1,8 +1,12 @@
 
 # CDN Assets Manager
 
+[![Latest Stable Version](https://poser.pugx.org/vinelab/cdn/v/stable.svg)](https://packagist.org/packages/vinelab/cdn)
+[![Latest Unstable Version](https://poser.pugx.org/vinelab/cdn/v/unstable.svg)](https://packagist.org/packages/vinelab/cdn)
+[![Total Downloads](https://poser.pugx.org/vinelab/cdn/downloads.svg)](https://packagist.org/packages/vinelab/cdn)
+[![License](https://poser.pugx.org/vinelab/cdn/license.svg)](https://packagist.org/packages/vinelab/cdn)
 [![Build Status](https://travis-ci.org/thephpleague/statsd.png?branch=master)](https://travis-ci.org/Vinelab/cdn)
-[![Total Downloads](https://poser.pugx.org/league/statsd/downloads.png)](https://packagist.org/packages/vinelab/cdn)
+
 Content Delivery Network Package for Laravel 4
 
 Upload static assets of your choice to a CDN and have the file paths replaced with full URLs.
@@ -148,13 +152,13 @@ Since the service provider of this package aliases itself as the facade `Cdn` yo
 
 ```blade
     {{Cdn::asset('public/index.php')}}
-    // https://s3.amazonaws.com/my-default-bucket/public/index.php
+    // https://default-bucket.s3.amazonaws.com/public/index.php
 
     {{Cdn::asset('public/assets/js/main.js')}}
-    // https://s3.amazonaws.com/js-bucket/public/assets/js/main.js
+    // https://js-bucket.s3.amazonaws.com/public/assets/js/main.js
 
     {{Cdn::asset('public/assets/css/main.css')}}
-    // https://s3.amazonaws.com/css-bucket/public/assets/css/main.css
+    // https://css-bucket.s3.amazonaws.com/public/assets/css/main.css
 ```
 
 ## Contributing

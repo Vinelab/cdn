@@ -33,7 +33,10 @@ class FinderTest extends TestCase {
         $finder = new \Vinelab\Cdn\Finder($console_output);
 
         $result = $finder->read($asset_holder);
-        assertEquals($result, new Collection);
+
+        assertInstanceOf('Symfony\Component\Finder\SplFileInfo', $result->first());
+
+        assertEquals($result, new Collection($result->all()));
     }
 
 }

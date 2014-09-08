@@ -10,4 +10,6 @@ interface CdnHelperInterface{
 
     public function validate($configuration, $required);
 
+    public function parseUrl($url);
+
 }

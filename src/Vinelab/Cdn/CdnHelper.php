@@ -75,6 +75,16 @@ class CdnHelper implements CdnHelperInterface{
 
     }
 
-
+    /**
+     * Take url as string and return it parsed object
+     *
+     * @param $url
+     *
+     * @return mixed
+     */
+    public function parseUrl($url)
+    {
+        return parse_url($url);
+    }
 
 }

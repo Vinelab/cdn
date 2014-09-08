@@ -109,9 +109,13 @@ class Finder extends SymfonyFinder implements FinderInterface{
             $this->notName($name);
         }
 
-        // exclude files with this extensions
-        foreach ($asset_holder->getExcludedExtensions() as $extension) {
-            $this->notName('*' . $extension);
+        // exclude files (if exist) with this extensions
+        $excluded_extensions = $asset_holder->getExcludedExtensions();
+        if ( ! empty($excluded_extensions))
+        {
+            foreach ($asset_holder->getExcludedExtensions() as $extension) {
+                $this->notName('*' . $extension);
+            }
         }
 
         // exclude the regex pattern
