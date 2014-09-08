@@ -101,7 +101,6 @@ class Finder extends SymfonyFinder implements FinderInterface{
      */
     private function excludeThis(AssetInterface $asset_holder)
     {
-
         // add or ignore hidden directories
         $this->ignoreDotFiles($asset_holder->getExcludeHidden());
 
