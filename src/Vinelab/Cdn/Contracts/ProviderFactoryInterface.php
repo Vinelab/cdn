@@ -4,8 +4,8 @@
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
-interface CdnInterface {
+interface ProviderFactoryInterface {
 
-    public function push();
+    public function create($configurations);
 
-} 
+}

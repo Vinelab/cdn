@@ -4,8 +4,8 @@
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
-interface CdnFacadeProviderInterface {
+interface FinderInterface {
 
-    public function load();
+    public function read(AssetInterface $paths);
 
-} 
+}

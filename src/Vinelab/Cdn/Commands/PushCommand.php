@@ -1,16 +1,15 @@
 <?php namespace Vinelab\Cdn\Commands;
 
 /**
- * @author Mahmoud Zalt <inbox@mahmoudzalt.com>
+ * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
+use Vinelab\Cdn\Contracts\CdnInterface;
 use Illuminate\Console\Command;
 
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
-use Vinelab\Cdn\Contracts\CdnInterface;
-
-class CdnCommand extends Command {
+class PushCommand extends Command {
 
     /**
      * The console command name.
@@ -24,10 +23,18 @@ class CdnCommand extends Command {
      *
      * @var string
      */
-    protected $description = 'Upload assets to CDN';
+    protected $description = 'Push assets to CDN';
 
+    /**
+     * an instance of the main Cdn class
+     *
+     * @var Vinelab\Cdn\Cdn
+     */
     protected $cdn;
 
+    /**
+     * @param CdnInterface $cdn
+     */
     public function __construct(CdnInterface $cdn)
     {
         $this->cdn = $cdn;
@@ -41,7 +48,7 @@ class CdnCommand extends Command {
      */
     public function fire()
     {
-        dd($this->cdn->make());
+        $this->cdn->push();
     }
 
 	/**
@@ -67,6 +74,5 @@ class CdnCommand extends Command {
 //			array('example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null),
 		);
 	}
-
 
 }

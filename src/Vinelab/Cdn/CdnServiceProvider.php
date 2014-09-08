@@ -1,7 +1,7 @@
 <?php namespace Vinelab\Cdn;
 
 /**
- * @author Mahmoud Zalt <inbox@mahmoudzalt.com>
+ * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
 use Illuminate\Support\ServiceProvider;
@@ -43,32 +43,45 @@ class CdnServiceProvider extends ServiceProvider {
         );
 
         $this->app->bind(
-            'Vinelab\Cdn\WebServices\Contracts\AmazonWebServiceInterface',
-            'Vinelab\Cdn\WebServices\AmazonWebService'
+            'Vinelab\Cdn\Providers\Contracts\ProviderInterface',
+            'Vinelab\Cdn\Providers\AwsS3Provider'
         );
 
         $this->app->bind(
-            'Vinelab\Cdn\WebServices\Contracts\WebServiceInterface',
-            'Vinelab\Cdn\WebServices\WebService'
+            'Vinelab\Cdn\Contracts\AssetInterface',
+            'Vinelab\Cdn\Asset'
         );
 
         $this->app->bind(
-            'Vinelab\Cdn\Contracts\DirectoryManagerInterface',
-            'Vinelab\Cdn\DirectoryManager'
+            'Vinelab\Cdn\Contracts\FinderInterface',
+            'Vinelab\Cdn\Finder'
         );
 
         $this->app->bind(
-            'Vinelab\Cdn\Contracts\CdnFacadeProviderInterface',
-            'Vinelab\Cdn\CdnFacadeProvider'
+            'Vinelab\Cdn\Contracts\ProviderFactoryInterface',
+            'Vinelab\Cdn\ProviderFactory'
         );
 
+        $this->app->bind(
+            'Vinelab\Cdn\Contracts\CdnFacadeInterface',
+            'Vinelab\Cdn\CdnFacade'
+        );
 
+        $this->app->bind(
+            'Vinelab\Cdn\Contracts\CdnHelperInterface',
+            'Vinelab\Cdn\CdnHelper'
+        );
+
+        $this->app->bind(
+            'Vinelab\Cdn\Validators\Contracts\ConfigurationsInterface',
+            'Vinelab\Cdn\Validators\Configurations'
+        );
 
         // register the commands:
         //-----------------------
         $this->app['cdn.push'] = $this->app->share(function()
             {
-                return  $this->app->make('Vinelab\Cdn\Commands\CdnCommand');
+                return  $this->app->make('Vinelab\Cdn\Commands\PushCommand');
             });
 
         $this->commands('cdn.push');
@@ -79,19 +92,17 @@ class CdnServiceProvider extends ServiceProvider {
         // facade bindings:
         //-----------------
 
-        // Register 'CdnFacadeProvider' instance container to our CdnFacadeProvider object
+        // Register 'CdnFacade' instance container to our CdnFacade object
         $this->app['cdn'] = $this->app->share(function()
             {
-                // first parameter 'the main class that contain the facade functions'
-                return $this->app->make('Vinelab\Cdn\CdnFacadeProvider');
+                return $this->app->make('Vinelab\Cdn\CdnFacade');
             });
 
         // Shortcut so developers don't need to add an Alias in app/config/app.php
         $this->app->booting(function()
             {
-                // the first parameter the Facade 'Word'. The second parameter 'the extra facade class'
                 $loader = \Illuminate\Foundation\AliasLoader::getInstance();
-                $loader->alias('Cdn', 'Vinelab\Cdn\Facades\CdnFacadeProvider');
+                $loader->alias('Cdn', 'Vinelab\Cdn\Facades\CdnFacadeAccessor');
             });
 
 

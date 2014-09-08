@@ -1,32 +1,152 @@
 <?php
 
-// IMPORTANT! Beware remove any of the configuration parameters would break functionality
-
 return [
-
 
     /*
     |--------------------------------------------------------------------------
-    | AWS Credentials
+    | Default CDN provider
     |--------------------------------------------------------------------------
     |
-    | You must provide your AWS credentials
-    | In order to communicate with your AWS service.
+    | Here you may specify which of the CDN providers below you wish
+	| to use as your default provider for all CDN work.
+    |
+    | Supported provider: Amazon S3 (aws.s3)
     |
     */
+    'default' => 'aws.s3',
 
+    /*
+    |--------------------------------------------------------------------------
+    | CDN URL
+    |--------------------------------------------------------------------------
+    |
+    | Set your CDN url, [without the bucket name]
+    |
+    */
+    'url' => 'https://s3.amazonaws.com',
 
-    'AWS-S3' => [
+    /*
+    |--------------------------------------------------------------------------
+    | Threshold
+    |--------------------------------------------------------------------------
+    |
+    | Define the number of files to allow in the queue before a flush.
+    | Automatically flush the batch when the size of the queue reaches
+    | the defined threshold value.
+    |
+    | Default = 10
+    |
+    */
+    'threshold' => 10,
 
-            'credentials' =>
-                [
-                    'key'    => '',
-                    'secret' => ''
-                ]
+    /*
+    |--------------------------------------------------------------------------
+    | CDN Supported Providers
+    |--------------------------------------------------------------------------
+    |
+	| Here are each of the CDN providers setup for your application.
+	| Of course, examples of configuring each provider platform that is
+	| supported by Laravel is shown below to make development simple.
+    |
+    */
+    'providers' => [
 
-    ]
+        'aws' => [
 
+            's3' => [
 
+                'credentials' => [
+                    'key'       => '',
+                    'secret'    => '',
+                ],
 
+                /*
+                |--------------------------------------------------------------------------
+                | CDN Bucket
+                |--------------------------------------------------------------------------
+                |
+                | If you want all your assets to be uploaded to one bucket,
+                | then set your bucket name below. 'your-bucket-name-here'
+                |
+                | And if you have multiple buckets (each for a specific directory),
+                | then you need to specify each bucket and it's directories.
+                |
+                | * Note: in case of multiple buckets remove the '*'
+                |
+                */
+                'buckets' => [
+                    'bucket-name-here' => '*',
+                    //        'your-js-bucket-name-here'   =>  ['public/js'],
+                    //        'your-css-bucket-name-here'  =>  ['public/css'],
+                ],
+
+                /*
+                |--------------------------------------------------------------------------
+                | Access Control Lists (ACL)
+                |--------------------------------------------------------------------------
+                |
+                | Amazon S3 supports a set of predefined grants, known as canned ACLs.
+                | Each canned ACL has a predefined a set of grantees and permissions.
+                | The following list is a set of canned ACLs and the associated
+                | predefined grants: private, public-read, public-read-write, authenticated-read
+                | bucket-owner-read, bucket-owner-full-control, log-delivery-write
+                */
+                'acl' => 'public-read'
+
+            ],
+
+//            'cloudfront' => [
+//
+//                'credentials' => [
+//                    'key'       => '',
+//                    'secret'    => '',
+//                ],
+//
+//            ],
+
+        ],
+
+//        'cloudflare' => [
+//            'key'       => '',
+//            'secret'    => '',
+//        ],
+
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Files to Include
+    |--------------------------------------------------------------------------
+    |
+    | Specify which directories to be uploaded when running the
+    | [$ php artisan cdn:push] command
+    |
+    | Enter the full paths of directories (starting from the application root).
+    |
+    */
+    'include'    => [
+        'directories'   => ['public'],
+        'extensions'    => [],
+        'patterns'      => [],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Files to Exclude
+    |--------------------------------------------------------------------------
+    |
+    | Specify what to exclude from the 'include' directories when uploading
+    | to the CDN.
+    |
+    | 'hidden' is a boolean to excludes "hidden" directories and files (starting with a dot)
+    |
+    */
+    'exclude'    => [
+        'directories'   => [],
+        'files'         => [],
+        'extensions'    => [],
+        'patterns'      => [],
+        'hidden'        => true,
+    ],
 
 ];
