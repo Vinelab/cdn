@@ -179,7 +179,7 @@ class Asset implements AssetInterface{
     }
 
     /**
-     * @return mixed
+     * @return Collection
      */
     public function getAssets()
     {

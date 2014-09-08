@@ -69,7 +69,7 @@ class Cdn implements CdnInterface{
         // return an instance of the corresponding Provider concrete according to the configuration
         $provider = $this->provider_factory->create($configurations);
 
-        $provider->upload($this->asset_holder->getAssets());
+        return $provider->upload($this->asset_holder->getAssets());
     }
 
 }

@@ -81,5 +81,4 @@ class AwsS3Test extends TestCase {
         assertEquals(true, $result);
     }
 
-
 }
