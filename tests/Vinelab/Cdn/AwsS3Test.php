@@ -12,7 +12,7 @@ class AwsS3Test extends TestCase {
         $this->m_console = M::mock('Symfony\Component\Console\Output\ConsoleOutput');
         $this->m_console->shouldReceive('writeln')->atLeast(2);
 
-        $this->m_validator = M::mock('Vinelab\Cdn\Validators\Configurations');
+        $this->m_validator = M::mock('Vinelab\Cdn\Validators\Contracts\ProviderValidatorInterface');
         $this->m_validator->shouldReceive('validate');
 
         $this->m_helper = M::mock('Vinelab\Cdn\CdnHelper');

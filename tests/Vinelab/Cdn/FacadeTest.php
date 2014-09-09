@@ -8,10 +8,10 @@ class FacadeTest extends TestCase {
     {
         parent::setUp();
 
+        $this->asset_path = 'public/foo/bar.php';
         $this->cdn_url = 'https://amazon.foo.bar.com';
 
         $this->provider = M::mock('Vinelab\Cdn\Providers\AwsS3Provider');
-        $this->provider->shouldReceive('urlGenerator')->once()->andReturn($this->cdn_url);
 
         $this->provider_factory = M::mock('Vinelab\Cdn\Contracts\ProviderFactoryInterface');
         $this->provider_factory->shouldReceive('create')->once()->andReturn($this->provider);
@@ -19,11 +19,10 @@ class FacadeTest extends TestCase {
         $this->helper = M::mock('Vinelab\Cdn\Contracts\CdnHelperInterface');
         $this->helper->shouldReceive('getConfigurations')->once()->andReturn([]);
 
-        $this->m_validator = M::mock('Vinelab\Cdn\Validators\CdnFacadeValidator');
-        $this->m_validator->shouldReceive('checkIfEmpty')->once();
+        $this->validator = new \Vinelab\Cdn\Validators\CdnFacadeValidator;
 
         $this->facade = new \Vinelab\Cdn\CdnFacade(
-            $this->provider_factory, $this->helper, $this->m_validator);
+            $this->provider_factory, $this->helper, $this->validator);
     }
 
     public function tearDown()
@@ -34,16 +33,23 @@ class FacadeTest extends TestCase {
 
     public function testAssetUrlGenerator()
     {
-        $result = $this->facade->asset('file path here');
+        $this->provider->shouldReceive('urlGenerator')
+            ->with($this->asset_path)
+            ->once()
+            ->andReturn($this->cdn_url);
 
+       $result = $this->facade->asset($this->asset_path);
+ 
         // assert is calling the url generator
         assertEquals($result, $this->cdn_url);
     }
 
-    public function testAssetUrlGeneratorWithEmpty()
+    /**
+     * @expectedException \Vinelab\Cdn\Exceptions\EmptyInputException
+     */
+    public function testAssetWithEmptyParameter()
     {
-//        $result = $this->facade->asset();
-
+        $this->facade->asset(null);
     }
 
 

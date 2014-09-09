@@ -17,6 +17,7 @@ class CdnTest extends TestCase {
         $this->m_asset->shouldReceive('setAssets')->once();
         $this->m_asset->shouldReceive('getAssets')->once()->andReturn(New Collection());
 
+
         $this->m_provider = M::mock('Vinelab\Cdn\Providers\Provider');
         $this->m_provider->shouldReceive('upload')->once()->andReturn(true);
 
