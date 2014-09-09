@@ -12,6 +12,4 @@ use Vinelab\Cdn\Validators\Contracts\CdnFacadeValidatorInterface;
  */
 class CdnFacadeValidator extends Validator implements CdnFacadeValidatorInterface{
 
-
-
 }

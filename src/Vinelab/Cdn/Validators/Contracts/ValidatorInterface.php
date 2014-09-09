@@ -6,6 +6,4 @@
 
 interface ValidatorInterface{
 
-    public function checkIfEmpty($string);
-
 }
