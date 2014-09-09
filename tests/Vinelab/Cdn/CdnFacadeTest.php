@@ -2,7 +2,7 @@
 
 use Mockery as M;
 
-class FacadeTest extends TestCase {
+class CdnFacadeTest extends TestCase {
 
     public function setUp()
     {

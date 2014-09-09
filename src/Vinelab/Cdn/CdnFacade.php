@@ -104,6 +104,4 @@ class CdnFacade implements CdnFacadeInterface{
         $this->provider = $this->provider_factory->create($configurations);
     }
 
-
-
 }
