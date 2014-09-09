@@ -7,6 +7,7 @@
 use Vinelab\Cdn\Contracts\ProviderFactoryInterface;
 use Vinelab\Cdn\Contracts\CdnFacadeInterface;
 use Vinelab\Cdn\Contracts\CdnHelperInterface;
+use Vinelab\Cdn\Validators\CdnFacadeValidator;
 
 /**
  * Class CdnFacade
@@ -30,19 +31,27 @@ class CdnFacade implements CdnFacadeInterface{
     protected $helper;
 
     /**
+     * @var Validators\CdnFacadeValidator
+     */
+    protected $cdn_facade_validator;
+
+    /**
      * Calls the provider initializer
      *
      * @param ProviderFactoryInterface $provider_factory
      * @param Contracts\CdnHelperInterface $helper
+     * @param Validators\CdnFacadeValidator $cdn_facade_validator
      *
      * @internal param \Vinelab\Cdn\Repository $configurations
      */
     public function __construct(
         ProviderFactoryInterface $provider_factory,
-        CdnHelperInterface $helper
+        CdnHelperInterface $helper,
+        CdnFacadeValidator $cdn_facade_validator
     ) {
         $this->provider_factory     = $provider_factory;
         $this->helper               = $helper;
+        $this->cdn_facade_validator = $cdn_facade_validator;
 
         $this->init();
     }
@@ -58,9 +67,13 @@ class CdnFacade implements CdnFacadeInterface{
      */
     public function asset($path)
     {
+        // validate is $path exist or throw Exception
+        $this->cdn_facade_validator->checkIfEmpty($path);
+
         // remove slashes from begging and ending of the path then call the
         // url generator of the provider
         return $this->provider->urlGenerator($this->cleanPath($path));
+
     }
 
     /**
