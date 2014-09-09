@@ -77,6 +77,16 @@ class CdnServiceProvider extends ServiceProvider {
             'Vinelab\Cdn\Validators\Configurations'
         );
 
+        $this->app->bind(
+            'Vinelab\Cdn\Validators\Contracts\CdnFacadeValidatorInterface',
+            'Vinelab\Cdn\Validators\CdnFacadeValidator'
+        );
+
+        $this->app->bind(
+            'Vinelab\Cdn\Validators\Contracts\ValidatorInterface',
+            'Vinelab\Cdn\Validators\Validator'
+        );
+
         // register the commands:
         //-----------------------
         $this->app['cdn.push'] = $this->app->share(function()
