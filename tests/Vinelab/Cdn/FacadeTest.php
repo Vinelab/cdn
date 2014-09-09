@@ -52,5 +52,4 @@ class FacadeTest extends TestCase {
         $this->facade->asset(null);
     }
 
-
 }

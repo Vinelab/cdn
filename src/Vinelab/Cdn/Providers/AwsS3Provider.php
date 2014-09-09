@@ -79,17 +79,19 @@ class AwsS3Provider extends Provider implements ProviderInterface{
 
     /**
      * @param \Symfony\Component\Console\Output\ConsoleOutput $console
-     * @param \Vinelab\Cdn\Validators\Contracts\ConfigurationsInterface $configurations
+     * @param \Vinelab\Cdn\Validators\Contracts\ProviderValidatorInterface $provider_validator
      * @param \Vinelab\Cdn\Contracts\CdnHelperInterface $cdn_helper
+     *
+     * @internal param \Vinelab\Cdn\Validators\Contracts\ConfigurationsInterface $configurations
      */
     public function __construct(
-        ConsoleOutput           $console,
-        ProviderValidatorInterface $provider_validator,
-        CdnHelperInterface      $cdn_helper
+        ConsoleOutput               $console,
+        ProviderValidatorInterface  $provider_validator,
+        CdnHelperInterface          $cdn_helper
     ) {
-        $this->console          = $console;
-        $this->provider_validator = $provider_validator;
-        $this->cdn_helper       = $cdn_helper;
+        $this->console              = $console;
+        $this->provider_validator   = $provider_validator;
+        $this->cdn_helper           = $cdn_helper;
     }
 
     /**
