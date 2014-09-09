@@ -19,7 +19,11 @@ class FacadeTest extends TestCase {
         $this->helper = M::mock('Vinelab\Cdn\Contracts\CdnHelperInterface');
         $this->helper->shouldReceive('getConfigurations')->once()->andReturn([]);
 
-        $this->facade = new \Vinelab\Cdn\CdnFacade($this->provider_factory, $this->helper);
+        $this->m_validator = M::mock('Vinelab\Cdn\Validators\CdnFacadeValidator');
+        $this->m_validator->shouldReceive('checkIfEmpty')->once();
+
+        $this->facade = new \Vinelab\Cdn\CdnFacade(
+            $this->provider_factory, $this->helper, $this->m_validator);
     }
 
     public function tearDown()
@@ -30,9 +34,17 @@ class FacadeTest extends TestCase {
 
     public function testAssetUrlGenerator()
     {
-        $result = $this->facade->asset('/foo/bar.php');
+        $result = $this->facade->asset('file path here');
 
+        // assert is calling the url generator
         assertEquals($result, $this->cdn_url);
     }
+
+    public function testAssetUrlGeneratorWithEmpty()
+    {
+//        $result = $this->facade->asset();
+
+    }
+
 
 }
