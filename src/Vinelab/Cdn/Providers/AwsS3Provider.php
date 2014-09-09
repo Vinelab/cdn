@@ -4,7 +4,7 @@
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
-use Vinelab\Cdn\Validators\Contracts\ConfigurationsInterface;
+use Vinelab\Cdn\Validators\Contracts\ProviderValidatorInterface;
 use Vinelab\Cdn\Providers\Contracts\ProviderInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Vinelab\Cdn\Contracts\CdnHelperInterface;
@@ -84,11 +84,11 @@ class AwsS3Provider extends Provider implements ProviderInterface{
      */
     public function __construct(
         ConsoleOutput           $console,
-        ConfigurationsInterface $configurations,
+        ProviderValidatorInterface $provider_validator,
         CdnHelperInterface      $cdn_helper
     ) {
         $this->console          = $console;
-        $this->configurations   = $configurations;
+        $this->provider_validator = $provider_validator;
         $this->cdn_helper       = $cdn_helper;
     }
 
@@ -116,7 +116,7 @@ class AwsS3Provider extends Provider implements ProviderInterface{
         ];
 
         // check if any required configuration is missed
-        $this->configurations->validate($supplier, $this->rules);
+        $this->provider_validator->validate($supplier, $this->rules);
 
         $this->supplier = $supplier;
 
