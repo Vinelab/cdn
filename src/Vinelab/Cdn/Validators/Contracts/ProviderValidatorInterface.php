@@ -6,4 +6,6 @@
 
 interface ProviderValidatorInterface{
 
+    public function validate($configuration, $required);
+
 } 
