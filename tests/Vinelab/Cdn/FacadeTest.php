@@ -45,7 +45,7 @@ class FacadeTest extends TestCase {
     }
 
     /**
-     * @expectedException \Vinelab\Cdn\Exceptions\EmptyInputException
+     * @expectedException \Vinelab\Cdn\Exceptions\EmptyPathException
      */
     public function testAssetWithEmptyParameter()
     {

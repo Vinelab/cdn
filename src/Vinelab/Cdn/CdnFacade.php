@@ -8,7 +8,7 @@ use Vinelab\Cdn\Contracts\ProviderFactoryInterface;
 use Vinelab\Cdn\Contracts\CdnFacadeInterface;
 use Vinelab\Cdn\Contracts\CdnHelperInterface;
 use Vinelab\Cdn\Validators\CdnFacadeValidator;
-use Vinelab\Cdn\Exceptions\EmptyInputException;
+use Vinelab\Cdn\Exceptions\EmptyPathException;
 
 /**
  * Class CdnFacade
@@ -64,18 +64,17 @@ class CdnFacade implements CdnFacadeInterface{
      *
      * @param $path
      *
-     * @throws Exceptions\EmptyInputException
-     * @return string
+     * @return mixed
+     * @throws Exceptions\EmptyPathException
      */
     public function asset($path)
     {
-        if( ! $path)
-            throw new EmptyInputException('Asset does not exist.');
+        if ( ! $path)
+            throw new EmptyPathException('Path does not exist.');
 
         // remove slashes from begging and ending of the path then call the
         // url generator of the provider
         return $this->provider->urlGenerator($this->cleanPath($path));
-
     }
 
     /**
