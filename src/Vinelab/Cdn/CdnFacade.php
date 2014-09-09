@@ -69,7 +69,7 @@ class CdnFacade implements CdnFacadeInterface{
      */
     public function asset($path)
     {
-        if ( ! $path)
+        if ( ! isset($path))
             throw new EmptyPathException('Path does not exist.');
 
         // remove slashes from begging and ending of the path then call the
