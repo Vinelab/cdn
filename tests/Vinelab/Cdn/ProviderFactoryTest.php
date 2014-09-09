@@ -36,4 +36,21 @@ class ProviderFactoryTest extends TestCase {
         assertEquals($provider, $m_aws_s3);
     }
 
+
+    /**
+     * @expectedException \Vinelab\Cdn\Exceptions\MissingConfigurationException
+     */
+    public function testMissingDefaultProviderConfiguration()
+    {
+        $configurations = ['default' => ''];
+
+        $m_aws_s3 = M::mock('Vinelab\Cdn\Providers\AwsS3Provider');
+
+        \Illuminate\Support\Facades\App::shouldReceive('make')->once()->andReturn($m_aws_s3);
+
+        $this->provider_factory->create($configurations);
+    }
+
+
+
 }
