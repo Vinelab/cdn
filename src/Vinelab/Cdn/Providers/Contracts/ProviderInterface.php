@@ -16,4 +16,8 @@ interface ProviderInterface{
 
     public function getBucket();
 
+    public function setS3Client($s3_client);
+
+    public function setBatchBuilder($batch);
+
 } 

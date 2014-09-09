@@ -35,6 +35,9 @@ class CdnHelper implements CdnHelperInterface{
     /**
      * Check if the config file exist and return it or
      * throw an exception
+     *
+     * @return array
+     * @throws Exceptions\MissingConfigurationFileException
      */
     public function getConfigurations()
     {

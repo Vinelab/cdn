@@ -39,4 +39,24 @@ class FinderTest extends TestCase {
         assertEquals($result, new Collection($result->all()));
     }
 
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testReadingAllowedDirectoriesWithEmptyAssetHolder()
+    {
+        $asset_holder = new \Vinelab\Cdn\Asset;
+
+        $asset_holder->init(array('include' => []));
+
+        $console_output = M::mock('Symfony\Component\Console\Output\ConsoleOutput');
+        $console_output->shouldReceive('writeln')
+            ->atLeast(1);
+
+        $finder = new \Vinelab\Cdn\Finder($console_output);
+
+        $finder->read($asset_holder);
+
+    }
+
 }

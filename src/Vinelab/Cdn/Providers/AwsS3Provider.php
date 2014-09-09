@@ -4,7 +4,7 @@
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
-use Vinelab\Cdn\Validators\Contracts\ConfigurationsInterface;
+use Vinelab\Cdn\Validators\Contracts\ProviderValidatorInterface;
 use Vinelab\Cdn\Providers\Contracts\ProviderInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Vinelab\Cdn\Contracts\CdnHelperInterface;
@@ -79,17 +79,19 @@ class AwsS3Provider extends Provider implements ProviderInterface{
 
     /**
      * @param \Symfony\Component\Console\Output\ConsoleOutput $console
-     * @param \Vinelab\Cdn\Validators\Contracts\ConfigurationsInterface $configurations
+     * @param \Vinelab\Cdn\Validators\Contracts\ProviderValidatorInterface $provider_validator
      * @param \Vinelab\Cdn\Contracts\CdnHelperInterface $cdn_helper
+     *
+     * @internal param \Vinelab\Cdn\Validators\Contracts\ConfigurationsInterface $configurations
      */
     public function __construct(
-        ConsoleOutput           $console,
-        ConfigurationsInterface $configurations,
-        CdnHelperInterface      $cdn_helper
+        ConsoleOutput               $console,
+        ProviderValidatorInterface  $provider_validator,
+        CdnHelperInterface          $cdn_helper
     ) {
-        $this->console          = $console;
-        $this->configurations   = $configurations;
-        $this->cdn_helper       = $cdn_helper;
+        $this->console              = $console;
+        $this->provider_validator   = $provider_validator;
+        $this->cdn_helper           = $cdn_helper;
     }
 
     /**
@@ -116,7 +118,7 @@ class AwsS3Provider extends Provider implements ProviderInterface{
         ];
 
         // check if any required configuration is missed
-        $this->configurations->validate($supplier, $this->rules);
+        $this->provider_validator->validate($supplier, $this->rules);
 
         $this->supplier = $supplier;
 
@@ -126,32 +128,54 @@ class AwsS3Provider extends Provider implements ProviderInterface{
 
     /**
      * Create a cdn instance and create a batch builder instance
+     *
+     * @return bool
      */
-    private function connect()
+    public function connect()
     {
-        // Instantiate an S3 client
-        $this->s3_client = S3Client::factory( array(
-                    'key'       => $this->credential_key,
-                    'secret'    => $this->credential_secret,
+        try{
+
+            // Instantiate an S3 client
+            $this->setS3Client(
+                S3Client::factory( array(
+                        'key'       => $this->credential_key,
+                        'secret'    => $this->credential_secret,
+                    )
                 )
             );
 
-        // Initialize the batch builder
-        $this->batch = BatchBuilder::factory()
-            ->transferCommands($this->threshold)
-            ->autoFlushAt($this->threshold)
-            ->build();
+            // Initialize the batch builder
+            $this->setBatchBuilder(
+                BatchBuilder::factory()
+                ->transferCommands($this->threshold)
+                ->autoFlushAt($this->threshold)
+                ->keepHistory()
+                ->build()
+            );
+
+        }catch (\Exception $e){
+
+            return false;
+        }
+
+        return true;
     }
 
     /**
      * Upload assets
      *
      * @param $assets
+     *
+     * @return bool
      */
     public function upload($assets)
     {
         // connect before uploading
-        $this->connect();
+        $connected = $this->connect();
+
+        if ( ! $connected) {
+            return false;
+        }
 
         // user terminal message
         $this->console->writeln('<fg=yellow>Uploading in progress...</fg=yellow>');
@@ -164,28 +188,31 @@ class AwsS3Provider extends Provider implements ProviderInterface{
 
                     'Bucket'    => $this->getBucket(), // the bucket name
                     'Key'       => $file->getPathName(), // the path of the file on the server (CDN)
-                    'Body'      => fopen($file->getRealpath(), 'r'), // the path of the path locally
+                    'Body'      => fopen($file->getRealPath(), 'r'), // the path of the path locally
                     'ACL'       => $this->acl, // the permission of the file
 
                 ]));
             } catch (S3Exception $e) {
-                echo "There was an error uploading this file ($file->getRealpath()).\n";
+                $this->console->writeln("<fg=red>Error while uploading: ($file->getRealpath())</fg=red>");
+                return false;
             }
-
         }
 
-        // Execute batch.
-        $commands = $this->batch->flush();
+        $commands = $this->batch->getHistory();
 
-        // Fix: in small threshold output is not available (batch related thing)
-        foreach ($commands as $command) {
-            $result = $command->getResult();
-            // user terminal message
-            $this->console->writeln('<fg=magenta>URL: ' . $result->get('ObjectURL') . '</fg=magenta>');
+        if ($commands) {
+            foreach ($commands as $command) {
+
+                $result = $command->getResult();
+                // user terminal message
+                $this->console->writeln('<fg=magenta>URL: ' . $result->get('ObjectURL') . '</fg=magenta>');
+            }
         }
 
         // user terminal message
         $this->console->writeln('<fg=green>Upload completed successfully.</fg=green>');
+
+        return true;
     }
 
     /**
@@ -202,6 +229,23 @@ class AwsS3Provider extends Provider implements ProviderInterface{
 
         return $url['scheme'] . '://' . $this->getBucket() . '.' . $url['host'] . '/' . $path;
     }
+
+    /**
+     * @param $s3_client
+     */
+    public function setS3Client($s3_client)
+    {
+        $this->s3_client = $s3_client;
+    }
+
+    /**
+     * @param $batch
+     */
+    public function setBatchBuilder($batch)
+    {
+        $this->batch = $batch;
+    }
+
 
     /**
      * @return string

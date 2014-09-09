@@ -6,8 +6,6 @@ require_once 'vendor/phpunit/phpunit/src/Framework/Assert/Functions.php';
 use Mockery as M;
 use PHPUnit_Framework_TestCase as PHPUnit;
 
-
-
 class TestCase extends PHPUnit {
 
     public function __construct()

@@ -73,8 +73,18 @@ class CdnServiceProvider extends ServiceProvider {
         );
 
         $this->app->bind(
-            'Vinelab\Cdn\Validators\Contracts\ConfigurationsInterface',
-            'Vinelab\Cdn\Validators\Configurations'
+            'Vinelab\Cdn\Validators\Contracts\ProviderValidatorInterface',
+            'Vinelab\Cdn\Validators\ProviderValidator'
+        );
+
+        $this->app->bind(
+            'Vinelab\Cdn\Validators\Contracts\CdnFacadeValidatorInterface',
+            'Vinelab\Cdn\Validators\CdnFacadeValidator'
+        );
+
+        $this->app->bind(
+            'Vinelab\Cdn\Validators\Contracts\ValidatorInterface',
+            'Vinelab\Cdn\Validators\Validator'
         );
 
         // register the commands:
@@ -106,6 +116,8 @@ class CdnServiceProvider extends ServiceProvider {
             });
 
 
+        // registering the package (for the config files)
+        $this->package("vinelab/cdn");
 
     }
 

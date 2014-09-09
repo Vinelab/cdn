@@ -7,7 +7,6 @@
 interface AssetInterface {
 
     public function init($configurations);
-    public function parseAndFillConfiguration($configurations);
 
     public function getIncludedDirectories();
     public function getIncludedExtensions();
