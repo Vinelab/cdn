@@ -6,4 +6,5 @@ class CdnException extends \RuntimeException {}
 class MissingConfigurationFileException extends CdnException {}
 class MissingConfigurationException extends CdnException {}
 class UnsupportedProviderException extends CdnException {}
+class EmptyInputException extends CdnException {}
 
