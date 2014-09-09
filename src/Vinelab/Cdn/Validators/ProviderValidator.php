@@ -5,13 +5,13 @@
  */
 
 use Vinelab\Cdn\Exceptions\MissingConfigurationException;
-use Vinelab\Cdn\Validators\Contracts\ConfigurationsInterface;
+use Vinelab\Cdn\Validators\Contracts\ProviderValidatorInterface;
 
 /**
  * Class Configurations
  * @package Vinelab\Cdn\Validators
  */
-class Configurations implements ConfigurationsInterface{
+class ProviderValidator extends Validator implements ProviderValidatorInterface{
 
     /**
      * Checks for any required configuration is missed

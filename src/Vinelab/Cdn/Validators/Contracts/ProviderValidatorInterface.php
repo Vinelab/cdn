@@ -4,6 +4,6 @@
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
  */
 
-interface ConfigurationsInterface{
+interface ProviderValidatorInterface{
 
 } 

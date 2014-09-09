@@ -73,8 +73,8 @@ class CdnServiceProvider extends ServiceProvider {
         );
 
         $this->app->bind(
-            'Vinelab\Cdn\Validators\Contracts\ConfigurationsInterface',
-            'Vinelab\Cdn\Validators\Configurations'
+            'Vinelab\Cdn\Validators\Contracts\ProviderValidatorInterface',
+            'Vinelab\Cdn\Validators\ProviderValidator'
         );
 
         $this->app->bind(
