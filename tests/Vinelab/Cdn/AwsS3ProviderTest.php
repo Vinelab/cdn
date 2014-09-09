@@ -3,7 +3,7 @@
 use Illuminate\Support\Collection;
 use Mockery as M;
 
-class AwsS3Test extends TestCase {
+class AwsS3ProviderTest extends TestCase {
 
     public function setUp()
     {
@@ -18,8 +18,8 @@ class AwsS3Test extends TestCase {
         $this->m_helper = M::mock('Vinelab\Cdn\CdnHelper');
 
         $this->m_spl_file = M::mock('Symfony\Component\Finder\SplFileInfo');
-        $this->m_spl_file->shouldReceive('getPathname')->andReturn('vinelab/cdn/tests/Vinelab/Cdn/AwsS3Test.php');
-        $this->m_spl_file->shouldReceive('getRealPath')->andReturn(__DIR__ . '/AwsS3Test.php');
+        $this->m_spl_file->shouldReceive('getPathname')->andReturn('vinelab/cdn/tests/Vinelab/Cdn/AwsS3ProviderTest.php');
+        $this->m_spl_file->shouldReceive('getRealPath')->andReturn(__DIR__ . '/AwsS3ProviderTest.php');
 
         $this->p_awsS3Provider = M::mock('\Vinelab\Cdn\Providers\AwsS3Provider[connect]', array
             ($this->m_console, $this->m_validator, $this->m_helper));

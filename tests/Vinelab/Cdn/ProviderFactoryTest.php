@@ -51,6 +51,4 @@ class ProviderFactoryTest extends TestCase {
         $this->provider_factory->create($configurations);
     }
 
-
-
 }
