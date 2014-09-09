@@ -116,6 +116,8 @@ class CdnServiceProvider extends ServiceProvider {
             });
 
 
+        // registering the package (for the config files)
+        $this->package("vinelab/cdn");
 
     }
 
