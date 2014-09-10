@@ -31,7 +31,7 @@ class CdnFacadeTest extends TestCase {
         parent::tearDown();
     }
 
-    public function testAssetUrlGenerator()
+    public function testAssetIsCallingUrlGenerator()
     {
         $this->provider->shouldReceive('urlGenerator')
             ->with($this->asset_path)
@@ -47,7 +47,7 @@ class CdnFacadeTest extends TestCase {
     /**
      * @expectedException \Vinelab\Cdn\Exceptions\EmptyPathException
      */
-    public function testAssetWithEmptyParameter()
+    public function testAssetThrowsExceptionWhenEmptyParameter()
     {
         $this->facade->asset(null);
     }

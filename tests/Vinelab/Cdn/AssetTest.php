@@ -18,7 +18,7 @@ class AssetTest extends TestCase {
         parent::tearDown();
     }
 
-    public function testParseAndFillConfiguration()
+    public function testInitReturningAssetObject()
     {
         $dir = 'foo';
 

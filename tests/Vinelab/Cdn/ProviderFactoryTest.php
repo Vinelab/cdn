@@ -18,7 +18,7 @@ class ProviderFactoryTest extends TestCase {
         parent::tearDown();
     }
 
-    public function testAwsS3ProviderCreation()
+    public function testCreateReturnCorrectProviderObject()
     {
         $configurations = ['default' => 'aws.s3'];
 
@@ -40,7 +40,7 @@ class ProviderFactoryTest extends TestCase {
     /**
      * @expectedException \Vinelab\Cdn\Exceptions\MissingConfigurationException
      */
-    public function testMissingDefaultProviderConfiguration()
+    public function testCreateThrowsExceptionWhenMissingDefaultConfiguration()
     {
         $configurations = ['default' => ''];
 
