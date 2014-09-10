@@ -53,7 +53,6 @@ class CdnFacadeTest extends TestCase {
         assertEquals($result, $cleaned_path);
     }
 
-
     /**
      * @expectedException \Vinelab\Cdn\Exceptions\EmptyPathException
      */
