@@ -44,7 +44,7 @@ class CdnHelper implements CdnHelperInterface{
         $configurations = $this->configurations->get('cdn::cdn');
 
         if ( ! $configurations) {
-            throw new MissingConfigurationFileException('CDN Configurations file not found');
+            throw new MissingConfigurationFileException("CDN 'config file' (cdn.php) not found");
         }
 
         return $configurations;
