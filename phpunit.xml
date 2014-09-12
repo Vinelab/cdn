@@ -16,9 +16,9 @@
         </testsuite>
     </testsuites>
 
-    <logging>
-        <log type="coverage-html" target="./CodeCoverage/"/>
-    </logging>
+    <!--<logging>-->
+        <!--<log type="coverage-html" target="./CodeCoverage/"/>-->
+    <!--</logging>-->
 
 </phpunit>
 
