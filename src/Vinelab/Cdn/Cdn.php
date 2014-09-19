@@ -40,10 +40,10 @@ class Cdn implements CdnInterface{
      * @internal param \Vinelab\Cdn\Repository $configurations
      */
     public function __construct(
-        FinderInterface $finder,
-        AssetInterface $asset_holder,
-        ProviderFactoryInterface $provider_factory,
-        CdnHelperInterface $helper
+        FinderInterface             $finder,
+        AssetInterface              $asset_holder,
+        ProviderFactoryInterface    $provider_factory,
+        CdnHelperInterface          $helper
     ) {
         $this->finder               = $finder;
         $this->asset_holder         = $asset_holder;

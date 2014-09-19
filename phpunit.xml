@@ -15,4 +15,11 @@
             <directory suffix=".php">./tests/Vinelab</directory>
         </testsuite>
     </testsuites>
+
+    <!--<logging>-->
+        <!--<log type="coverage-html" target="./CodeCoverage/"/>-->
+    <!--</logging>-->
+
 </phpunit>
+
+

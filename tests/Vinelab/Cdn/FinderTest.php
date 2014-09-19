@@ -16,7 +16,7 @@ class FinderTest extends TestCase {
         parent::tearDown();
     }
 
-    public function testReadingAllowedDirectories()
+    public function testReadReturnCorrectDataType()
     {
         $asset_holder = new \Vinelab\Cdn\Asset;
 
@@ -43,7 +43,7 @@ class FinderTest extends TestCase {
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testReadingAllowedDirectoriesWithEmptyAssetHolder()
+    public function testReadThrowsException()
     {
         $asset_holder = new \Vinelab\Cdn\Asset;
 
