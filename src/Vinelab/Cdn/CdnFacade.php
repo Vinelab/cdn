@@ -70,8 +70,9 @@ class CdnFacade implements CdnFacadeInterface{
      */
     public function asset($path)
     {
-        return $this->preparePathAndGenerateUrl('asset', $path);
+        return $this->preparePathAndCallUrlGenerator('asset', $path);
     }
+
 
     /**
      * this function will be called from the 'views' using the
@@ -85,7 +86,7 @@ class CdnFacade implements CdnFacadeInterface{
      */
     public function path($path)
     {
-        return $this->preparePathAndGenerateUrl('path', $path);
+        return $this->preparePathAndCallUrlGenerator('path', $path);
     }
 
     /**
@@ -97,7 +98,7 @@ class CdnFacade implements CdnFacadeInterface{
      * @return mixed
      * @throws Exceptions\EmptyPathException
      */
-    private function preparePathAndGenerateUrl($from, $path)
+    private function preparePathAndCallUrlGenerator($from, $path)
     {
         if ( ! isset($path))
             throw new EmptyPathException('Path does not exist.');

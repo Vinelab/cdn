@@ -18,6 +18,8 @@ class CdnFacadeTest extends TestCase {
 
         $this->helper = M::mock('Vinelab\Cdn\Contracts\CdnHelperInterface');
         $this->helper->shouldReceive('getConfigurations')->once()->andReturn([]);
+        $this->helper->shouldReceive('cleanPath')->andReturn($this->asset_path);
+        $this->helper->shouldReceive('startsWith')->andReturn(true);
 
         $this->validator = new \Vinelab\Cdn\Validators\CdnFacadeValidator;
 
@@ -44,21 +46,12 @@ class CdnFacadeTest extends TestCase {
         assertEquals($result, $this->cdn_url);
     }
 
-    public function testCleanPathIsCleaning()
-    {
-        $path = '/foo/bar/';
-        $cleaned_path = 'foo/bar';
-        // invoke the private function cleanPath()
-        $result = $this->invokeMethod($this->facade, 'cleanPath', array($path));
-        assertEquals($result, $cleaned_path);
-    }
-
     /**
      * @expectedException \Vinelab\Cdn\Exceptions\EmptyPathException
      */
-    public function testAssetThrowsExceptionWhenEmptyParameter()
+    public function testPreparePathThrowsExceptionWhenEmptyParameter()
     {
-        $this->facade->asset(null);
+        $this->invokeMethod($this->facade, 'preparePathAndCallUrlGenerator', array(null, null));
     }
 
 }
