@@ -45,7 +45,8 @@ class CdnFacade implements CdnFacadeInterface{
      *
      * @internal param \Vinelab\Cdn\Repository $configurations
      */
-    public function __construct(
+    public function __construct
+    (
         ProviderFactoryInterface $provider_factory,
         CdnHelperInterface $helper,
         CdnFacadeValidator $cdn_facade_validator
@@ -58,7 +59,7 @@ class CdnFacade implements CdnFacadeInterface{
     }
 
     /**
-     * This function will be called from the 'views' using the
+     * this function will be called from the 'views' using the
      * 'Cdn' facade {{Cdn::asset('')}} to convert the path into
      * it's CDN url
      *
@@ -69,24 +70,52 @@ class CdnFacade implements CdnFacadeInterface{
      */
     public function asset($path)
     {
+        return $this->preparePathAndGenerateUrl('asset', $path);
+    }
+
+    /**
+     * this function will be called from the 'views' using the
+     * 'Cdn' facade {{Cdn::path('')}} to convert the path into
+     * it's CDN url
+     *
+     * @param $path
+     *
+     * @return mixed
+     * @throws Exceptions\EmptyPathException
+     */
+    public function path($path)
+    {
+        return $this->preparePathAndGenerateUrl('path', $path);
+    }
+
+    /**
+     * responsible of preparing the path before generating the url
+     *
+     * @param $from
+     * @param $path
+     *
+     * @return mixed
+     * @throws Exceptions\EmptyPathException
+     */
+    private function preparePathAndGenerateUrl($from, $path)
+    {
         if ( ! isset($path))
             throw new EmptyPathException('Path does not exist.');
 
         // remove slashes from begging and ending of the path then call the
-        // url generator of the provider
-        return $this->provider->urlGenerator($this->cleanPath($path));
-    }
+        $clean_path = $this->helper->cleanPath($path);
 
-    /**
-     * remove any extra slashes '/' from the path
-     *
-     * @param $path
-     *
-     * @return string
-     */
-    private function cleanPath($path)
-    {
-        return rtrim(ltrim($path, '/'), '/');
+        if ($from == 'asset')
+        {
+            // if path starts with public
+            if ( ! $this->helper->startsWith('public', $clean_path))
+            {
+                // append public/ to the path
+                $clean_path = 'public/' . $clean_path;
+            }
+        }
+
+        return $this->provider->urlGenerator($clean_path);
     }
 
     /**
