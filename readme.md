@@ -41,7 +41,11 @@ the `Cdn` class to `CdnFacadeProvider` so you can simply use the `Cdn` facade an
 
 ## Configuration
 
-Publish the default config using `php artisan config:publish vinelab/cdn` and check it out at `app/config/packages/vinelab/cdn/cdn.php`
+Publish the package config file:
+```dos
+php artisan config:publish vinelab/cdn
+```
+and check it out at `app/config/packages/vinelab/cdn/cdn.php`
 
 In case you would like to have environment-based configuration `app/config/packages/vinelab/cdn/[ENV]/cdn.php`
 
@@ -138,22 +142,33 @@ not to exceed what you have allowed in your PHP configuration.
 
 ### Push
 
-Upload your assets with `php artisan cdn:push`
-
+Upload your assets with
+```dos
+php artisan cdn:push
+```
 ### Load Assets
 
-Since the service provider of this package aliases itself as the facade `Cdn` you may use it as such:
+Now you can use the facade `Cdn` to call the `Cdn::asset()` function.
+Note: the `asset` works the same as the Laravel `asset` it start looking for assets in the `public/` directory:
 
 ```blade
-    {{Cdn::asset('public/index.php')}}
-    // https://default-bucket.s3.amazonaws.com/public/index.php
-
-    {{Cdn::asset('public/assets/js/main.js')}}
+    {{Cdn::asset('assets/js/main.js')}}
     // https://js-bucket.s3.amazonaws.com/public/assets/js/main.js
 
-    {{Cdn::asset('public/assets/css/main.css')}}
+    {{Cdn::asset('assets/css/main.css')}}
     // https://css-bucket.s3.amazonaws.com/public/assets/css/main.css
 ```
+
+If you want to use a file from outside the `public/` directory anywhere in `app/` you can use the `Cdn::path()` function to do that:
+
+```blade
+    {{Cdn::path('public/assets/js/main.js')}}
+    // https://js-bucket.s3.amazonaws.com/public/assets/js/main.js
+
+    {{Cdn::path('private/something/file.txt')}}
+    // https://css-bucket.s3.amazonaws.com/private/something/file.txt
+```
+
 
 ## Contributing
 
