@@ -82,7 +82,7 @@ class Finder extends SymfonyFinder implements FinderInterface{
 
         // include files with this extensions
         foreach ($asset_holder->getIncludedExtensions() as $extension) {
-            $this->name('*'.$extension);
+            $this->name('*' . $extension);
         }
 
         // include patterns

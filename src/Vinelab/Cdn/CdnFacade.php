@@ -7,12 +7,19 @@
 use Vinelab\Cdn\Contracts\ProviderFactoryInterface;
 use Vinelab\Cdn\Contracts\CdnFacadeInterface;
 use Vinelab\Cdn\Contracts\CdnHelperInterface;
+use Vinelab\Cdn\Validators\CdnFacadeValidator;
+use Vinelab\Cdn\Exceptions\EmptyPathException;
 
 /**
  * Class CdnFacade
  * @package Vinelab\Cdn
  */
 class CdnFacade implements CdnFacadeInterface{
+
+    /**
+     * @var Contracts\ProviderFactoryInterface
+     */
+    protected $provider_factory;
 
     /**
      * @var instance of the default provider object
@@ -25,19 +32,27 @@ class CdnFacade implements CdnFacadeInterface{
     protected $helper;
 
     /**
+     * @var Validators\CdnFacadeValidator
+     */
+    protected $cdn_facade_validator;
+
+    /**
      * Calls the provider initializer
      *
      * @param ProviderFactoryInterface $provider_factory
      * @param Contracts\CdnHelperInterface $helper
+     * @param Validators\CdnFacadeValidator $cdn_facade_validator
      *
      * @internal param \Vinelab\Cdn\Repository $configurations
      */
     public function __construct(
         ProviderFactoryInterface $provider_factory,
-        CdnHelperInterface $helper
+        CdnHelperInterface $helper,
+        CdnFacadeValidator $cdn_facade_validator
     ) {
         $this->provider_factory     = $provider_factory;
         $this->helper               = $helper;
+        $this->cdn_facade_validator = $cdn_facade_validator;
 
         $this->init();
     }
@@ -49,10 +64,14 @@ class CdnFacade implements CdnFacadeInterface{
      *
      * @param $path
      *
-     * @return string
+     * @return mixed
+     * @throws Exceptions\EmptyPathException
      */
     public function asset($path)
     {
+        if ( ! isset($path))
+            throw new EmptyPathException('Path does not exist.');
+
         // remove slashes from begging and ending of the path then call the
         // url generator of the provider
         return $this->provider->urlGenerator($this->cleanPath($path));
@@ -84,7 +103,5 @@ class CdnFacade implements CdnFacadeInterface{
         // return an instance of the corresponding Provider concrete according to the configuration
         $this->provider = $this->provider_factory->create($configurations);
     }
-
-
 
 }

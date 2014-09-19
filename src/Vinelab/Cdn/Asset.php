@@ -18,7 +18,7 @@ class Asset implements AssetInterface{
      *
      * @var array
      */
-    private $default_include = [
+    protected $default_include = [
         'directories'   => ['public'],
         'extensions'    => [],
         'patterns'      => [],
@@ -29,7 +29,7 @@ class Asset implements AssetInterface{
      *
      * @var array
      */
-    private $default_exclude =  [
+    protected $default_exclude =  [
         'directories'   => [],
         'files'         => [],
         'extensions'    => [],
@@ -40,40 +40,40 @@ class Asset implements AssetInterface{
     /**
      * @var Array
      */
-    public $included_directories;
+    protected $included_directories;
     /**
      * @var Array
      */
-    public $included_files;
+    protected $included_files;
     /**
      * @var Array
      */
-    public $included_extensions;
+    protected $included_extensions;
     /**
      * @var Array
      */
-    public $included_patterns;
+    protected $included_patterns;
 
     /**
      * @var Array
      */
-    public $excluded_directories;
+    protected $excluded_directories;
     /**
      * @var Array
      */
-    public $excluded_files;
+    protected $excluded_files;
     /**
      * @var Array
      */
-    public $excluded_extensions;
+    protected $excluded_extensions;
     /**
      * @var Array
      */
-    public $excluded_patterns;
+    protected $excluded_patterns;
     /*
      * @var boolean
      */
-    public $exclude_hidden;
+    protected $exclude_hidden;
 
     /*
      * Allowed assets for upload (found in included_directories)
@@ -113,7 +113,7 @@ class Asset implements AssetInterface{
      *
      * @param $configurations
      */
-    public function parseAndFillConfiguration($configurations)
+    private function parseAndFillConfiguration($configurations)
     {
         $this->default_include = isset($configurations['include']) ?
             array_merge($this->default_include, $configurations['include']) : $this->default_include;
@@ -179,7 +179,7 @@ class Asset implements AssetInterface{
     }
 
     /**
-     * @return mixed
+     * @return Collection
      */
     public function getAssets()
     {

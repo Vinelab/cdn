@@ -118,16 +118,10 @@ Specify what to be ignored.
 
 #### URL
 
-Set the URL protocol:
+Set the CDN URL:
 
 ```php
-    'protocol' => 'https',
-```
-
-Set the CDN domain:
-
-```php
-    'domain' => 's3.amazonaws.com',
+    'url' => 'https://s3.amazonaws.com',
 ```
 
 #### Threshold

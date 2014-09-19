@@ -16,7 +16,7 @@ class FinderTest extends TestCase {
         parent::tearDown();
     }
 
-    public function testReadingAllowedDirectories()
+    public function testReadReturnCorrectDataType()
     {
         $asset_holder = new \Vinelab\Cdn\Asset;
 
@@ -37,6 +37,26 @@ class FinderTest extends TestCase {
         assertInstanceOf('Symfony\Component\Finder\SplFileInfo', $result->first());
 
         assertEquals($result, new Collection($result->all()));
+    }
+
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testReadThrowsException()
+    {
+        $asset_holder = new \Vinelab\Cdn\Asset;
+
+        $asset_holder->init(array('include' => []));
+
+        $console_output = M::mock('Symfony\Component\Console\Output\ConsoleOutput');
+        $console_output->shouldReceive('writeln')
+            ->atLeast(1);
+
+        $finder = new \Vinelab\Cdn\Finder($console_output);
+
+        $finder->read($asset_holder);
+
     }
 
 }
