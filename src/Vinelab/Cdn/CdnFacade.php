@@ -45,11 +45,10 @@ class CdnFacade implements CdnFacadeInterface{
      *
      * @internal param \Vinelab\Cdn\Repository $configurations
      */
-    public function __construct
-    (
-        ProviderFactoryInterface $provider_factory,
-        CdnHelperInterface $helper,
-        CdnFacadeValidator $cdn_facade_validator
+    public function __construct(
+        ProviderFactoryInterface    $provider_factory,
+        CdnHelperInterface          $helper,
+        CdnFacadeValidator          $cdn_facade_validator
     ) {
         $this->provider_factory     = $provider_factory;
         $this->helper               = $helper;
@@ -70,7 +69,7 @@ class CdnFacade implements CdnFacadeInterface{
      */
     public function asset($path)
     {
-        return $this->preparePathAndCallUrlGenerator('asset', $path);
+        return $this->generateUrl($path, 'asset');
     }
 
 
@@ -86,29 +85,30 @@ class CdnFacade implements CdnFacadeInterface{
      */
     public function path($path)
     {
-        return $this->preparePathAndCallUrlGenerator('path', $path);
+        return $this->generateUrl($path, 'path');
     }
 
     /**
      * responsible of preparing the path before generating the url
      *
-     * @param $from
      * @param $path
+     * @param $prepend
      *
-     * @return mixed
      * @throws Exceptions\EmptyPathException
+     * @return
      */
-    private function preparePathAndCallUrlGenerator($from, $path)
+    private function generateUrl($path, $prepend = '')
     {
         if ( ! isset($path))
             throw new EmptyPathException('Path does not exist.');
 
-        // remove slashes from begging and ending of the path then call the
+        // remove slashes from begging and ending of the path
         $clean_path = $this->helper->cleanPath($path);
 
-        if ($from == 'asset')
+        // if the called of this function is the asset()
+        if ($prepend == 'asset')
         {
-            // if path starts with public
+            // check if path doesn't starts with public/
             if ( ! $this->helper->startsWith('public', $clean_path))
             {
                 // append public/ to the path
