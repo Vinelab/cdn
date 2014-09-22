@@ -69,7 +69,8 @@ class CdnFacade implements CdnFacadeInterface{
      */
     public function asset($path)
     {
-        return $this->generateUrl($path, 'asset');
+        // if asset always append the public/ dir to the path (since the user should not add public/ to asset)
+        return $this->generateUrl($path, 'public/');
     }
 
 
@@ -85,7 +86,7 @@ class CdnFacade implements CdnFacadeInterface{
      */
     public function path($path)
     {
-        return $this->generateUrl($path, 'path');
+        return $this->generateUrl($path);
     }
 
     /**
@@ -103,19 +104,10 @@ class CdnFacade implements CdnFacadeInterface{
             throw new EmptyPathException('Path does not exist.');
 
         // remove slashes from begging and ending of the path
-        $clean_path = $this->helper->cleanPath($path);
+        // and append directories if needed
+        $clean_path = $prepend . $this->helper->cleanPath($path);
 
-        // if the called of this function is the asset()
-        if ($prepend == 'asset')
-        {
-            // check if path doesn't starts with public/
-            if ( ! $this->helper->startsWith('public', $clean_path))
-            {
-                // append public/ to the path
-                $clean_path = 'public/' . $clean_path;
-            }
-        }
-
+        // call the provider specific url generator
         return $this->provider->urlGenerator($clean_path);
     }
 
