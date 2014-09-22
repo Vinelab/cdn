@@ -49,9 +49,9 @@ class CdnFacadeTest extends TestCase {
     /**
      * @expectedException \Vinelab\Cdn\Exceptions\EmptyPathException
      */
-    public function testPreparePathThrowsExceptionWhenEmptyParameter()
+    public function testUrlGeneratorThrowsException()
     {
-        $this->invokeMethod($this->facade, 'preparePathAndCallUrlGenerator', array(null, null));
+        $this->invokeMethod($this->facade, 'generateUrl', array(null, null));
     }
 
 }
