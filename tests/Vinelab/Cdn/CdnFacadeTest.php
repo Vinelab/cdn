@@ -8,8 +8,9 @@ class CdnFacadeTest extends TestCase {
     {
         parent::setUp();
 
-        $this->asset_path = 'public/foo/bar.php';
-        $this->cdn_url = 'https://amazon.foo.bar.com';
+        $this->asset_path = 'foo/bar.php';
+        $this->path_path = 'public/foo/bar.php';
+        $this->asset_url = 'https://bucket.s3.amazonaws.com/public/foo/bar.php';
 
         $this->provider = M::mock('Vinelab\Cdn\Providers\AwsS3Provider');
 
@@ -36,14 +37,23 @@ class CdnFacadeTest extends TestCase {
     public function testAssetIsCallingUrlGenerator()
     {
         $this->provider->shouldReceive('urlGenerator')
-            ->with($this->asset_path)
-            ->once()
-            ->andReturn($this->cdn_url);
+        ->once()
+        ->andReturn($this->asset_url);
 
-       $result = $this->facade->asset($this->asset_path);
- 
+        $result = $this->facade->asset($this->asset_path);
         // assert is calling the url generator
-        assertEquals($result, $this->cdn_url);
+        assertEquals($result, $this->asset_url);
+    }
+
+    public function testPathIsCallingUrlGenerator()
+    {
+        $this->provider->shouldReceive('urlGenerator')
+            ->once()
+            ->andReturn($this->asset_url);
+
+        $result = $this->facade->asset($this->path_path);
+        // assert is calling the url generator
+        assertEquals($result, $this->asset_url);
     }
 
     /**
