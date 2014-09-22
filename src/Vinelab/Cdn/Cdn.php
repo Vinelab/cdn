@@ -60,7 +60,7 @@ class Cdn implements CdnInterface{
         // return the configurations from the config file
         $configurations = $this->helper->getConfigurations();
 
-        // Initialize an instance of the asset holder to read the config    urations
+        // Initialize an instance of the asset holder to read the configurations
         // then call the read(), to return all the allowed assets as a collection of files objects
         $assets = $this->finder->read($this->asset_holder->init($configurations));
         // store the returned assets in the instance of the asset holder as collection of paths
