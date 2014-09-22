@@ -46,9 +46,9 @@ class CdnFacade implements CdnFacadeInterface{
      * @internal param \Vinelab\Cdn\Repository $configurations
      */
     public function __construct(
-        ProviderFactoryInterface $provider_factory,
-        CdnHelperInterface $helper,
-        CdnFacadeValidator $cdn_facade_validator
+        ProviderFactoryInterface    $provider_factory,
+        CdnHelperInterface          $helper,
+        CdnFacadeValidator          $cdn_facade_validator
     ) {
         $this->provider_factory     = $provider_factory;
         $this->helper               = $helper;
@@ -58,7 +58,7 @@ class CdnFacade implements CdnFacadeInterface{
     }
 
     /**
-     * This function will be called from the 'views' using the
+     * this function will be called from the 'views' using the
      * 'Cdn' facade {{Cdn::asset('')}} to convert the path into
      * it's CDN url
      *
@@ -69,24 +69,46 @@ class CdnFacade implements CdnFacadeInterface{
      */
     public function asset($path)
     {
-        if ( ! isset($path))
-            throw new EmptyPathException('Path does not exist.');
-
-        // remove slashes from begging and ending of the path then call the
-        // url generator of the provider
-        return $this->provider->urlGenerator($this->cleanPath($path));
+        // if asset always append the public/ dir to the path (since the user should not add public/ to asset)
+        return $this->generateUrl($path, 'public/');
     }
 
+
     /**
-     * remove any extra slashes '/' from the path
+     * this function will be called from the 'views' using the
+     * 'Cdn' facade {{Cdn::path('')}} to convert the path into
+     * it's CDN url
      *
      * @param $path
      *
-     * @return string
+     * @return mixed
+     * @throws Exceptions\EmptyPathException
      */
-    private function cleanPath($path)
+    public function path($path)
     {
-        return rtrim(ltrim($path, '/'), '/');
+        return $this->generateUrl($path);
+    }
+
+    /**
+     * responsible of preparing the path before generating the url
+     *
+     * @param $path
+     * @param $prepend
+     *
+     * @throws Exceptions\EmptyPathException
+     * @return
+     */
+    private function generateUrl($path, $prepend = '')
+    {
+        if ( ! isset($path))
+            throw new EmptyPathException('Path does not exist.');
+
+        // remove slashes from begging and ending of the path
+        // and append directories if needed
+        $clean_path = $prepend . $this->helper->cleanPath($path);
+
+        // call the provider specific url generator
+        return $this->provider->urlGenerator($clean_path);
     }
 
     /**

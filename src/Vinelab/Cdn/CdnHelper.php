@@ -90,4 +90,29 @@ class CdnHelper implements CdnHelperInterface{
         return parse_url($url);
     }
 
+    /**
+     * check if a string starts with a string
+     *
+     * @param $with
+     * @param $str
+     *
+     * @return bool
+     */
+    public function startsWith($with, $str)
+    {
+        return (substr($str, 0, strlen($with)) === $with);
+    }
+
+    /**
+     * remove any extra slashes '/' from the path
+     *
+     * @param $path
+     *
+     * @return string
+     */
+    public function cleanPath($path)
+    {
+        return rtrim(ltrim($path, '/'), '/');
+    }
+
 }
