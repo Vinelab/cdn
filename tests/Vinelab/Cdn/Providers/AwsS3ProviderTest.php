@@ -9,6 +9,12 @@ class AwsS3ProviderTest extends TestCase {
     {
         parent::setUp();
 
+        $this->url = 'http://www.google.com';
+        $this->cdn_url = 'http://ZZZZZZZ.www.google.com/public/css/cool/style.css';
+        $this->path = 'public/css/cool/style.css';
+        $this->path_url = 'http://www.google.com/public/css/cool/style.css';
+        $this->pased_url = parse_url($this->url);
+
         $this->m_console = M::mock('Symfony\Component\Console\Output\ConsoleOutput');
         $this->m_console->shouldReceive('writeln')->atLeast(2);
 
@@ -16,6 +22,8 @@ class AwsS3ProviderTest extends TestCase {
         $this->m_validator->shouldReceive('validate');
 
         $this->m_helper = M::mock('Vinelab\Cdn\CdnHelper');
+        $this->m_helper->shouldReceive('parseUrl')
+                       ->andReturn($this->pased_url);
 
         $this->m_spl_file = M::mock('Symfony\Component\Finder\SplFileInfo');
         $this->m_spl_file->shouldReceive('getPathname')->andReturn('vinelab/cdn/tests/Vinelab/Cdn/AwsS3ProviderTest.php');
@@ -36,7 +44,7 @@ class AwsS3ProviderTest extends TestCase {
         $this->p_awsS3Provider->setBatchBuilder($this->m_batch);
 
         $this->p_awsS3Provider->shouldReceive('connect')->andReturn(true);
-        
+
         $this->configurations = [
             'default' => 'aws.s3',
             'url' => 'https://s3.amazonaws.com',
@@ -57,6 +65,8 @@ class AwsS3ProviderTest extends TestCase {
             ],
         ];
 
+        $this->awsS3Provider_obj = $this->p_awsS3Provider->init($this->configurations);
+
     }
 
     public function tearDown()
@@ -67,18 +77,21 @@ class AwsS3ProviderTest extends TestCase {
 
     public function testInitializingObject()
     {
-        $returned = $this->p_awsS3Provider->init($this->configurations);
-
-        assertInstanceOf('Vinelab\Cdn\Providers\AwsS3Provider', $returned);
+        assertInstanceOf('Vinelab\Cdn\Providers\AwsS3Provider', $this->awsS3Provider_obj);
     }
 
     public function testUploadingAssets()
     {
-        $this->p_awsS3Provider->init($this->configurations);
-
         $result = $this->p_awsS3Provider->upload(new Collection([$this->m_spl_file]));
 
         assertEquals(true, $result);
+    }
+
+    public function testUrlGenerator()
+    {
+        $result = $this->p_awsS3Provider->urlGenerator($this->path);
+
+        assertEquals($this->cdn_url, $result);
     }
 
 }
