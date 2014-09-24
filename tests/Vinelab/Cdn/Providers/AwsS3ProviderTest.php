@@ -44,8 +44,17 @@ class AwsS3ProviderTest extends TestCase {
         $this->p_awsS3Provider->setBatchBuilder($this->m_batch);
 
         $this->p_awsS3Provider->shouldReceive('connect')->andReturn(true);
+    }
 
-        $this->configurations = [
+    public function tearDown()
+    {
+        M::close();
+        parent::tearDown();
+    }
+
+    public function testInitializingObject()
+    {
+        $configurations = [
             'default' => 'aws.s3',
             'url' => 'https://s3.amazonaws.com',
             'threshold' => 10,
@@ -65,23 +74,35 @@ class AwsS3ProviderTest extends TestCase {
             ],
         ];
 
-        $this->awsS3Provider_obj = $this->p_awsS3Provider->init($this->configurations);
+        $awsS3Provider_obj = $this->p_awsS3Provider->init($configurations);
 
-    }
-
-    public function tearDown()
-    {
-        M::close();
-        parent::tearDown();
-    }
-
-    public function testInitializingObject()
-    {
-        assertInstanceOf('Vinelab\Cdn\Providers\AwsS3Provider', $this->awsS3Provider_obj);
+        assertInstanceOf('Vinelab\Cdn\Providers\AwsS3Provider', $awsS3Provider_obj);
     }
 
     public function testUploadingAssets()
     {
+        $configurations = [
+            'default' => 'aws.s3',
+            'url' => 'https://s3.amazonaws.com',
+            'threshold' => 10,
+            'providers' => [
+                'aws' => [
+                    's3' => [
+                        'credentials' => [
+                            'key'       => 'XXXXXXX',
+                            'secret'    => 'YYYYYYY',
+                        ],
+                        'buckets' => [
+                            'ZZZZZZZ' => '*',
+                        ],
+                        'acl' => 'public-read'
+                    ],
+                ],
+            ],
+        ];
+
+        $this->p_awsS3Provider->init($configurations);
+
         $result = $this->p_awsS3Provider->upload(new Collection([$this->m_spl_file]));
 
         assertEquals(true, $result);
@@ -89,9 +110,60 @@ class AwsS3ProviderTest extends TestCase {
 
     public function testUrlGenerator()
     {
+        $configurations = [
+            'default' => 'aws.s3',
+            'url' => 'https://s3.amazonaws.com',
+            'threshold' => 10,
+            'providers' => [
+                'aws' => [
+                    's3' => [
+                        'credentials' => [
+                            'key'       => 'XXXXXXX',
+                            'secret'    => 'YYYYYYY',
+                        ],
+                        'buckets' => [
+                            'ZZZZZZZ' => '*',
+                        ],
+                        'acl' => 'public-read'
+                    ],
+                ],
+            ],
+        ];
+
+        $this->p_awsS3Provider->init($configurations);
+
         $result = $this->p_awsS3Provider->urlGenerator($this->path);
 
         assertEquals($this->cdn_url, $result);
+    }
+
+    public function testEmptyUrlGenerator()
+    {
+        $configurations = [
+            'default' => 'aws.s3',
+            'url' => 'https://s3.amazonaws.com',
+            'threshold' => 10,
+            'providers' => [
+                'aws' => [
+                    's3' => [
+                        'credentials' => [
+                            'key'       => 'XXXXXXX',
+                            'secret'    => 'YYYYYYY',
+                        ],
+                        'buckets' => [
+                            '' => '*',
+                        ],
+                        'acl' => 'public-read'
+                    ],
+                ],
+            ],
+        ];
+
+        $this->p_awsS3Provider->init($configurations);
+
+        $result = $this->p_awsS3Provider->urlGenerator($this->path);
+
+        assertEquals($this->path_url, $result);
     }
 
 }
