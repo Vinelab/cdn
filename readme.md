@@ -138,6 +138,13 @@ not to exceed what you have allowed in your PHP configuration.
     'threshold' => 10,
 ```
 
+#### Bypass
+
+To load your local assets (not the CDN assets) for testing or during development, set the `bypass` option to `true`:
+
+```php
+    'bypass' => true,
+```
 ## Usage
 
 ### Push
