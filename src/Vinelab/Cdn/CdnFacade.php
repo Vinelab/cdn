@@ -17,7 +17,7 @@ use Vinelab\Cdn\Exceptions\EmptyPathException;
 class CdnFacade implements CdnFacadeInterface{
 
     /**
-     * @var configurations
+     * configurations
      */
     protected $configurations;
 
@@ -108,7 +108,7 @@ class CdnFacade implements CdnFacadeInterface{
     {
         // if the package is surpassed, then return the same $path
         // to load the asset from the localhost
-        if ( $this->configurations['surpass'] )
+        if ( isset($this->configurations['bypass']) and  $this->configurations['bypass'] )
             return $path;
 
         if ( ! isset($path))
