@@ -2,6 +2,23 @@
 
 return [
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Bypass loading assets from the CDN
+    |--------------------------------------------------------------------------
+    |
+    | This option determines whether to load the assets from localhost or from
+    | the CDN server. (this is useful during development).
+    | Set it to "true" to load from localhost, or set it to "false" to load
+    | from the CDN (on production).
+    |
+    | Default: false
+    |
+    */
+
+    'bypass' => false,
+
     /*
     |--------------------------------------------------------------------------
     | Default CDN provider
@@ -75,7 +92,7 @@ return [
                 |
                 */
                 'buckets' => [
-                    'bucket-name-here' => '*',
+                    'bucket-name' => '*',
                     //        'your-js-bucket-name-here'   =>  ['public/js'],
                     //        'your-css-bucket-name-here'  =>  ['public/css'],
                 ],
