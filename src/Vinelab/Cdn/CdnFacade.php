@@ -17,7 +17,7 @@ use Vinelab\Cdn\Exceptions\EmptyPathException;
 class CdnFacade implements CdnFacadeInterface{
 
     /**
-     * configurations
+     * @var array
      */
     protected $configurations;
 
