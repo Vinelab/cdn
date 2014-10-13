@@ -17,6 +17,11 @@ use Vinelab\Cdn\Exceptions\EmptyPathException;
 class CdnFacade implements CdnFacadeInterface{
 
     /**
+     * @var configurations
+     */
+    protected $configurations;
+
+    /**
      * @var Contracts\ProviderFactoryInterface
      */
     protected $provider_factory;
@@ -90,7 +95,8 @@ class CdnFacade implements CdnFacadeInterface{
     }
 
     /**
-     * responsible of preparing the path before generating the url
+     * check if package is surpassed or not then
+     * prepare the path before generating the url
      *
      * @param $path
      * @param $prepend
@@ -100,6 +106,11 @@ class CdnFacade implements CdnFacadeInterface{
      */
     private function generateUrl($path, $prepend = '')
     {
+        // if the package is surpassed, then return the same $path
+        // to load the asset from the localhost
+        if ( $this->configurations['surpass'] )
+            return $path;
+
         if ( ! isset($path))
             throw new EmptyPathException('Path does not exist.');
 
@@ -120,10 +131,10 @@ class CdnFacade implements CdnFacadeInterface{
     private function init()
     {
         // return the configurations from the config file
-        $configurations = $this->helper->getConfigurations();
+        $this->configurations = $this->helper->getConfigurations();
 
         // return an instance of the corresponding Provider concrete according to the configuration
-        $this->provider = $this->provider_factory->create($configurations);
+        $this->provider = $this->provider_factory->create($this->configurations);
     }
 
 }
