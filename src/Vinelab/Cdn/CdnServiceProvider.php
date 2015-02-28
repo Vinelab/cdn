@@ -114,11 +114,6 @@ class CdnServiceProvider extends ServiceProvider {
                 $loader = \Illuminate\Foundation\AliasLoader::getInstance();
                 $loader->alias('Cdn', 'Vinelab\Cdn\Facades\CdnFacadeAccessor');
             });
-
-
-        // registering the package (for the config files)
-        $this->package("vinelab/cdn");
-
     }
 
 	/**
