@@ -113,7 +113,7 @@ class CdnTest extends TestCase {
 
         $m_config = M::mock('Illuminate\Config\Repository');
         $m_config->shouldReceive('get')
-            ->with('cdn::cdn')
+            ->with('cdn')
             ->once()
             ->andReturn($configuration_file);
 
