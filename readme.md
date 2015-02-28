@@ -7,7 +7,7 @@
 [![License](https://poser.pugx.org/vinelab/cdn/license.svg)](https://packagist.org/packages/vinelab/cdn)
 [![Build Status](https://travis-ci.org/thephpleague/statsd.png?branch=master)](https://travis-ci.org/Vinelab/cdn)
 
-Content Delivery Network Package for Laravel 4
+Content Delivery Network Package for Laravel
 
 Upload static assets of your choice to a CDN and have the file paths replaced with full URLs.
 ----------

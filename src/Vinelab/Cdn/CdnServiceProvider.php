@@ -2,6 +2,7 @@
 
 /**
  * @author Mahmoud Zalt <mahmoud@vinelab.com>
+ * @author Abed Halawi <abed.halawi@vinelab.com>
  */
 
 use Illuminate\Support\ServiceProvider;
@@ -23,7 +24,6 @@ class CdnServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('vinelab/cdn');
 
     }
 
