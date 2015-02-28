@@ -24,7 +24,9 @@ class CdnServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-
+        $this->publishes([
+            __DIR__.'/../../config/cdn.php' => config_path('cdn.php')
+        ]);
     }
 
 	/**
