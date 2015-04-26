@@ -193,7 +193,7 @@ class AwsS3Provider extends Provider implements ProviderInterface{
                 $this->batch->add($this->s3_client->getCommand('PutObject', [
 
                     'Bucket'    => $this->getBucket(), // the bucket name
-                    'Key'       => $file->getPathName(), // the path of the file on the server (CDN)
+                    'Key'       => str_replace('\\', '/', $file->getPathName()), // the path of the file on the server (CDN)
                     'Body'      => fopen($file->getRealPath(), 'r'), // the path of the path locally
                     'ACL'       => $this->acl, // the permission of the file
 
