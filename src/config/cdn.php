@@ -108,7 +108,21 @@ return [
                 | predefined grants: private, public-read, public-read-write, authenticated-read
                 | bucket-owner-read, bucket-owner-full-control, log-delivery-write
                 */
-                'acl' => 'public-read'
+                'acl' => 'public-read',
+
+                /*
+                |--------------------------------------------------------------------------
+                | Use CloudFront as the CDN
+                |--------------------------------------------------------------------------
+                |
+                | Amazon S3 can be linked to CloudFront through distributions. This allows
+                | the files in your S3 buckets to be served from a number of global
+                | locations to achieve low latency and faster page load times.
+                */
+                'cloudfront' => [
+                    'use'       => false,
+                    'cdn_url'   => '',
+                ],
 
             ],
 
