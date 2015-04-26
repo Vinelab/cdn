@@ -153,10 +153,10 @@ class AwsS3Provider extends Provider implements ProviderInterface{
             // Initialize the batch builder
             $this->setBatchBuilder(
                 BatchBuilder::factory()
-                    ->transferCommands($this->threshold)
-                    ->autoFlushAt($this->threshold)
-                    ->keepHistory()
-                    ->build()
+                ->transferCommands($this->threshold)
+                ->autoFlushAt($this->threshold)
+                ->keepHistory()
+                ->build()
             );
 
         }catch (\Exception $e){
