@@ -17,7 +17,7 @@ return [
     |
     */
 
-    'bypass' => false,
+    'bypass' => $app->environment('local') ? false : false,
 
     /*
     |--------------------------------------------------------------------------
@@ -34,10 +34,10 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | CDN URL
+    | S3 URL
     |--------------------------------------------------------------------------
     |
-    | Set your CDN url, [without the bucket name]
+    | Set your S3 url, [without your bucket name]
     |
     */
     'url' => 'https://s3.amazonaws.com',
@@ -73,8 +73,8 @@ return [
             's3' => [
 
                 'credentials' => [
-                    'key'       => '',
-                    'secret'    => '',
+                    'key'       => env('S3_ACCESS_KEY'),
+                    'secret'    => env('S3_SECRET_KEY'),
                 ],
 
                 /*
@@ -92,7 +92,7 @@ return [
                 |
                 */
                 'buckets' => [
-                    'bucket-name' => '*',
+                    'spareskills' => '*',
                     //        'your-js-bucket-name-here'   =>  ['public/js'],
                     //        'your-css-bucket-name-here'  =>  ['public/css'],
                 ],
@@ -108,7 +108,21 @@ return [
                 | predefined grants: private, public-read, public-read-write, authenticated-read
                 | bucket-owner-read, bucket-owner-full-control, log-delivery-write
                 */
-                'acl' => 'public-read'
+                'acl' => 'public-read',
+
+                /*
+                |--------------------------------------------------------------------------
+                | Use CloudFront as the CDN
+                |--------------------------------------------------------------------------
+                |
+                | Amazon S3 can be linked to CloudFront through distributions. This allows
+                | the files in your S3 buckets to be served from a number of global
+                | locations to achieve low latency and faster page load times.
+                */
+                'cloudfront' => [
+                    'use'       => false,
+                    'cdn_url'   => '',
+                ],
 
             ],
 
