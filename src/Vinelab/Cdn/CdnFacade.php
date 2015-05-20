@@ -9,6 +9,7 @@ use Vinelab\Cdn\Contracts\CdnFacadeInterface;
 use Vinelab\Cdn\Contracts\CdnHelperInterface;
 use Vinelab\Cdn\Validators\CdnFacadeValidator;
 use Vinelab\Cdn\Exceptions\EmptyPathException;
+use Illuminate\Support\Facades\Request;
 
 /**
  * Class CdnFacade
