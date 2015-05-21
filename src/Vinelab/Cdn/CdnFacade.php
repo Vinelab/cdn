@@ -115,6 +115,10 @@ class CdnFacade implements CdnFacadeInterface{
         if ( ! isset($path))
             throw new EmptyPathException('Path does not exist.');
 
+        // Add version number
+
+        $path = str_replace("build", "build/" . env("VERSION", ''), $path);
+
         // remove slashes from begging and ending of the path
         // and append directories if needed
         $clean_path = $prepend . $this->helper->cleanPath($path);
