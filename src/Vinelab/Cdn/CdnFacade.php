@@ -107,10 +107,6 @@ class CdnFacade implements CdnFacadeInterface{
      */
     private function generateUrl($path, $prepend = '')
     {
-
-        // Add version number
-        $path = str_replace("build", "build/" . env("VERSION", ''), $path);
-        
         // if the package is surpassed, then return the same $path
         // to load the asset from the localhost
         if ( isset($this->configurations['bypass']) and  $this->configurations['bypass'] )
@@ -118,6 +114,10 @@ class CdnFacade implements CdnFacadeInterface{
 
         if ( ! isset($path))
             throw new EmptyPathException('Path does not exist.');
+
+        // Add version number
+
+        $path = str_replace("build", "build/" . env("VERSION", ''), $path);
 
         // remove slashes from begging and ending of the path
         // and append directories if needed

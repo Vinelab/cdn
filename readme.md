@@ -21,12 +21,7 @@ Upload static assets of your choice to a CDN and have the file paths replaced wi
     ```json
     {
         "require": {
-            "vinelab/cdn": "dev-master"
-        }
-        
-        {
-            "type": "git",
-            "url": "git@github.com:RajeshHegde/cdn.git"
+            "vinelab/cdn": "*"
         }
     }
     ```
