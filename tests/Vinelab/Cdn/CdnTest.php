@@ -70,6 +70,7 @@ class CdnTest extends TestCase {
     public function testPushCommand()
     {
         $configuration_file = [
+                'bypass' => false,
                 'default' => 'aws.s3',
                 'url' => 'https://s3.amazonaws.com',
                 'threshold' => 10,
@@ -83,7 +84,12 @@ class CdnTest extends TestCase {
                             'buckets' => [
                                 'bbbuuuucccctttt' => '*',
                             ],
-                            'acl' => 'public-read'
+                            'acl' => 'public-read',
+                            'cloudfront' => [
+                                'use'       => false,
+                                'cdn_url'   => '',
+                                'version'   => '',
+                            ]
                         ],
                     ],
                 ],

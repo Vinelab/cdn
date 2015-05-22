@@ -8,6 +8,44 @@ class CdnFacadeTest extends TestCase {
     {
         parent::setUp();
 
+        $configuration_file = [
+            'bypass' => false,
+            'default' => 'aws.s3',
+            'url' => 'https://s3.amazonaws.com',
+            'threshold' => 10,
+            'providers' => [
+                'aws' => [
+                    's3' => [
+                        'credentials' => [
+                            'key'       => 'keeeeeeeeeeeeeeeeeeeeeeey',
+                            'secret'    => 'ssssssssccccccccccctttttt',
+                        ],
+                        'buckets' => [
+                            'bbbuuuucccctttt' => '*',
+                        ],
+                        'acl' => 'public-read',
+                        'cloudfront' => [
+                            'use'       => false,
+                            'cdn_url'   => '',
+                            'version'   => '1',
+                        ]
+                    ],
+                ],
+            ],
+            'include'    => [
+                'directories'   => [__DIR__],
+                'extensions'    => [],
+                'patterns'      => [],
+            ],
+            'exclude'    => [
+                'directories'   => [],
+                'files'         => [],
+                'extensions'    => [],
+                'patterns'      => [],
+                'hidden'        => true,
+            ],
+        ];
+
         $this->asset_path = 'foo/bar.php';
         $this->path_path = 'public/foo/bar.php';
         $this->asset_url = 'https://bucket.s3.amazonaws.com/public/foo/bar.php';
@@ -18,7 +56,7 @@ class CdnFacadeTest extends TestCase {
         $this->provider_factory->shouldReceive('create')->once()->andReturn($this->provider);
 
         $this->helper = M::mock('Vinelab\Cdn\Contracts\CdnHelperInterface');
-        $this->helper->shouldReceive('getConfigurations')->once()->andReturn([]);
+        $this->helper->shouldReceive('getConfigurations')->once()->andReturn($configuration_file);
         $this->helper->shouldReceive('cleanPath')->andReturn($this->asset_path);
         $this->helper->shouldReceive('startsWith')->andReturn(true);
 

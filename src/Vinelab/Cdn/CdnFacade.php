@@ -108,7 +108,7 @@ class CdnFacade implements CdnFacadeInterface{
     {
         // if the package is surpassed, then return the same $path
         // to load the asset from the localhost
-        if ( isset($this->configurations['bypass']) and  $this->configurations['bypass'] )
+        if ( isset($this->configurations['bypass']) && $this->configurations['bypass'] )
             return $path;
 
         if ( ! isset($path))
@@ -116,7 +116,11 @@ class CdnFacade implements CdnFacadeInterface{
 
         // Add version number
 
-        $path = str_replace("build", "build/" . env("VERSION", ''), $path);
+        $path = str_replace(
+            "build",
+            "build/" . $this->configurations['providers']['aws']['s3']['cloudfront']['version'],
+            $path
+        );
 
         // remove slashes from begging and ending of the path
         // and append directories if needed

@@ -122,6 +122,7 @@ return [
                 'cloudfront' => [
                     'use'       => false,
                     'cdn_url'   => '',
+                    'version'   => '',
                 ],
 
             ],

@@ -72,6 +72,7 @@ class AwsS3ProviderTest extends TestCase {
                         'cloudfront' => [
                             'use'       => false,
                             'cdn_url'   => null,
+                            'version'   => null,
                         ],
                     ],
                 ],
@@ -103,6 +104,7 @@ class AwsS3ProviderTest extends TestCase {
                         'cloudfront' => [
                             'use'       => false,
                             'cdn_url'   => null,
+                            'version'   => null,
                         ],
                     ],
                 ],
@@ -136,6 +138,7 @@ class AwsS3ProviderTest extends TestCase {
                         'cloudfront' => [
                             'use'       => false,
                             'cdn_url'   => null,
+                            'version'   => null,
                         ],
                     ],
                 ],
@@ -169,6 +172,7 @@ class AwsS3ProviderTest extends TestCase {
                         'cloudfront' => [
                             'use'       => false,
                             'cdn_url'   => null,
+                            'version'   => null,
                         ],
                     ],
                 ],
