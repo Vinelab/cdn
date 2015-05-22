@@ -1,6 +1,7 @@
 <?php
 namespace Vinelab\Cdn;
 
+use Illuminate\Support\Facades\Request;
 use Vinelab\Cdn\Contracts\CdnFacadeInterface;
 use Vinelab\Cdn\Contracts\CdnHelperInterface;
 use Vinelab\Cdn\Contracts\ProviderFactoryInterface;
@@ -109,7 +110,7 @@ class CdnFacade implements CdnFacadeInterface
         // if the package is surpassed, then return the same $path
         // to load the asset from the localhost
         if (isset($this->configurations['bypass']) && $this->configurations['bypass']) {
-            return $path;
+            return Request::root() .'/'. $path;
         }
 
         if (!isset($path)) {
