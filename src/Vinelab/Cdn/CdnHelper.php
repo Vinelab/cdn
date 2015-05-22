@@ -25,7 +25,7 @@ class CdnHelper implements CdnHelperInterface
     protected $configurations;
 
     /**
-     * @param Repository $configurations
+     * @param \Illuminate\Config\Repository $configurations
      */
     public function __construct(Repository $configurations)
     {

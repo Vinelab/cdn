@@ -23,33 +23,33 @@ class CdnFacade implements CdnFacadeInterface
     protected $configurations;
 
     /**
-     * @var Contracts\ProviderFactoryInterface
+     * @var \Vinelab\Cdn\Contracts\ProviderFactoryInterface
      */
     protected $provider_factory;
 
     /**
-     * @var instance of the default provider object
+     * instance of the default provider object
+     *
+     * @var \Vinelab\Cdn\Providers\Contracts\ProviderInterface
      */
     protected $provider;
 
     /**
-     * @var instance of the CdnHelper class
+     * @var \Vinelab\Cdn\Contracts\CdnHelperInterface
      */
     protected $helper;
 
     /**
-     * @var Validators\CdnFacadeValidator
+     * @var \Vinelab\Cdn\Validators\CdnFacadeValidator
      */
     protected $cdn_facade_validator;
 
     /**
      * Calls the provider initializer
      *
-     * @param ProviderFactoryInterface      $provider_factory
-     * @param Contracts\CdnHelperInterface  $helper
-     * @param Validators\CdnFacadeValidator $cdn_facade_validator
-     *
-     * @internal param \Vinelab\Cdn\Repository $configurations
+     * @param \Vinelab\Cdn\Contracts\ProviderFactoryInterface $provider_factory
+     * @param \Vinelab\Cdn\Contracts\CdnHelperInterface       $helper
+     * @param \Vinelab\Cdn\Validators\CdnFacadeValidator      $cdn_facade_validator
      */
     public function __construct(
         ProviderFactoryInterface $provider_factory,
