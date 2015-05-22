@@ -1,41 +1,45 @@
-<?php namespace Vinelab\Cdn;
-
-/**
- * @author Mahmoud Zalt <mahmoud@vinelab.com>
- * @author Abed Halawi <abed.halawi@vinelab.com>
- */
+<?php
+namespace Vinelab\Cdn;
 
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * Class CdnServiceProvider
+ *
+ * @category Service Provider
+ * @package Vinelab\Cdn
+ * @author  Mahmoud Zalt <mahmoud@vinelab.com>
+ * @author  Abed Halawi <abed.halawi@vinelab.com>
+ */
+class CdnServiceProvider extends ServiceProvider
+{
 
-class CdnServiceProvider extends ServiceProvider {
+    /**
+     * Indicates if loading of the provider is deferred.
+     *
+     * @var bool
+     */
+    protected $defer = false;
 
-	/**
-	 * Indicates if loading of the provider is deferred.
-	 *
-	 * @var bool
-	 */
-	protected $defer = false;
-
-	/**
-	 * Bootstrap the application events.
-	 *
-	 * @return void
-	 */
-	public function boot()
-	{
+    /**
+     * Bootstrap the application events.
+     *
+     * @return void
+     */
+    public function boot()
+    {
         $this->publishes([
-            __DIR__.'/../../config/cdn.php' => config_path('cdn.php')
+            __DIR__ . '/../../config/cdn.php' => config_path('cdn.php')
         ]);
     }
 
-	/**
-	 * Register the service provider.
-	 *
-	 * @return void
-	 */
-	public function register()
-	{
+    /**
+     * Register the service provider.
+     *
+     * @return void
+     */
+    public function register()
+    {
 
         // implementation bindings:
         //-------------------------
@@ -91,41 +95,35 @@ class CdnServiceProvider extends ServiceProvider {
 
         // register the commands:
         //-----------------------
-        $this->app['cdn.push'] = $this->app->share(function()
-            {
-                return  $this->app->make('Vinelab\Cdn\Commands\PushCommand');
-            });
+        $this->app['cdn.push'] = $this->app->share(function () {
+            return $this->app->make('Vinelab\Cdn\Commands\PushCommand');
+        });
 
         $this->commands('cdn.push');
-
-
-
 
         // facade bindings:
         //-----------------
 
         // Register 'CdnFacade' instance container to our CdnFacade object
-        $this->app['cdn'] = $this->app->share(function()
-            {
-                return $this->app->make('Vinelab\Cdn\CdnFacade');
-            });
+        $this->app['cdn'] = $this->app->share(function () {
+            return $this->app->make('Vinelab\Cdn\CdnFacade');
+        });
 
         // Shortcut so developers don't need to add an Alias in app/config/app.php
-        $this->app->booting(function()
-            {
-                $loader = \Illuminate\Foundation\AliasLoader::getInstance();
-                $loader->alias('Cdn', 'Vinelab\Cdn\Facades\CdnFacadeAccessor');
-            });
+        $this->app->booting(function () {
+            $loader = \Illuminate\Foundation\AliasLoader::getInstance();
+            $loader->alias('Cdn', 'Vinelab\Cdn\Facades\CdnFacadeAccessor');
+        });
     }
 
-	/**
-	 * Get the services provided by the provider.
-	 *
-	 * @return array
-	 */
-	public function provides()
-	{
-		return array();
-	}
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return array();
+    }
 
 }

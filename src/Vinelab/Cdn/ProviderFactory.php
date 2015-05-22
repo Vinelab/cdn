@@ -1,23 +1,23 @@
-<?php namespace Vinelab\Cdn;
+<?php
+namespace Vinelab\Cdn;
 
-/**
- * @author Mahmoud Zalt <mahmoud@vinelab.com>
- */
-
+use Illuminate\Support\Facades\App;
+use Vinelab\Cdn\Contracts\ProviderFactoryInterface;
 use Vinelab\Cdn\Exceptions\MissingConfigurationException;
 use Vinelab\Cdn\Exceptions\UnsupportedProviderException;
-use Vinelab\Cdn\Contracts\ProviderFactoryInterface;
 use Vinelab\Cdn\Provider\AwsS3Provider;
-use Illuminate\Support\Facades\App;
 
 /**
+ * Class ProviderFactory
  * This class is responsible of creating objects from the default
  * provider found in the config file.
  *
- * Class ProviderFactory
+ * @category Factory
  * @package Vinelab\Cdn
+ * @author  Mahmoud Zalt <mahmoud@vinelab.com>
  */
-class ProviderFactory implements ProviderFactoryInterface{
+class ProviderFactory implements ProviderFactoryInterface
+{
 
     /**
      * Create and return an instance of the corresponding

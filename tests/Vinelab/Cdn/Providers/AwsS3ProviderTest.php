@@ -1,9 +1,18 @@
-<?php namespace Vinelab\Cdn\Tests;
+<?php
+namespace Vinelab\Cdn\Tests;
 
 use Illuminate\Support\Collection;
 use Mockery as M;
 
-class AwsS3ProviderTest extends TestCase {
+/**
+ * Class AwsS3ProviderTest
+ *
+ * @category Test
+ * @package  Vinelab\Cdn\Tests
+ * @author   Mahmoud Zalt <mahmoud@vinelab.com>
+ */
+class AwsS3ProviderTest extends TestCase
+{
 
     public function setUp()
     {
@@ -23,14 +32,18 @@ class AwsS3ProviderTest extends TestCase {
 
         $this->m_helper = M::mock('Vinelab\Cdn\CdnHelper');
         $this->m_helper->shouldReceive('parseUrl')
-                       ->andReturn($this->pased_url);
+            ->andReturn($this->pased_url);
 
         $this->m_spl_file = M::mock('Symfony\Component\Finder\SplFileInfo');
         $this->m_spl_file->shouldReceive('getPathname')->andReturn('vinelab/cdn/tests/Vinelab/Cdn/AwsS3ProviderTest.php');
         $this->m_spl_file->shouldReceive('getRealPath')->andReturn(__DIR__ . '/AwsS3ProviderTest.php');
 
         $this->p_awsS3Provider = M::mock('\Vinelab\Cdn\Providers\AwsS3Provider[connect]', array
-            ($this->m_console, $this->m_validator, $this->m_helper));
+        (
+            $this->m_console,
+            $this->m_validator,
+            $this->m_helper
+        ));
 
         $this->m_s3 = M::mock('Aws\S3\S3Client');
         $this->m_s3->shouldReceive('factory')->andReturn('Aws\S3\S3Client');
@@ -55,24 +68,24 @@ class AwsS3ProviderTest extends TestCase {
     public function testInitializingObject()
     {
         $configurations = [
-            'default' => 'aws.s3',
-            'url' => 'https://s3.amazonaws.com',
+            'default'   => 'aws.s3',
+            'url'       => 'https://s3.amazonaws.com',
             'threshold' => 10,
             'providers' => [
                 'aws' => [
                     's3' => [
                         'credentials' => [
-                            'key'       => 'XXXXXXX',
-                            'secret'    => 'YYYYYYY',
+                            'key'    => 'XXXXXXX',
+                            'secret' => 'YYYYYYY',
                         ],
-                        'buckets' => [
+                        'buckets'     => [
                             'ZZZZZZZ' => '*',
                         ],
-                        'acl' => 'public-read',
-                        'cloudfront' => [
-                            'use'       => false,
-                            'cdn_url'   => null,
-                            'version'   => null,
+                        'acl'         => 'public-read',
+                        'cloudfront'  => [
+                            'use'     => false,
+                            'cdn_url' => null,
+                            'version' => null,
                         ],
                     ],
                 ],
@@ -87,24 +100,24 @@ class AwsS3ProviderTest extends TestCase {
     public function testUploadingAssets()
     {
         $configurations = [
-            'default' => 'aws.s3',
-            'url' => 'https://s3.amazonaws.com',
+            'default'   => 'aws.s3',
+            'url'       => 'https://s3.amazonaws.com',
             'threshold' => 10,
             'providers' => [
                 'aws' => [
                     's3' => [
                         'credentials' => [
-                            'key'       => 'XXXXXXX',
-                            'secret'    => 'YYYYYYY',
+                            'key'    => 'XXXXXXX',
+                            'secret' => 'YYYYYYY',
                         ],
-                        'buckets' => [
+                        'buckets'     => [
                             'ZZZZZZZ' => '*',
                         ],
-                        'acl' => 'public-read',
-                        'cloudfront' => [
-                            'use'       => false,
-                            'cdn_url'   => null,
-                            'version'   => null,
+                        'acl'         => 'public-read',
+                        'cloudfront'  => [
+                            'use'     => false,
+                            'cdn_url' => null,
+                            'version' => null,
                         ],
                     ],
                 ],
@@ -121,24 +134,24 @@ class AwsS3ProviderTest extends TestCase {
     public function testUrlGenerator()
     {
         $configurations = [
-            'default' => 'aws.s3',
-            'url' => 'https://s3.amazonaws.com',
+            'default'   => 'aws.s3',
+            'url'       => 'https://s3.amazonaws.com',
             'threshold' => 10,
             'providers' => [
                 'aws' => [
                     's3' => [
                         'credentials' => [
-                            'key'       => 'XXXXXXX',
-                            'secret'    => 'YYYYYYY',
+                            'key'    => 'XXXXXXX',
+                            'secret' => 'YYYYYYY',
                         ],
-                        'buckets' => [
+                        'buckets'     => [
                             'ZZZZZZZ' => '*',
                         ],
-                        'acl' => 'public-read',
-                        'cloudfront' => [
-                            'use'       => false,
-                            'cdn_url'   => null,
-                            'version'   => null,
+                        'acl'         => 'public-read',
+                        'cloudfront'  => [
+                            'use'     => false,
+                            'cdn_url' => null,
+                            'version' => null,
                         ],
                     ],
                 ],
@@ -155,24 +168,24 @@ class AwsS3ProviderTest extends TestCase {
     public function testEmptyUrlGenerator()
     {
         $configurations = [
-            'default' => 'aws.s3',
-            'url' => 'https://s3.amazonaws.com',
+            'default'   => 'aws.s3',
+            'url'       => 'https://s3.amazonaws.com',
             'threshold' => 10,
             'providers' => [
                 'aws' => [
                     's3' => [
                         'credentials' => [
-                            'key'       => 'XXXXXXX',
-                            'secret'    => 'YYYYYYY',
+                            'key'    => 'XXXXXXX',
+                            'secret' => 'YYYYYYY',
                         ],
-                        'buckets' => [
+                        'buckets'     => [
                             '' => '*',
                         ],
-                        'acl' => 'public-read',
-                        'cloudfront' => [
-                            'use'       => false,
-                            'cdn_url'   => null,
-                            'version'   => null,
+                        'acl'         => 'public-read',
+                        'cloudfront'  => [
+                            'use'     => false,
+                            'cdn_url' => null,
+                            'version' => null,
                         ],
                     ],
                 ],

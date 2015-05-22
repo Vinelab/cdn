@@ -1,8 +1,17 @@
-<?php namespace Vinelab\Cdn\Tests;
+<?php
+namespace Vinelab\Cdn\Tests;
 
 use Mockery as M;
 
-class ProviderFactoryTest extends TestCase {
+/**
+ * Class ProviderFactoryTest
+ *
+ * @category Test
+ * @package Vinelab\Cdn\Tests
+ * @author  Mahmoud Zalt <mahmoud@vinelab.com>
+ */
+class ProviderFactoryTest extends TestCase
+{
 
     public function setUp()
     {

@@ -1,9 +1,17 @@
-<?php namespace Vinelab\Cdn\Tests;
+<?php
+namespace Vinelab\Cdn\Tests;
 
-use Illuminate\Support\Collection;
 use Mockery as M;
 
-class AssetTest extends TestCase {
+/**
+ * Class AssetTest
+ *
+ * @category Test
+ * @package Vinelab\Cdn\Tests
+ * @author  Mahmoud Zalt <mahmoud@vinelab.com>
+ */
+class AssetTest extends TestCase
+{
 
     public function setUp()
     {
@@ -23,10 +31,10 @@ class AssetTest extends TestCase {
         $dir = 'foo';
 
         $result = $this->asset->init([
-                'include'    => [
-                    'directories'   => $dir,
-                ],
-            ]);
+            'include' => [
+                'directories' => $dir,
+            ],
+        ]);
 
         // check the returned object is of type Vinelab\Cdn\Asset
         assertEquals($result, $this->asset);
@@ -37,10 +45,10 @@ class AssetTest extends TestCase {
         $dir = 'foo';
 
         $this->asset->init([
-                'include'    => [
-                    'directories'   => $dir,
-                ],
-            ]);
+            'include' => [
+                'directories' => $dir,
+            ],
+        ]);
 
         $result = $this->asset->getIncludedDirectories();
 
@@ -52,10 +60,10 @@ class AssetTest extends TestCase {
         $ext = 'foo';
 
         $this->asset->init([
-                'include'    => [
-                    'extensions'   => $ext,
-                ],
-            ]);
+            'include' => [
+                'extensions' => $ext,
+            ],
+        ]);
 
         $result = $this->asset->getIncludedExtensions();
 
@@ -67,10 +75,10 @@ class AssetTest extends TestCase {
         $pat = 'foo';
 
         $this->asset->init([
-                'include'    => [
-                    'patterns'   => $pat,
-                ],
-            ]);
+            'include' => [
+                'patterns' => $pat,
+            ],
+        ]);
 
         $result = $this->asset->getIncludedPatterns();
 
@@ -82,10 +90,10 @@ class AssetTest extends TestCase {
         $dir = 'foo';
 
         $this->asset->init([
-                'exclude'    => [
-                    'directories'   => $dir,
-                ],
-            ]);
+            'exclude' => [
+                'directories' => $dir,
+            ],
+        ]);
 
         $result = $this->asset->getExcludedDirectories();
 
@@ -97,10 +105,10 @@ class AssetTest extends TestCase {
         $dir = 'foo';
 
         $this->asset->init([
-                'exclude'    => [
-                    'files'   => $dir,
-                ],
-            ]);
+            'exclude' => [
+                'files' => $dir,
+            ],
+        ]);
 
         $result = $this->asset->getExcludedFiles();
 
@@ -112,10 +120,10 @@ class AssetTest extends TestCase {
         $dir = 'foo';
 
         $this->asset->init([
-                'exclude'    => [
-                    'extensions'   => $dir,
-                ],
-            ]);
+            'exclude' => [
+                'extensions' => $dir,
+            ],
+        ]);
 
         $result = $this->asset->getExcludedExtensions();
 
@@ -127,10 +135,10 @@ class AssetTest extends TestCase {
         $dir = 'foo';
 
         $this->asset->init([
-                'exclude'    => [
-                    'patterns'   => $dir,
-                ],
-            ]);
+            'exclude' => [
+                'patterns' => $dir,
+            ],
+        ]);
 
         $result = $this->asset->getExcludedPatterns();
 
@@ -142,10 +150,10 @@ class AssetTest extends TestCase {
         $bol = true;
 
         $this->asset->init([
-                'exclude'    => [
-                    'hidden'   => $bol,
-                ],
-            ]);
+            'exclude' => [
+                'hidden' => $bol,
+            ],
+        ]);
 
         $result = $this->asset->getExcludeHidden();
 

@@ -1,48 +1,57 @@
-<?php namespace Vinelab\Cdn\Tests;
+<?php
+namespace Vinelab\Cdn\Tests;
 
 use Mockery as M;
 
-class CdnFacadeTest extends TestCase {
+/**
+ * Class CdnFacadeTest
+ *
+ * @category Test
+ * @package Vinelab\Cdn\Tests
+ * @author  Mahmoud Zalt <mahmoud@vinelab.com>
+ */
+class CdnFacadeTest extends TestCase
+{
 
     public function setUp()
     {
         parent::setUp();
 
         $configuration_file = [
-            'bypass' => false,
-            'default' => 'aws.s3',
-            'url' => 'https://s3.amazonaws.com',
+            'bypass'    => false,
+            'default'   => 'aws.s3',
+            'url'       => 'https://s3.amazonaws.com',
             'threshold' => 10,
             'providers' => [
                 'aws' => [
                     's3' => [
                         'credentials' => [
-                            'key'       => 'keeeeeeeeeeeeeeeeeeeeeeey',
-                            'secret'    => 'ssssssssccccccccccctttttt',
+                            'key'    => 'keeeeeeeeeeeeeeeeeeeeeeey',
+                            'secret' => 'ssssssssccccccccccctttttt',
                         ],
-                        'buckets' => [
+                        'buckets'     => [
                             'bbbuuuucccctttt' => '*',
                         ],
-                        'acl' => 'public-read',
-                        'cloudfront' => [
-                            'use'       => false,
-                            'cdn_url'   => '',
-                            'version'   => '1',
+                        'acl'         => 'public-read',
+                        'cloudfront'  => [
+                            'use'     => false,
+                            'cdn_url' => '',
+                            'version' => '1',
                         ]
                     ],
                 ],
             ],
-            'include'    => [
-                'directories'   => [__DIR__],
-                'extensions'    => [],
-                'patterns'      => [],
+            'include'   => [
+                'directories' => [__DIR__],
+                'extensions'  => [],
+                'patterns'    => [],
             ],
-            'exclude'    => [
-                'directories'   => [],
-                'files'         => [],
-                'extensions'    => [],
-                'patterns'      => [],
-                'hidden'        => true,
+            'exclude'   => [
+                'directories' => [],
+                'files'       => [],
+                'extensions'  => [],
+                'patterns'    => [],
+                'hidden'      => true,
             ],
         ];
 
@@ -75,8 +84,8 @@ class CdnFacadeTest extends TestCase {
     public function testAssetIsCallingUrlGenerator()
     {
         $this->provider->shouldReceive('urlGenerator')
-        ->once()
-        ->andReturn($this->asset_url);
+            ->once()
+            ->andReturn($this->asset_url);
 
         $result = $this->facade->asset($this->asset_path);
         // assert is calling the url generator

@@ -1,10 +1,13 @@
-<?php namespace Vinelab\Cdn\Contracts;
+<?php
+namespace Vinelab\Cdn\Contracts;
 
 /**
- * @author Mahmoud Zalt <mahmoud@vinelab.com>
+ * Interface CdnFacadeInterface
+ * @package  Vinelab\Cdn\Contracts
+ * @author   Mahmoud Zalt <mahmoud@vinelab.com>
  */
-
-interface CdnFacadeInterface {
+interface CdnFacadeInterface
+{
 
     public function asset($path);
 

@@ -127,15 +127,6 @@ return [
 
             ],
 
-//            'cloudfront' => [
-//
-//                'credentials' => [
-//                    'key'       => '',
-//                    'secret'    => '',
-//                ],
-//
-//            ],
-
         ],
 
 //        'cloudflare' => [

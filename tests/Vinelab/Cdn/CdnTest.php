@@ -1,9 +1,18 @@
-<?php namespace Vinelab\Cdn\Tests;
+<?php
+namespace Vinelab\Cdn\Tests;
 
 use Illuminate\Support\Collection;
 use Mockery as M;
 
-class CdnTest extends TestCase {
+/**
+ * Class CdnTest
+ *
+ * @category Test
+ * @package Vinelab\Cdn\Tests
+ * @author  Mahmoud Zalt <mahmoud@vinelab.com>
+ */
+class CdnTest extends TestCase
+{
 
     public function setUp()
     {
@@ -58,7 +67,6 @@ class CdnTest extends TestCase {
             $this->m_provider_factory,
             $this->m_helper);
 
-
         $result = $this->cdn->push();
 
         assertEquals($result, true);
@@ -70,42 +78,42 @@ class CdnTest extends TestCase {
     public function testPushCommand()
     {
         $configuration_file = [
-                'bypass' => false,
-                'default' => 'aws.s3',
-                'url' => 'https://s3.amazonaws.com',
-                'threshold' => 10,
-                'providers' => [
-                    'aws' => [
-                        's3' => [
-                            'credentials' => [
-                                'key'       => 'keeeeeeeeeeeeeeeeeeeeeeey',
-                                'secret'    => 'ssssssssccccccccccctttttt',
-                            ],
-                            'buckets' => [
-                                'bbbuuuucccctttt' => '*',
-                            ],
-                            'acl' => 'public-read',
-                            'cloudfront' => [
-                                'use'       => false,
-                                'cdn_url'   => '',
-                                'version'   => '',
-                            ]
+            'bypass'    => false,
+            'default'   => 'aws.s3',
+            'url'       => 'https://s3.amazonaws.com',
+            'threshold' => 10,
+            'providers' => [
+                'aws' => [
+                    's3' => [
+                        'credentials' => [
+                            'key'    => 'keeeeeeeeeeeeeeeeeeeeeeey',
+                            'secret' => 'ssssssssccccccccccctttttt',
                         ],
+                        'buckets'     => [
+                            'bbbuuuucccctttt' => '*',
+                        ],
+                        'acl'         => 'public-read',
+                        'cloudfront'  => [
+                            'use'     => false,
+                            'cdn_url' => '',
+                            'version' => '',
+                        ]
                     ],
                 ],
-                'include'    => [
-                    'directories'   => [__DIR__],
-                    'extensions'    => [],
-                    'patterns'      => [],
-                ],
-                'exclude'    => [
-                    'directories'   => [],
-                    'files'         => [],
-                    'extensions'    => [],
-                    'patterns'      => [],
-                    'hidden'        => true,
-                ],
-            ];
+            ],
+            'include'   => [
+                'directories' => [__DIR__],
+                'extensions'  => [],
+                'patterns'    => [],
+            ],
+            'exclude'   => [
+                'directories' => [],
+                'files'       => [],
+                'extensions'  => [],
+                'patterns'    => [],
+                'hidden'      => true,
+            ],
+        ];
 
         $m_consol = M::mock('Symfony\Component\Console\Output\ConsoleOutput');
         $m_consol->shouldReceive('writeln')
@@ -141,7 +149,11 @@ class CdnTest extends TestCase {
             ->andReturn(__DIR__ . '/AwsS3ProviderTest.php');
 
         $p_aws_s3_provider = M::mock('\Vinelab\Cdn\Providers\AwsS3Provider[connect]', array
-            ($m_console, $m_validator, $m_helper));
+        (
+            $m_console,
+            $m_validator,
+            $m_helper
+        ));
 
         $m_s3 = M::mock('Aws\S3\S3Client');
         $m_s3->shouldReceive('factory')
@@ -164,16 +176,15 @@ class CdnTest extends TestCase {
             ->once()
             ->andReturn($p_aws_s3_provider);
 
-        $cdn = new \Vinelab\Cdn\Cdn(    $finder,
-                                        $asset,
-                                        $provider_factory,
-                                        $helper
-                                    );
+        $cdn = new \Vinelab\Cdn\Cdn($finder,
+            $asset,
+            $provider_factory,
+            $helper
+        );
 
         $result = $cdn->push();
 
         assertEquals($result, true);
     }
-
 
 }
