@@ -1,8 +1,17 @@
-<?php namespace Vinelab\Cdn\Tests;
+<?php
+namespace Vinelab\Cdn\Tests;
 
 use Mockery as M;
 
-class ProviderFactoryTest extends TestCase {
+/**
+ * Class ProviderFactoryTest
+ *
+ * @category Test
+ * @package Vinelab\Cdn\Tests
+ * @author  Mahmoud Zalt <mahmoud@vinelab.com>
+ */
+class ProviderFactoryTest extends TestCase
+{
 
     public function setUp()
     {
@@ -20,7 +29,7 @@ class ProviderFactoryTest extends TestCase {
 
     public function testCreateReturnCorrectProviderObject()
     {
-        $configurations = ['default' => 'aws.s3'];
+        $configurations = ['default' => 'AwsS3'];
 
         $m_aws_s3 = M::mock('Vinelab\Cdn\Providers\AwsS3Provider');
 

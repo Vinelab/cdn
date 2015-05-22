@@ -1,17 +1,18 @@
-<?php namespace Vinelab\Cdn\Validators;
-
-/**
- * @author Mahmoud Zalt <mahmoud@vinelab.com>
- */
+<?php
+namespace Vinelab\Cdn\Validators;
 
 use Vinelab\Cdn\Exceptions\MissingConfigurationException;
 use Vinelab\Cdn\Validators\Contracts\ProviderValidatorInterface;
 
 /**
- * Class Configurations
+ * Class ProviderValidator
+ *
+ * @category
  * @package Vinelab\Cdn\Validators
+ * @author  Mahmoud Zalt <mahmoud@vinelab.com>
  */
-class ProviderValidator extends Validator implements ProviderValidatorInterface{
+class ProviderValidator extends Validator implements ProviderValidatorInterface
+{
 
     /**
      * Checks for any required configuration is missed
@@ -28,14 +29,15 @@ class ProviderValidator extends Validator implements ProviderValidatorInterface{
         foreach ($configuration as $key => $value) {
 
             if (in_array($key, $required) &&
-                (empty($value) || $value == null || $value == ''))
-            {
+                (empty($value) || $value == null || $value == '')
+            ) {
                 $missing .= ' ' . $key;
             }
         }
 
-        if ($missing)
+        if ($missing) {
             throw new MissingConfigurationException("Missed Configuration:" . $missing);
+        }
 
     }
 

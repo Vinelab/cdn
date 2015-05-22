@@ -1,10 +1,13 @@
-<?php namespace Vinelab\Cdn\Contracts;
+<?php
+namespace Vinelab\Cdn\Contracts;
 
 /**
- * @author Mahmoud Zalt <mahmoud@vinelab.com>
+ * Interface CdnHelperInterface
+ * @package  Vinelab\Cdn\Contracts
+ * @author   Mahmoud Zalt <mahmoud@vinelab.com>
  */
-
-interface CdnHelperInterface{
+interface CdnHelperInterface
+{
 
     public function getConfigurations();
 

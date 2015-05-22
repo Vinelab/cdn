@@ -1,10 +1,13 @@
-<?php namespace Vinelab\Cdn\Contracts;
+<?php
+namespace Vinelab\Cdn\Contracts;
 
 /**
- * @author Mahmoud Zalt <mahmoud@vinelab.com>
+ * Interface CdnInterface
+ * @package  Vinelab\Cdn\Contracts
+ * @author   Mahmoud Zalt <mahmoud@vinelab.com>
  */
-
-interface CdnInterface {
+interface CdnInterface
+{
 
     public function push();
 

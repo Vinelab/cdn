@@ -1,15 +1,18 @@
-<?php namespace Vinelab\Cdn\Commands;
+<?php
+namespace Vinelab\Cdn\Commands;
+
+use Illuminate\Console\Command;
+use Vinelab\Cdn\Contracts\CdnInterface;
 
 /**
- * @author Mahmoud Zalt <mahmoud@vinelab.com>
+ * Class PushCommand
+ *
+ * @category Command
+ * @package  Vinelab\Cdn\Commands
+ * @author   Mahmoud Zalt <mahmoud@vinelab.com>
  */
-
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
-use Vinelab\Cdn\Contracts\CdnInterface;
-use Illuminate\Console\Command;
-
-class PushCommand extends Command {
+class PushCommand extends Command
+{
 
     /**
      * The console command name.
@@ -41,6 +44,7 @@ class PushCommand extends Command {
 
         parent::__construct();
     }
+
     /**
      * Execute the console command.
      *
@@ -51,28 +55,28 @@ class PushCommand extends Command {
         $this->cdn->push();
     }
 
-	/**
-	 * Get the console command arguments.
-	 *
-	 * @return array
-	 */
-	protected function getArguments()
-	{
-		return array(
+    /**
+     * Get the console command arguments.
+     *
+     * @return array
+     */
+    protected function getArguments()
+    {
+        return array(
 //			array('cdn', InputArgument::OPTIONAL, 'cdn option.'),
-		);
-	}
+        );
+    }
 
-	/**
-	 * Get the console command options.
-	 *
-	 * @return array
-	 */
-	protected function getOptions()
-	{
-		return array(
+    /**
+     * Get the console command options.
+     *
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return array(
 //			array('example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null),
-		);
-	}
+        );
+    }
 
 }

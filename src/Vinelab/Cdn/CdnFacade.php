@@ -1,20 +1,21 @@
-<?php namespace Vinelab\Cdn;
+<?php
+namespace Vinelab\Cdn;
 
-/**
- * @author Mahmoud Zalt <mahmoud@vinelab.com>
- */
-
-use Vinelab\Cdn\Contracts\ProviderFactoryInterface;
 use Vinelab\Cdn\Contracts\CdnFacadeInterface;
 use Vinelab\Cdn\Contracts\CdnHelperInterface;
-use Vinelab\Cdn\Validators\CdnFacadeValidator;
+use Vinelab\Cdn\Contracts\ProviderFactoryInterface;
 use Vinelab\Cdn\Exceptions\EmptyPathException;
+use Vinelab\Cdn\Validators\CdnFacadeValidator;
 
 /**
  * Class CdnFacade
+ *
+ * @category
  * @package Vinelab\Cdn
+ * @author  Mahmoud Zalt <mahmoud@vinelab.com>
  */
-class CdnFacade implements CdnFacadeInterface{
+class CdnFacade implements CdnFacadeInterface
+{
 
     /**
      * @var array
@@ -44,19 +45,19 @@ class CdnFacade implements CdnFacadeInterface{
     /**
      * Calls the provider initializer
      *
-     * @param ProviderFactoryInterface $provider_factory
-     * @param Contracts\CdnHelperInterface $helper
+     * @param ProviderFactoryInterface      $provider_factory
+     * @param Contracts\CdnHelperInterface  $helper
      * @param Validators\CdnFacadeValidator $cdn_facade_validator
      *
      * @internal param \Vinelab\Cdn\Repository $configurations
      */
     public function __construct(
-        ProviderFactoryInterface    $provider_factory,
-        CdnHelperInterface          $helper,
-        CdnFacadeValidator          $cdn_facade_validator
+        ProviderFactoryInterface $provider_factory,
+        CdnHelperInterface $helper,
+        CdnFacadeValidator $cdn_facade_validator
     ) {
-        $this->provider_factory     = $provider_factory;
-        $this->helper               = $helper;
+        $this->provider_factory = $provider_factory;
+        $this->helper = $helper;
         $this->cdn_facade_validator = $cdn_facade_validator;
 
         $this->init();
@@ -98,25 +99,30 @@ class CdnFacade implements CdnFacadeInterface{
      * check if package is surpassed or not then
      * prepare the path before generating the url
      *
-     * @param $path
-     * @param $prepend
+     * @param        $path
+     * @param string $prepend
      *
-     * @throws Exceptions\EmptyPathException
-     * @return
+     * @return mixed
      */
     private function generateUrl($path, $prepend = '')
     {
         // if the package is surpassed, then return the same $path
         // to load the asset from the localhost
-        if ( isset($this->configurations['bypass']) and  $this->configurations['bypass'] )
+        if (isset($this->configurations['bypass']) && $this->configurations['bypass']) {
             return $path;
+        }
 
-        if ( ! isset($path))
+        if (!isset($path)) {
             throw new EmptyPathException('Path does not exist.');
+        }
 
         // Add version number
 
-        $path = str_replace("build", "build/" . env("VERSION", ''), $path);
+        $path = str_replace(
+            "build",
+            "build/" . $this->configurations['providers']['aws']['s3']['cloudfront']['version'],
+            $path
+        );
 
         // remove slashes from begging and ending of the path
         // and append directories if needed

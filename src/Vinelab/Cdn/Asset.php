@@ -1,17 +1,19 @@
-<?php namespace Vinelab\Cdn;
-/**
- * @author Mahmoud Zalt <mahmoud@vinelab.com>
- */
+<?php
+namespace Vinelab\Cdn;
 
 use Vinelab\Cdn\Contracts\AssetInterface;
 
 /**
+ * Class Asset
  * Class Asset used to parse and hold all assets and
  * paths related data and configurations
  *
+ * @category DTO
  * @package Vinelab\Cdn
+ * @author  Mahmoud Zalt <mahmoud@vinelab.com>
  */
-class Asset implements AssetInterface{
+class Asset implements AssetInterface
+{
 
     /**
      * default [include] configurations
@@ -19,9 +21,9 @@ class Asset implements AssetInterface{
      * @var array
      */
     protected $default_include = [
-        'directories'   => ['public'],
-        'extensions'    => [],
-        'patterns'      => [],
+        'directories' => ['public'],
+        'extensions'  => [],
+        'patterns'    => [],
     ];
 
     /**
@@ -29,26 +31,29 @@ class Asset implements AssetInterface{
      *
      * @var array
      */
-    protected $default_exclude =  [
-        'directories'   => [],
-        'files'         => [],
-        'extensions'    => [],
-        'patterns'      => [],
-        'hidden'        => true,
+    protected $default_exclude = [
+        'directories' => [],
+        'files'       => [],
+        'extensions'  => [],
+        'patterns'    => [],
+        'hidden'      => true,
     ];
 
     /**
      * @var Array
      */
     protected $included_directories;
+
     /**
      * @var Array
      */
     protected $included_files;
+
     /**
      * @var Array
      */
     protected $included_extensions;
+
     /**
      * @var Array
      */
@@ -58,18 +63,22 @@ class Asset implements AssetInterface{
      * @var Array
      */
     protected $excluded_directories;
+
     /**
      * @var Array
      */
     protected $excluded_files;
+
     /**
      * @var Array
      */
     protected $excluded_extensions;
+
     /**
      * @var Array
      */
     protected $excluded_patterns;
+
     /*
      * @var boolean
      */
@@ -93,15 +102,15 @@ class Asset implements AssetInterface{
     {
         $this->parseAndFillConfiguration($configurations);
 
-        $this->included_directories  = $this->default_include['directories'];
-        $this->included_extensions   = $this->default_include['extensions'];
-        $this->included_patterns     = $this->default_include['patterns'];
+        $this->included_directories = $this->default_include['directories'];
+        $this->included_extensions = $this->default_include['extensions'];
+        $this->included_patterns = $this->default_include['patterns'];
 
-        $this->excluded_directories  = $this->default_exclude['directories'];
-        $this->excluded_files        = $this->default_exclude['files'];
-        $this->excluded_extensions   = $this->default_exclude['extensions'];
-        $this->excluded_patterns     = $this->default_exclude['patterns'];
-        $this->exclude_hidden        = $this->default_exclude['hidden'];
+        $this->excluded_directories = $this->default_exclude['directories'];
+        $this->excluded_files = $this->default_exclude['files'];
+        $this->excluded_extensions = $this->default_exclude['extensions'];
+        $this->excluded_patterns = $this->default_exclude['patterns'];
+        $this->exclude_hidden = $this->default_exclude['hidden'];
 
         return $this;
     }

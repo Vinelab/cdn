@@ -1,10 +1,13 @@
-<?php namespace Vinelab\Cdn\Validators\Contracts;
+<?php
+namespace Vinelab\Cdn\Validators\Contracts;
 
 /**
- * @author Mahmoud Zalt <mahmoud@vinelab.com>
+ * Interface ProviderValidatorInterface
+ * @package Vinelab\Cdn\Validators\Contracts
+ * @author  Mahmoud Zalt <mahmoud@vinelab.com>
  */
-
-interface ProviderValidatorInterface{
+interface ProviderValidatorInterface
+{
 
     public function validate($configuration, $required);
 

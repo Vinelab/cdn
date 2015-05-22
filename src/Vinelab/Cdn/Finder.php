@@ -1,21 +1,22 @@
-<?php namespace Vinelab\Cdn;
+<?php
+namespace Vinelab\Cdn;
 
-/**
- * @author Mahmoud Zalt <mahmoud@vinelab.com>
- */
-
-use Symfony\Component\Finder\Finder as SymfonyFinder;
+use File;
+use Illuminate\Support\Collection;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Finder\Finder as SymfonyFinder;
 use Vinelab\Cdn\Contracts\AssetInterface;
 use Vinelab\Cdn\Contracts\FinderInterface;
-use Illuminate\Support\Collection;
-use File;
 
 /**
  * Class Finder
+ *
+ * @category Finder Helper
  * @package Vinelab\Cdn
+ * @author  Mahmoud Zalt <mahmoud@vinelab.com>
  */
-class Finder extends SymfonyFinder implements FinderInterface{
+class Finder extends SymfonyFinder implements FinderInterface
+{
 
     /**
      * @var \Symfony\Component\Console\Output\ConsoleOutput
@@ -105,14 +106,13 @@ class Finder extends SymfonyFinder implements FinderInterface{
         $this->ignoreDotFiles($asset_holder->getExcludeHidden());
 
         // exclude ignored files
-        foreach( $asset_holder->getExcludedFiles() as $name) {
+        foreach ($asset_holder->getExcludedFiles() as $name) {
             $this->notName($name);
         }
 
         // exclude files (if exist) with this extensions
         $excluded_extensions = $asset_holder->getExcludedExtensions();
-        if ( ! empty($excluded_extensions))
-        {
+        if (!empty($excluded_extensions)) {
             foreach ($asset_holder->getExcludedExtensions() as $extension) {
                 $this->notName('*' . $extension);
             }
