@@ -29,7 +29,7 @@ class ProviderFactoryTest extends TestCase
 
     public function testCreateReturnCorrectProviderObject()
     {
-        $configurations = ['default' => 'aws.s3'];
+        $configurations = ['default' => 'AwsS3'];
 
         $m_aws_s3 = M::mock('Vinelab\Cdn\Providers\AwsS3Provider');
 

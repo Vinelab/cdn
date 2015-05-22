@@ -79,7 +79,7 @@ class CdnTest extends TestCase
     {
         $configuration_file = [
             'bypass'    => false,
-            'default'   => 'aws.s3',
+            'default'   => 'AwsS3',
             'url'       => 'https://s3.amazonaws.com',
             'threshold' => 10,
             'providers' => [

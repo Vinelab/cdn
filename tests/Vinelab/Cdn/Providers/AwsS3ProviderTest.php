@@ -68,7 +68,7 @@ class AwsS3ProviderTest extends TestCase
     public function testInitializingObject()
     {
         $configurations = [
-            'default'   => 'aws.s3',
+            'default'   => 'AwsS3',
             'url'       => 'https://s3.amazonaws.com',
             'threshold' => 10,
             'providers' => [
@@ -100,7 +100,7 @@ class AwsS3ProviderTest extends TestCase
     public function testUploadingAssets()
     {
         $configurations = [
-            'default'   => 'aws.s3',
+            'default'   => 'AwsS3',
             'url'       => 'https://s3.amazonaws.com',
             'threshold' => 10,
             'providers' => [
@@ -134,7 +134,7 @@ class AwsS3ProviderTest extends TestCase
     public function testUrlGenerator()
     {
         $configurations = [
-            'default'   => 'aws.s3',
+            'default'   => 'AwsS3',
             'url'       => 'https://s3.amazonaws.com',
             'threshold' => 10,
             'providers' => [
@@ -168,7 +168,7 @@ class AwsS3ProviderTest extends TestCase
     public function testEmptyUrlGenerator()
     {
         $configurations = [
-            'default'   => 'aws.s3',
+            'default'   => 'AwsS3',
             'url'       => 'https://s3.amazonaws.com',
             'threshold' => 10,
             'providers' => [
