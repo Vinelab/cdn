@@ -13,7 +13,19 @@ use Vinelab\Cdn\Validators\Contracts\ProviderValidatorInterface;
  * Class AwsS3Provider
  * Amazon (AWS) S3
  *
+ *
  * @category Driver
+ *
+ * @property string  $provider_url
+ * @property string  $threshold
+ * @property string  $credential_key
+ * @property string  $credential_secret
+ * @property string  $buckets
+ * @property string  $acl
+ * @property string  $cloudfront
+ * @property string  $cloudfront_url
+ * @property string  $version
+ *
  * @package  Vinelab\Cdn\Providers
  * @author   Mahmoud Zalt <mahmoud@vinelab.com>
  */
@@ -82,11 +94,14 @@ class AwsS3Provider extends Provider implements ProviderInterface
     protected $configurations;
 
     /**
+     * @var \Vinelab\Cdn\Validators\Contracts\ProviderValidatorInterface
+     */
+    protected $provider_validator;
+
+    /**
      * @param \Symfony\Component\Console\Output\ConsoleOutput              $console
      * @param \Vinelab\Cdn\Validators\Contracts\ProviderValidatorInterface $provider_validator
      * @param \Vinelab\Cdn\Contracts\CdnHelperInterface                    $cdn_helper
-     *
-     * @internal param \Vinelab\Cdn\Validators\Contracts\ConfigurationsInterface $configurations
      */
     public function __construct(
         ConsoleOutput $console,
@@ -237,7 +252,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
      */
     public function urlGenerator($path)
     {
-        if ($this->getCloudFront() == true) {
+        if ($this->getCloudFront() === true) {
             $url = $this->cdn_helper->parseUrl($this->getCloudFrontUrl());
 
             return $url['scheme'] . '://' . $url['host'] . '/' . $path;

@@ -34,6 +34,16 @@ class Cdn implements CdnInterface
     protected $asset_holder;
 
     /**
+     * @var \Vinelab\Cdn\Contracts\ProviderFactoryInterface
+     */
+    protected $provider_factory;
+
+    /**
+     * @var \Vinelab\Cdn\Contracts\CdnHelperInterface
+     */
+    protected $helper;
+
+    /**
      * @param FinderInterface          $finder
      * @param AssetInterface           $asset_holder
      * @param ProviderFactoryInterface $provider_factory
