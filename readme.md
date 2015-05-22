@@ -204,7 +204,7 @@ Please see [CONTRIBUTING](https://github.com/Vinelab/cdn/blob/master/CONTRIBUTIN
 
 ## Security
 
-If you discover any security related issues, please email :author_email instead of using the issue tracker.
+If you discover any security related issues, please email mahmoud@vinelab.com instead of using the issue tracker.
 
 ## Credits
 
