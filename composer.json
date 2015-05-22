@@ -16,7 +16,7 @@
         "symfony/finder": "2.*",
         "symfony/console": "2.*",
         "guzzlehttp/guzzle": "~5.0",
-        "aws/aws-sdk-php": "2.7.*"
+        "aws/aws-sdk-php": "2.*"
     },
     "require-dev": {
         "phpunit/phpunit": "4.3.*",
