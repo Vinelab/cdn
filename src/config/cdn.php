@@ -108,14 +108,7 @@ return [
                 | predefined grants: private, public-read, public-read-write, authenticated-read
                 | bucket-owner-read, bucket-owner-full-control, log-delivery-write
                 */
-                'acl' => 'public-read',
-
-                'metadata' => [],
-
-                'expires' => gmdate("D, d M Y H:i:s T", strtotime("+5 years")),
-
-                'cache-control' => 'max-age=2628000',
-
+                'acl' => 'public-read'
 
             ],
 

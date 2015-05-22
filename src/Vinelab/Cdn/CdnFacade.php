@@ -9,7 +9,6 @@ use Vinelab\Cdn\Contracts\CdnFacadeInterface;
 use Vinelab\Cdn\Contracts\CdnHelperInterface;
 use Vinelab\Cdn\Validators\CdnFacadeValidator;
 use Vinelab\Cdn\Exceptions\EmptyPathException;
-use Illuminate\Support\Facades\Request;
 
 /**
  * Class CdnFacade
@@ -110,7 +109,7 @@ class CdnFacade implements CdnFacadeInterface{
         // if the package is surpassed, then return the same $path
         // to load the asset from the localhost
         if ( isset($this->configurations['bypass']) and  $this->configurations['bypass'] )
-            return Request::root() .'/'. $path;
+            return $path;
 
         if ( ! isset($path))
             throw new EmptyPathException('Path does not exist.');
