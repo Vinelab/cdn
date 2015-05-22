@@ -68,7 +68,11 @@ class AwsS3ProviderTest extends TestCase {
                         'buckets' => [
                             'ZZZZZZZ' => '*',
                         ],
-                        'acl' => 'public-read'
+                        'acl' => 'public-read',
+                        'cloudfront' => [
+                            'use'       => false,
+                            'cdn_url'   => null,
+                        ],
                     ],
                 ],
             ],
@@ -95,7 +99,11 @@ class AwsS3ProviderTest extends TestCase {
                         'buckets' => [
                             'ZZZZZZZ' => '*',
                         ],
-                        'acl' => 'public-read'
+                        'acl' => 'public-read',
+                        'cloudfront' => [
+                            'use'       => false,
+                            'cdn_url'   => null,
+                        ],
                     ],
                 ],
             ],
@@ -124,7 +132,11 @@ class AwsS3ProviderTest extends TestCase {
                         'buckets' => [
                             'ZZZZZZZ' => '*',
                         ],
-                        'acl' => 'public-read'
+                        'acl' => 'public-read',
+                        'cloudfront' => [
+                            'use'       => false,
+                            'cdn_url'   => null,
+                        ],
                     ],
                 ],
             ],
@@ -153,7 +165,11 @@ class AwsS3ProviderTest extends TestCase {
                         'buckets' => [
                             '' => '*',
                         ],
-                        'acl' => 'public-read'
+                        'acl' => 'public-read',
+                        'cloudfront' => [
+                            'use'       => false,
+                            'cdn_url'   => null,
+                        ],
                     ],
                 ],
             ],

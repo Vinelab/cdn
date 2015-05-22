@@ -38,6 +38,10 @@ class AwsS3Provider extends Provider implements ProviderInterface{
                     ],
                     'buckets' => null,
                     'acl' => 'public-read',
+                    'cloudfront' => [
+                        'use'       => false,
+                        'cdn_url'   => null,
+                    ],
                 ]
             ]
         ],
@@ -115,6 +119,8 @@ class AwsS3Provider extends Provider implements ProviderInterface{
             'credential_secret'     => $this->default['providers']['aws']['s3']['credentials']['secret'],
             'buckets'               => $this->default['providers']['aws']['s3']['buckets'],
             'acl'                   => $this->default['providers']['aws']['s3']['acl'],
+            'cloudfront'            => $this->default['providers']['aws']['s3']['cloudfront']['use'],
+            'cloudfront_url'        => $this->default['providers']['aws']['s3']['cloudfront']['cdn_url'],
         ];
 
         // check if any required configuration is missed
@@ -225,6 +231,12 @@ class AwsS3Provider extends Provider implements ProviderInterface{
      */
     public function urlGenerator($path)
     {
+        if($this->getCloudFront() == true) {
+            $url = $this->cdn_helper->parseUrl($this->getCloudFrontUrl());
+
+            return $url['scheme'] . '://' . $url['host'] . '/' . $path;
+        }
+
         $url = $this->cdn_helper->parseUrl($this->getUrl());
 
         $bucket = $this->getBucket();
@@ -256,6 +268,25 @@ class AwsS3Provider extends Provider implements ProviderInterface{
     public function getUrl()
     {
         return rtrim($this->provider_url, "/") . '/';
+    }
+
+    /**
+     * @return string
+     */
+    public function getCloudFront()
+    {
+        if(!is_bool($cloudfront = $this->cloudfront))
+            return false;
+
+        return $cloudfront;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCloudFrontUrl()
+    {
+        return rtrim($this->cloudfront_url, "/") . '/';
     }
 
 

@@ -14,6 +14,10 @@ interface ProviderInterface{
 
     public function getUrl();
 
+    public function getCloudFront();
+
+    public function getCloudFrontUrl();
+
     public function getBucket();
 
     public function setS3Client($s3_client);
