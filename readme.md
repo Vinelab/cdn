@@ -1,16 +1,27 @@
-
 # CDN Assets Manager
 
-[![Latest Stable Version](https://poser.pugx.org/vinelab/cdn/v/stable.svg)](https://packagist.org/packages/vinelab/cdn)
-[![Latest Unstable Version](https://poser.pugx.org/vinelab/cdn/v/unstable.svg)](https://packagist.org/packages/vinelab/cdn)
-[![Total Downloads](https://poser.pugx.org/vinelab/cdn/downloads.svg)](https://packagist.org/packages/vinelab/cdn)
-[![License](https://poser.pugx.org/vinelab/cdn/license.svg)](https://packagist.org/packages/vinelab/cdn)
-[![Build Status](https://travis-ci.org/thephpleague/statsd.png?branch=master)](https://travis-ci.org/Vinelab/cdn)
+[![Total Downloads](https://poser.pugx.org/vinelab/cdn/downloads)](https://packagist.org/packages/vinelab/cdn) 
+[![Latest Stable Version](https://poser.pugx.org/vinelab/cdn/v/stable)](https://packagist.org/packages/vinelab/cdn) 
+[![Latest Unstable Version](https://poser.pugx.org/vinelab/cdn/v/unstable)](https://packagist.org/packages/vinelab/cdn) 
+[![Build Status](https://travis-ci.org/Vinelab/cdn.svg?branch=master)](https://travis-ci.org/Vinelab/cdn)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Vinelab/cdn/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Vinelab/cdn/?branch=master)
+[![License](https://poser.pugx.org/vinelab/cdn/license)](https://packagist.org/packages/vinelab/cdn)
+
 
 Content Delivery Network Package for Laravel
 
 Upload static assets of your choice to a CDN and have the file paths replaced with full URLs.
 ----------
+
+
+
+
+
+
+
+
+
+
 
 ## Install
 
@@ -57,7 +68,7 @@ Supported Providers:
 
 #### Default Provider
 ```php
-'default' => 'aws-s3',
+'default' => 'AwsS3',
 ```
 
 #### CDN Provider Setup
@@ -177,11 +188,32 @@ If you want to use a file from outside the `public/` directory anywhere in `app/
 ```
 
 
+
+
+
+
+
+
+
+
+
+
 ## Contributing
 
 Please see [CONTRIBUTING](https://github.com/Vinelab/cdn/blob/master/CONTRIBUTING.md) for details.
+
+## Security
+
+If you discover any security related issues, please email :author_email instead of using the issue tracker.
+
+## Credits
+
+- [Mahmoud Zalt](https://github.com/Mahmoudz)
+- [All Contributors](../../contributors)
 
 
 ## License
 
 The MIT License (MIT). Please see [License File](https://github.com/Vinelab/cdn/blob/master/LICENSE) for more information.
+
+
