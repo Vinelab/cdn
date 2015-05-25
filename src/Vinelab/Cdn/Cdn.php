@@ -1,20 +1,22 @@
-<?php namespace Vinelab\Cdn;
+<?php
+namespace Vinelab\Cdn;
 
-/**
- * @author Mahmoud Zalt <mahmoud@vinelab.com>
- */
-
+use Vinelab\Cdn\Contracts\AssetInterface;
+use Vinelab\Cdn\Contracts\CdnHelperInterface;
 use Vinelab\Cdn\Contracts\CdnInterface;
 use Vinelab\Cdn\Contracts\FinderInterface;
-use Vinelab\Cdn\Contracts\CdnHelperInterface;
-use Vinelab\Cdn\Contracts\AssetInterface;
 use Vinelab\Cdn\Contracts\ProviderFactoryInterface;
 
 /**
+ * Class Cdn
  * Class Cdn is the manager and the main class of this package
+ *
+ * @category Main Class
  * @package Vinelab\Cdn
+ * @author  Mahmoud Zalt <mahmoud@vinelab.com>
  */
-class Cdn implements CdnInterface{
+class Cdn implements CdnInterface
+{
 
     /**
      * An instance of the finder class
@@ -32,23 +34,33 @@ class Cdn implements CdnInterface{
     protected $asset_holder;
 
     /**
-     * @param FinderInterface $finder
-     * @param AssetInterface $asset_holder
+     * @var \Vinelab\Cdn\Contracts\ProviderFactoryInterface
+     */
+    protected $provider_factory;
+
+    /**
+     * @var \Vinelab\Cdn\Contracts\CdnHelperInterface
+     */
+    protected $helper;
+
+    /**
+     * @param FinderInterface          $finder
+     * @param AssetInterface           $asset_holder
      * @param ProviderFactoryInterface $provider_factory
-     * @param CdnHelperInterface $helper
+     * @param CdnHelperInterface       $helper
      *
      * @internal param \Vinelab\Cdn\Repository $configurations
      */
     public function __construct(
-        FinderInterface             $finder,
-        AssetInterface              $asset_holder,
-        ProviderFactoryInterface    $provider_factory,
-        CdnHelperInterface          $helper
+        FinderInterface $finder,
+        AssetInterface $asset_holder,
+        ProviderFactoryInterface $provider_factory,
+        CdnHelperInterface $helper
     ) {
-        $this->finder               = $finder;
-        $this->asset_holder         = $asset_holder;
-        $this->provider_factory     = $provider_factory;
-        $this->helper               = $helper;
+        $this->finder = $finder;
+        $this->asset_holder = $asset_holder;
+        $this->provider_factory = $provider_factory;
+        $this->helper = $helper;
     }
 
 

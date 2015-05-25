@@ -1,9 +1,18 @@
-<?php namespace Vinelab\Cdn\Tests;
+<?php
+namespace Vinelab\Cdn\Tests;
 
 use Illuminate\Support\Collection;
 use Mockery as M;
 
-class FinderTest extends TestCase {
+/**
+ * Class FinderTest
+ *
+ * @category Test
+ * @package Vinelab\Cdn\Tests
+ * @author  Mahmoud Zalt <mahmoud@vinelab.com>
+ */
+class FinderTest extends TestCase
+{
 
     public function setUp()
     {
@@ -21,10 +30,10 @@ class FinderTest extends TestCase {
         $asset_holder = new \Vinelab\Cdn\Asset;
 
         $asset_holder->init(array(
-                'include'    => [
-                    'directories'   => [__DIR__],
-                ]
-            ));
+            'include' => [
+                'directories' => [__DIR__],
+            ]
+        ));
 
         $console_output = M::mock('Symfony\Component\Console\Output\ConsoleOutput');
         $console_output->shouldReceive('writeln')

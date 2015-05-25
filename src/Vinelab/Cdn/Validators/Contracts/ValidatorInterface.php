@@ -1,9 +1,12 @@
-<?php namespace Vinelab\Cdn\Validators\Contracts;
+<?php 
+namespace Vinelab\Cdn\Validators\Contracts;
 
 /**
- * @author Mahmoud Zalt <mahmoud@vinelab.com>
+ * Interface ValidatorInterface
+ * @package Vinelab\Cdn\Validators\Contracts
+ * @author  Mahmoud Zalt <mahmoud@vinelab.com>
  */
-
-interface ValidatorInterface{
+interface ValidatorInterface
+{
 
 }

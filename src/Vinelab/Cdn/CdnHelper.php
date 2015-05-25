@@ -1,21 +1,21 @@
-<?php namespace Vinelab\Cdn;
+<?php
+namespace Vinelab\Cdn;
 
-/**
- * @author Mahmoud Zalt <mahmoud@vinelab.com>
- */
-
-use \Illuminate\Config\Repository;
+use Illuminate\Config\Repository;
 use Vinelab\Cdn\Contracts\CdnHelperInterface;
 use Vinelab\Cdn\Exceptions\MissingConfigurationException;
 use Vinelab\Cdn\Exceptions\MissingConfigurationFileException;
 
 /**
+ * Class CdnHelper
  * Helper class containing shared functions
  *
- * Class CdnHelper
+ * @category General Helper
  * @package Vinelab\Cdn
+ * @author  Mahmoud Zalt <mahmoud@vinelab.com>
  */
-class CdnHelper implements CdnHelperInterface{
+class CdnHelper implements CdnHelperInterface
+{
 
     /**
      * An object of the 'Repository' class that allows reading the laravel config files
@@ -25,7 +25,7 @@ class CdnHelper implements CdnHelperInterface{
     protected $configurations;
 
     /**
-     * @param Repository $configurations
+     * @param \Illuminate\Config\Repository $configurations
      */
     public function __construct(Repository $configurations)
     {
@@ -43,13 +43,12 @@ class CdnHelper implements CdnHelperInterface{
     {
         $configurations = $this->configurations->get('cdn');
 
-        if ( ! $configurations) {
+        if (!$configurations) {
             throw new MissingConfigurationFileException("CDN 'config file' (cdn.php) not found");
         }
 
         return $configurations;
     }
-
 
 
     /**
@@ -67,14 +66,15 @@ class CdnHelper implements CdnHelperInterface{
         foreach ($configuration as $key => $value) {
 
             if (in_array($key, $required) &&
-                (empty($value) || $value == null || $value == ''))
-            {
+                (empty($value) || $value == null || $value == '')
+            ) {
                 $missing .= ' ' . $key;
             }
         }
 
-        if ($missing)
+        if ($missing) {
             throw new MissingConfigurationException("Missed Configuration:" . $missing);
+        }
 
     }
 

@@ -1,12 +1,59 @@
-<?php namespace Vinelab\Cdn\Tests;
+<?php
+namespace Vinelab\Cdn\Tests;
 
 use Mockery as M;
 
-class CdnFacadeTest extends TestCase {
+/**
+ * Class CdnFacadeTest
+ *
+ * @category Test
+ * @package Vinelab\Cdn\Tests
+ * @author  Mahmoud Zalt <mahmoud@vinelab.com>
+ */
+class CdnFacadeTest extends TestCase
+{
 
     public function setUp()
     {
         parent::setUp();
+
+        $configuration_file = [
+            'bypass'    => false,
+            'default'   => 'AwsS3',
+            'url'       => 'https://s3.amazonaws.com',
+            'threshold' => 10,
+            'providers' => [
+                'aws' => [
+                    's3' => [
+                        'credentials' => [
+                            'key'    => 'keeeeeeeeeeeeeeeeeeeeeeey',
+                            'secret' => 'ssssssssccccccccccctttttt',
+                        ],
+                        'buckets'     => [
+                            'bbbuuuucccctttt' => '*',
+                        ],
+                        'acl'         => 'public-read',
+                        'cloudfront'  => [
+                            'use'     => false,
+                            'cdn_url' => '',
+                            'version' => '1',
+                        ]
+                    ],
+                ],
+            ],
+            'include'   => [
+                'directories' => [__DIR__],
+                'extensions'  => [],
+                'patterns'    => [],
+            ],
+            'exclude'   => [
+                'directories' => [],
+                'files'       => [],
+                'extensions'  => [],
+                'patterns'    => [],
+                'hidden'      => true,
+            ],
+        ];
 
         $this->asset_path = 'foo/bar.php';
         $this->path_path = 'public/foo/bar.php';
@@ -18,7 +65,7 @@ class CdnFacadeTest extends TestCase {
         $this->provider_factory->shouldReceive('create')->once()->andReturn($this->provider);
 
         $this->helper = M::mock('Vinelab\Cdn\Contracts\CdnHelperInterface');
-        $this->helper->shouldReceive('getConfigurations')->once()->andReturn([]);
+        $this->helper->shouldReceive('getConfigurations')->once()->andReturn($configuration_file);
         $this->helper->shouldReceive('cleanPath')->andReturn($this->asset_path);
         $this->helper->shouldReceive('startsWith')->andReturn(true);
 
@@ -37,8 +84,8 @@ class CdnFacadeTest extends TestCase {
     public function testAssetIsCallingUrlGenerator()
     {
         $this->provider->shouldReceive('urlGenerator')
-        ->once()
-        ->andReturn($this->asset_url);
+            ->once()
+            ->andReturn($this->asset_url);
 
         $result = $this->facade->asset($this->asset_path);
         // assert is calling the url generator

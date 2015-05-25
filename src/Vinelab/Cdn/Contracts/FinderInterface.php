@@ -1,10 +1,13 @@
-<?php namespace Vinelab\Cdn\Contracts;
+<?php
+namespace Vinelab\Cdn\Contracts;
 
 /**
- * @author Mahmoud Zalt <mahmoud@vinelab.com>
+ * Interface FinderInterface
+ * @package  Vinelab\Cdn\Contracts
+ * @author   Mahmoud Zalt <mahmoud@vinelab.com>
  */
-
-interface FinderInterface {
+interface FinderInterface
+{
 
     public function read(AssetInterface $paths);
 

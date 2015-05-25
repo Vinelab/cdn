@@ -1,10 +1,13 @@
-<?php namespace Vinelab\Cdn\Contracts;
+<?php
+namespace Vinelab\Cdn\Contracts;
 
 /**
- * @author Mahmoud Zalt <mahmoud@vinelab.com>
+ * Interface ProviderFactoryInterface
+ * @package  Vinelab\Cdn\Contracts
+ * @author   Mahmoud Zalt <mahmoud@vinelab.com>
  */
-
-interface ProviderFactoryInterface {
+interface ProviderFactoryInterface
+{
 
     public function create($configurations);
 
