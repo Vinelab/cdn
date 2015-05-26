@@ -243,6 +243,62 @@ class AwsS3Provider extends Provider implements ProviderInterface
     }
 
     /**
+     * Empty bucket
+     *
+     * @return bool
+     */
+    public function emptyBucket()
+    {
+        // connect before uploading
+        $connected = $this->connect();
+
+        if ( ! $connected)
+        {
+            return false;
+        }
+
+        // user terminal message
+        $this->console->writeln('<fg=yellow>Emptying in progress...</fg=yellow>');
+
+        // get all files within the bucket
+        try
+        {
+            $contents = $this->s3_client->listObjects([
+
+                'Bucket' => $this->getBucket()
+
+            ])->getPath('Contents/*/Key');
+
+            $this->s3_client->deleteObjects([
+
+                'Bucket'  => $this->getBucket(),
+                'Objects' => array_map(function ($key)
+                {
+                    return ['Key' => $key];
+                }, $contents),
+
+            ]);
+        }
+        catch (S3Exception $e)
+        {
+            $this->console->writeln("<fg=red>Error while trying to empty the bucket</fg=red>");
+
+            return false;
+        }
+
+        // output terminal message of files that have been deleted
+        foreach ($contents as $object)
+        {
+            $this->console->writeln('<fg=magenta>URL: ' . $object . '</fg=magenta>');
+        }
+
+        // user terminal message
+        $this->console->writeln('<fg=green>Bucket emptied successfully.</fg=green>');
+
+        return true;
+    }
+
+    /**
      * This function will be called from the CdnFacade class when
      * someone use this {{ Cdn::asset('') }} facade helper
      *
