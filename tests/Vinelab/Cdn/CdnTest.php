@@ -97,7 +97,12 @@ class CdnTest extends TestCase
                             'use'     => false,
                             'cdn_url' => '',
                             'version' => '',
-                        ]
+                        ],
+						'metadata' => [],
+
+                        'expires' => gmdate("D, d M Y H:i:s T", strtotime("+5 years")),
+
+                        'cache-control' => 'max-age=2628000',
                     ],
                 ],
             ],
