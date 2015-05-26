@@ -13,6 +13,8 @@ interface ProviderInterface
 
     public function upload($assets);
 
+    public function emptyBucket();
+
     public function urlGenerator($path);
 
     public function getUrl();

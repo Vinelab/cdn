@@ -101,6 +101,12 @@ class CdnServiceProvider extends ServiceProvider
 
         $this->commands('cdn.push');
 
+        $this->app['cdn.empty'] = $this->app->share(function () {
+            return $this->app->make('Vinelab\Cdn\Commands\EmptyCommand');
+        });
+
+        $this->commands('cdn.empty');
+
         // facade bindings:
         //-----------------
 
