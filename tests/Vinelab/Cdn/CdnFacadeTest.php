@@ -36,8 +36,9 @@ class CdnFacadeTest extends TestCase
                         'cloudfront'  => [
                             'use'     => false,
                             'cdn_url' => '',
-                            'version' => '1',
-                        ]
+                        ],
+
+                        'version' => '1'
                     ],
                 ],
             ],

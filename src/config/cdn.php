@@ -121,8 +121,7 @@ return [
                 */
                 'cloudfront' => [
                     'use'       => false,
-                    'cdn_url'   => '',
-                    'version'   => '',
+                    'cdn_url'   => ''
                 ],
 
                 /*
@@ -148,6 +147,14 @@ return [
                 |   Add browser level cache
                 */
                 'cache-control' => 'max-age=2628000',
+
+                /*
+                |--------------------------------------------------------------------------
+                | Add version number
+                |--------------------------------------------------------------------------
+                |   Add version number
+                */
+                'version'   => ''
 
             ],
 
