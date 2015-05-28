@@ -136,7 +136,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
             'acl'               => $this->default['providers']['aws']['s3']['acl'],
             'cloudfront'        => $this->default['providers']['aws']['s3']['cloudfront']['use'],
             'cloudfront_url'    => $this->default['providers']['aws']['s3']['cloudfront']['cdn_url'],
-            'version'           => $this->default['providers']['aws']['s3']['cloudfront']['version'],
+            'version'           => $this->default['providers']['aws']['s3']['version'],
         ];
 
         // check if any required configuration is missed

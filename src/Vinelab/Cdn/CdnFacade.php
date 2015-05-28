@@ -121,7 +121,7 @@ class CdnFacade implements CdnFacadeInterface
 
         $path = str_replace(
             "build",
-            "build" . $this->configurations['providers']['aws']['s3']['cloudfront']['version'],
+            "build" . $this->configurations['providers']['aws']['s3']['version'],
             $path
         );
 
