@@ -97,7 +97,7 @@ class CdnTest extends TestCase
                             'use'     => false,
                             'cdn_url' => '',
                         ],
-						'metadata' => [],
+                        'metadata' => [],
 
                         'expires' => gmdate("D, d M Y H:i:s T", strtotime("+5 years")),
 
