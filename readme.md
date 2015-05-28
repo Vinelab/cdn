@@ -54,7 +54,7 @@ the `Cdn` class to `CdnFacadeProvider` so you can simply use the `Cdn` facade an
 
 Publish the package config file:
 ```dos
-php artisan config:publish vinelab/cdn
+php artisan vendor:publish vinelab/cdn
 ```
 and check it out at `app/config/packages/vinelab/cdn/cdn.php`
 
