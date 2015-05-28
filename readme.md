@@ -164,6 +164,12 @@ Upload your assets with
 ```dos
 php artisan cdn:push
 ```
+### Empty
+
+Delete all of your assets remotely with
+```dos
+php artisan cdn:empty
+```
 ### Load Assets
 
 Now you can use the facade `Cdn` to call the `Cdn::asset()` function.
