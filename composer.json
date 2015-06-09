@@ -10,12 +10,12 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0",
-        "illuminate/support": "5.0.*",
-        "illuminate/config": "5.0.*",
-        "symfony/finder": "2.6.*",
-        "symfony/console": "2.6.*",
-        "guzzlehttp/guzzle": "5.3.*",
+        "php": ">=5.5.0",
+        "illuminate/support": "~5.0",
+        "illuminate/config": "~5.0",
+        "symfony/finder": "2.7.*",
+        "symfony/console": "2.7.*",
+        "guzzlehttp/guzzle": "~5.3",
         "aws/aws-sdk-php": "2.8.*"
     },
     "require-dev": {
