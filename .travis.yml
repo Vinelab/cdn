@@ -1,7 +1,6 @@
 language: php
 
 php:
-- 5.4
 - 5.5
 - 5.6
 - 7.0
@@ -10,8 +9,6 @@ php:
 matrix:
   allow_failures:
     - php: 7.0
-  include:
-    - php: 5.4
 
 before_script:
   - travis_retry composer self-update
