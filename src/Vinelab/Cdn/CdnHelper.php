@@ -72,6 +72,7 @@ class CdnHelper implements CdnHelperInterface
             }
         }
 
+
         if ($missing) {
             throw new MissingConfigurationException("Missed Configuration:" . $missing);
         }

@@ -15,7 +15,6 @@
         "illuminate/config": "~5.0",
         "symfony/finder": "2.7.*",
         "symfony/console": "2.7.*",
-        "guzzlehttp/guzzle": "~6.0",
         "aws/aws-sdk-php": "~3.0"
     },
     "require-dev": {

@@ -27,6 +27,4 @@ interface ProviderInterface
 
     public function setS3Client($s3_client);
 
-    public function setBatchBuilder($batch);
-
 } 

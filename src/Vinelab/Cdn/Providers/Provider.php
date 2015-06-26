@@ -26,6 +26,16 @@ abstract class Provider implements ProviderInterface
     /**
      * @var string
      */
+    protected $region;
+
+    /**
+     * @var string
+     */
+    protected $version;
+
+    /**
+     * @var string
+     */
     protected $url;
 
     /**

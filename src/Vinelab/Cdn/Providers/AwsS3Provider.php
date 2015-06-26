@@ -3,6 +3,7 @@ namespace Vinelab\Cdn\Providers;
 
 use Aws\S3\Exception\S3Exception;
 use Aws\S3\S3Client;
+use Aws\S3\BatchDelete;
 use Guzzle\Batch\BatchBuilder;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Vinelab\Cdn\Contracts\CdnHelperInterface;
@@ -18,13 +19,14 @@ use Vinelab\Cdn\Validators\Contracts\ProviderValidatorInterface;
  *
  * @property string  $provider_url
  * @property string  $threshold
+ * @property string  $version
+ * @property string  $region
  * @property string  $credential_key
  * @property string  $credential_secret
  * @property string  $buckets
  * @property string  $acl
  * @property string  $cloudfront
  * @property string  $cloudfront_url
- * @property string  $version
  *
  * @package  Vinelab\Cdn\Providers
  * @author   Mahmoud Zalt <mahmoud@vinelab.com>
@@ -44,6 +46,8 @@ class AwsS3Provider extends Provider implements ProviderInterface
         'providers' => [
             'aws' => [
                 's3' => [
+                    'version'     => null,
+                    'region'      => null,
                     'credentials' => [
                         'key'    => null,
                         'secret' => null,
@@ -64,7 +68,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
      *
      * @var array
      */
-    protected $rules = ['key', 'secret', 'buckets', 'url'];
+    protected $rules = [ 'region', 'key', 'secret', 'buckets', 'url' ];
 
     /**
      * this array holds the parsed configuration to be used across the class
@@ -108,9 +112,9 @@ class AwsS3Provider extends Provider implements ProviderInterface
         ProviderValidatorInterface $provider_validator,
         CdnHelperInterface $cdn_helper
     ) {
-        $this->console = $console;
+        $this->console            = $console;
         $this->provider_validator = $provider_validator;
-        $this->cdn_helper = $cdn_helper;
+        $this->cdn_helper         = $cdn_helper;
     }
 
     /**
@@ -130,13 +134,14 @@ class AwsS3Provider extends Provider implements ProviderInterface
         $supplier = [
             'provider_url'      => $this->default['url'],
             'threshold'         => $this->default['threshold'],
+            'version'           => $this->default['providers']['aws']['s3']['version'],
+            'region'            => $this->default['providers']['aws']['s3']['region'],
             'credential_key'    => $this->default['providers']['aws']['s3']['credentials']['key'],
             'credential_secret' => $this->default['providers']['aws']['s3']['credentials']['secret'],
             'buckets'           => $this->default['providers']['aws']['s3']['buckets'],
             'acl'               => $this->default['providers']['aws']['s3']['acl'],
             'cloudfront'        => $this->default['providers']['aws']['s3']['cloudfront']['use'],
             'cloudfront_url'    => $this->default['providers']['aws']['s3']['cloudfront']['cdn_url'],
-            'version'           => $this->default['providers']['aws']['s3']['version'],
         ];
 
         // check if any required configuration is missed
@@ -147,7 +152,6 @@ class AwsS3Provider extends Provider implements ProviderInterface
         return $this;
     }
 
-
     /**
      * Create a cdn instance and create a batch builder instance
      *
@@ -156,26 +160,19 @@ class AwsS3Provider extends Provider implements ProviderInterface
     public function connect()
     {
         try {
-
             // Instantiate an S3 client
-            $this->setS3Client(
-                S3Client::factory(array(
-                        'key'    => $this->credential_key,
-                        'secret' => $this->credential_secret,
-                    )
+            $this->setS3Client(new S3Client([
+                        'version'     => $this->supplier['version'],
+                        'region'      => $this->supplier['region'],
+                        'credentials' => [
+                            'key'    => $this->supplier['credential_key'],
+                            'secret' => $this->supplier['credential_secret']
+                        ]
+                    ]
                 )
             );
 
-            // Initialize the batch builder
-            $this->setBatchBuilder(
-                BatchBuilder::factory()
-                    ->transferCommands($this->threshold)
-                    ->autoFlushAt($this->threshold)
-                    ->keepHistory()
-                    ->build()
-            );
-
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
 
             return false;
         }
@@ -195,7 +192,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
         // connect before uploading
         $connected = $this->connect();
 
-        if (!$connected) {
+        if ( ! $connected) {
             return false;
         }
 
@@ -206,37 +203,28 @@ class AwsS3Provider extends Provider implements ProviderInterface
         foreach ($assets as $file) {
 
             try {
-                $this->batch->add($this->s3_client->getCommand('PutObject', [
+                $command = $this->s3_client->getCommand('putObject', [
 
-                    'Bucket' => $this->getBucket(),
                     // the bucket name
-                    'Key'    => str_replace('\\', '/', $file->getPathName()),
+                    'Bucket'       => $this->getBucket(),
                     // the path of the file on the server (CDN)
-                    'Body'   => fopen($file->getRealPath(), 'r'),
+                    'Key'          => str_replace('\\', '/', $file->getPathName()),
                     // the path of the path locally
-                    'ACL'    => $this->acl,
+                    'Body'         => fopen($file->getRealPath(), 'r'),
                     // the permission of the file
 
-					'CacheControl' => $this->default['providers']['aws']['s3']['cache-control'],
-                    'MetaData' => $this->default['providers']['aws']['s3']['metadata'],
-                    "Expires" => $this->default['providers']['aws']['s3']['expires']
+                    'ACL'          => $this->acl,
+                    'CacheControl' => $this->default['providers']['aws']['s3']['cache-control'],
+                    'MetaData'     => $this->default['providers']['aws']['s3']['metadata'],
+                    "Expires"      => $this->default['providers']['aws']['s3']['expires']
+                ]);
 
-                ]));
-            } catch(S3Exception $e) {
+                $this->s3_client->execute($command);
+
+            } catch (S3Exception $e) {
                 $this->console->writeln("<fg=red>Error while uploading: ($file->getRealpath())</fg=red>");
 
                 return false;
-            }
-        }
-
-        $commands = $this->batch->getHistory();
-
-        if ($commands) {
-            foreach ($commands as $command) {
-
-                $result = $command->getResult();
-                // user terminal message
-                $this->console->writeln('<fg=magenta>URL: ' . $result->get('ObjectURL') . '</fg=magenta>');
             }
         }
 
@@ -253,51 +241,47 @@ class AwsS3Provider extends Provider implements ProviderInterface
      */
     public function emptyBucket()
     {
+
         // connect before uploading
         $connected = $this->connect();
 
-        if ( ! $connected)
-        {
+        if ( ! $connected) {
             return false;
         }
 
         // user terminal message
         $this->console->writeln('<fg=yellow>Emptying in progress...</fg=yellow>');
 
-        // get all files within the bucket
-        try
-        {
+        try {
+
+            // Get the contents of the bucket for information purposes
             $contents = $this->s3_client->listObjects([
-
-                'Bucket' => $this->getBucket()
-
-            ])->getPath('Contents/*/Key');
-
-            $this->s3_client->deleteObjects([
-
-                'Bucket'  => $this->getBucket(),
-                'Objects' => array_map(function ($key)
-                {
-                    return ['Key' => $key];
-                }, $contents),
-
+                'Bucket' => $this->getBucket(),
+                'Key'    => ''
             ]);
-        }
-        catch (S3Exception $e)
-        {
-            $this->console->writeln("<fg=red>Error while trying to empty the bucket</fg=red>");
+
+            // Check if the bucket is already empty
+            if ( ! $contents['Contents']) {
+                $this->console->writeln('<fg=green>The bucket ' . $this->getBucket() . ' is already empty.</fg=green>');
+
+                return true;
+            }
+
+            // Empty out the bucket
+            $empty = BatchDelete::fromListObjects($this->s3_client, [
+                'Bucket' => $this->getBucket(),
+                'Prefix' => null
+            ]);
+
+            $empty->delete();
+
+        } catch (S3Exception $e) {
+            $this->console->writeln("<fg=red>" . $e->getMessage() . "</fg=red>");
 
             return false;
         }
 
-        // output terminal message of files that have been deleted
-        foreach ($contents as $object)
-        {
-            $this->console->writeln('<fg=magenta>URL: ' . $object . '</fg=magenta>');
-        }
-
-        // user terminal message
-        $this->console->writeln('<fg=green>Bucket emptied successfully.</fg=green>');
+        $this->console->writeln('<fg=green>The bucket ' . $this->getBucket() . ' is now empty.</fg=green>');
 
         return true;
     }
@@ -321,7 +305,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
         $url = $this->cdn_helper->parseUrl($this->getUrl());
 
         $bucket = $this->getBucket();
-        $bucket = (!empty($bucket)) ? $bucket . '.' : '';
+        $bucket = ( ! empty( $bucket ) ) ? $bucket . '.' : '';
 
         return $url['scheme'] . '://' . $bucket . $url['host'] . '/' . $path;
     }
@@ -333,15 +317,6 @@ class AwsS3Provider extends Provider implements ProviderInterface
     {
         $this->s3_client = $s3_client;
     }
-
-    /**
-     * @param $batch
-     */
-    public function setBatchBuilder($batch)
-    {
-        $this->batch = $batch;
-    }
-
 
     /**
      * @return string
@@ -356,7 +331,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
      */
     public function getCloudFront()
     {
-        if (!is_bool($cloudfront = $this->cloudfront)) {
+        if ( ! is_bool($cloudfront = $this->cloudfront)) {
             return false;
         }
 
@@ -370,7 +345,6 @@ class AwsS3Provider extends Provider implements ProviderInterface
     {
         return rtrim($this->cloudfront_url, "/") . '/';
     }
-
 
     /**
      * @return array
@@ -395,7 +369,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
      */
     public function __get($attr)
     {
-        return isset($this->supplier[$attr]) ? $this->supplier[$attr] : null;
+        return isset( $this->supplier[$attr] ) ? $this->supplier[$attr] : null;
     }
 
 }

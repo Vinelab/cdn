@@ -2,7 +2,6 @@
 
 return [
 
-
     /*
     |--------------------------------------------------------------------------
     | Bypass loading assets from the CDN
@@ -16,8 +15,7 @@ return [
     | Default: false
     |
     */
-
-    'bypass' => false,
+    'bypass'    => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -30,7 +28,7 @@ return [
     | Supported provider: Amazon S3 (AwsS3)
     |
     */
-    'default' => 'AwsS3',
+    'default'   => 'AwsS3',
 
     /*
     |--------------------------------------------------------------------------
@@ -40,7 +38,7 @@ return [
     | Set your CDN url, [without the bucket name]
     |
     */
-    'url' => 'https://s3.amazonaws.com',
+    'url'       => 'https://s3.amazonaws.com',
 
     /*
     |--------------------------------------------------------------------------
@@ -72,9 +70,13 @@ return [
 
             's3' => [
 
-                'credentials' => [
-                    'key'       => '',
-                    'secret'    => '',
+                'version'       => 'latest', // If versioning is not enabled then set to latest
+
+                'region'        => '',
+
+                'credentials'   => [
+                    'key'    => '',
+                    'secret' => '',
                 ],
 
                 /*
@@ -91,7 +93,8 @@ return [
                 | * Note: in case of multiple buckets remove the '*'
                 |
                 */
-                'buckets' => [
+                'buckets'       => [
+
                     'bucket-name' => '*',
                     //        'your-js-bucket-name-here'   =>  ['public/js'],
                     //        'your-css-bucket-name-here'  =>  ['public/css'],
@@ -108,7 +111,7 @@ return [
                 | predefined grants: private, public-read, public-read-write, authenticated-read
                 | bucket-owner-read, bucket-owner-full-control, log-delivery-write
                 */
-                'acl' => 'public-read',
+                'acl'           => 'public-read',
 
                 /*
                 |--------------------------------------------------------------------------
@@ -119,9 +122,9 @@ return [
                 | the files in your S3 buckets to be served from a number of global
                 | locations to achieve low latency and faster page load times.
                 */
-                'cloudfront' => [
-                    'use'       => false,
-                    'cdn_url'   => ''
+                'cloudfront'    => [
+                    'use'     => false,
+                    'cdn_url' => ''
                 ],
 
                 /*
@@ -130,7 +133,7 @@ return [
                 |--------------------------------------------------------------------------
                 |   Add metadata to each s3 file
                 */
-                'metadata' => [],
+                'metadata'      => [ ],
 
                 /*
                 |--------------------------------------------------------------------------
@@ -138,7 +141,7 @@ return [
                 |--------------------------------------------------------------------------
                 |   Add expiry data to file
                 */
-                'expires' => gmdate("D, d M Y H:i:s T", strtotime("+5 years")),
+                'expires'       => gmdate("D, d M Y H:i:s T", strtotime("+5 years")),
 
                 /*
                 |--------------------------------------------------------------------------
@@ -148,25 +151,15 @@ return [
                 */
                 'cache-control' => 'max-age=2628000',
 
-                /*
-                |--------------------------------------------------------------------------
-                | Add version number
-                |--------------------------------------------------------------------------
-                |   Add version number
-                */
-                'version'   => ''
-
             ],
 
         ],
-
 //        'cloudflare' => [
 //            'key'       => '',
 //            'secret'    => '',
 //        ],
 
     ],
-
     /*
     |--------------------------------------------------------------------------
     | Files to Include
@@ -178,10 +171,10 @@ return [
     | Enter the full paths of directories (starting from the application root).
     |
     */
-    'include'    => [
-        'directories'   => ['public'],
-        'extensions'    => [],
-        'patterns'      => [],
+    'include'   => [
+        'directories' => [ 'public' ],
+        'extensions'  => [ ],
+        'patterns'    => [ ],
     ],
 
     /*
@@ -195,12 +188,12 @@ return [
     | 'hidden' is a boolean to excludes "hidden" directories and files (starting with a dot)
     |
     */
-    'exclude'    => [
-        'directories'   => [],
-        'files'         => [],
-        'extensions'    => [],
-        'patterns'      => [],
-        'hidden'        => true,
+    'exclude'   => [
+        'directories' => [ ],
+        'files'       => [ ],
+        'extensions'  => [ ],
+        'patterns'    => [ ],
+        'hidden'      => true,
     ],
 
 ];
