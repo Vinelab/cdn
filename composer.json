@@ -2,7 +2,17 @@
     "name": "vinelab/cdn",
     "description": "Content Delivery Network (CDN) Package for Laravel",
     "license": "MIT",
-    "keywords": ["laravel", "cdn", "artisan", "upload"],
+    "keywords": [
+      "laravel",
+      "CDN",
+      "upload",
+      "AWS",
+      "S3",
+      "AWS S3",
+      "amazon",
+      "Assets Upload",
+      "Content Delivery Network"
+    ],
     "authors": [
         {
             "name": "Mahmoud Zalt",
