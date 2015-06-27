@@ -77,6 +77,10 @@ Supported Providers:
     'aws' => [
 
         's3' => [
+        
+        	'version'	=> 'latest',
+        	
+        	'region'	=> '',
 
             'credentials' => [
                 'key'    => '',

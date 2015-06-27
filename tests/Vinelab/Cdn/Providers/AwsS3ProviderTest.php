@@ -51,6 +51,7 @@ class AwsS3ProviderTest extends TestCase
         $this->p_awsS3Provider->setS3Client($this->m_s3);
 
         $this->p_awsS3Provider->shouldReceive('connect')->andReturn(true);
+
     }
 
     public function tearDown()

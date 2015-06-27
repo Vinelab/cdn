@@ -164,8 +164,8 @@ class CdnTest extends TestCase
         ));
 
         $m_s3 = M::mock('Aws\S3\S3Client');
-        $m_s3->shouldReceive('factory')
-            ->andReturn('Aws\S3\S3Client');
+        //$m_s3->shouldReceive('factory')
+        //    ->andReturn('Aws\S3\S3Client');
         $m_s3->shouldReceive('getCommand');
         $p_aws_s3_provider->setS3Client($m_s3);
 
@@ -181,6 +181,10 @@ class CdnTest extends TestCase
             $provider_factory,
             $helper
         );
+
+        $m_execute = M::mock('Aws\CommandInterface');
+        $m_execute->shouldReceive('execute')
+            ->andReturn('Aws\CommandInterface');
 
         $result = $cdn->push();
 
