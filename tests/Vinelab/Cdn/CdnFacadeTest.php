@@ -7,8 +7,8 @@ use Mockery as M;
  * Class CdnFacadeTest
  *
  * @category Test
- * @package Vinelab\Cdn\Tests
- * @author  Mahmoud Zalt <mahmoud@vinelab.com>
+ * @package  Vinelab\Cdn\Tests
+ * @author   Mahmoud Zalt <mahmoud@vinelab.com>
  */
 class CdnFacadeTest extends TestCase
 {
@@ -25,9 +25,11 @@ class CdnFacadeTest extends TestCase
             'providers' => [
                 'aws' => [
                     's3' => [
+                        'region'  => 'rrrrrrrrrrrgggggggggnnnnn',
+                        'version' => 'vvvvvvvvssssssssssnnnnnnn',
                         'credentials' => [
-                            'key'    => 'keeeeeeeeeeeeeeeeeeeeeeey',
-                            'secret' => 'ssssssssccccccccccctttttt',
+                            'key'     => 'keeeeeeeeeeeeeeeeeeeeeeey',
+                            'secret'  => 'ssssssssccccccccccctttttt',
                         ],
                         'buckets'     => [
                             'bbbuuuucccctttt' => '*',
@@ -37,28 +39,27 @@ class CdnFacadeTest extends TestCase
                             'use'     => false,
                             'cdn_url' => '',
                         ],
-
-                        'version' => '1'
+                        'version'     => '1'
                     ],
                 ],
             ],
             'include'   => [
-                'directories' => [__DIR__],
-                'extensions'  => [],
-                'patterns'    => [],
+                'directories' => [ __DIR__ ],
+                'extensions'  => [ ],
+                'patterns'    => [ ],
             ],
             'exclude'   => [
-                'directories' => [],
-                'files'       => [],
-                'extensions'  => [],
-                'patterns'    => [],
+                'directories' => [ ],
+                'files'       => [ ],
+                'extensions'  => [ ],
+                'patterns'    => [ ],
                 'hidden'      => true,
             ],
         ];
 
         $this->asset_path = 'foo/bar.php';
-        $this->path_path = 'public/foo/bar.php';
-        $this->asset_url = 'https://bucket.s3.amazonaws.com/public/foo/bar.php';
+        $this->path_path  = 'public/foo/bar.php';
+        $this->asset_url  = 'https://bucket.s3.amazonaws.com/public/foo/bar.php';
 
         $this->provider = M::mock('Vinelab\Cdn\Providers\AwsS3Provider');
 
@@ -85,8 +86,8 @@ class CdnFacadeTest extends TestCase
     public function testAssetIsCallingUrlGenerator()
     {
         $this->provider->shouldReceive('urlGenerator')
-            ->once()
-            ->andReturn($this->asset_url);
+                       ->once()
+                       ->andReturn($this->asset_url);
 
         $result = $this->facade->asset($this->asset_path);
         // assert is calling the url generator
@@ -96,8 +97,8 @@ class CdnFacadeTest extends TestCase
     public function testPathIsCallingUrlGenerator()
     {
         $this->provider->shouldReceive('urlGenerator')
-            ->once()
-            ->andReturn($this->asset_url);
+                       ->once()
+                       ->andReturn($this->asset_url);
 
         $result = $this->facade->asset($this->path_path);
         // assert is calling the url generator
@@ -109,7 +110,7 @@ class CdnFacadeTest extends TestCase
      */
     public function testUrlGeneratorThrowsException()
     {
-        $this->invokeMethod($this->facade, 'generateUrl', array(null, null));
+        $this->invokeMethod($this->facade, 'generateUrl', array( null, null ));
     }
 
 }

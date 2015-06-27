@@ -85,6 +85,8 @@ class CdnTest extends TestCase
             'providers' => [
                 'aws' => [
                     's3' => [
+                        'region'  => 'rrrrrrrrrrrgggggggggnnnnn',
+                        'version' => 'vvvvvvvvssssssssssnnnnnnn',
                         'credentials' => [
                             'key'    => 'keeeeeeeeeeeeeeeeeeeeeeey',
                             'secret' => 'ssssssssccccccccccctttttt',
@@ -166,14 +168,6 @@ class CdnTest extends TestCase
             ->andReturn('Aws\S3\S3Client');
         $m_s3->shouldReceive('getCommand');
         $p_aws_s3_provider->setS3Client($m_s3);
-
-        $m_batch = M::mock('Guzzle\Batch\BatchBuilder');
-        $m_batch->shouldReceive('factory')
-            ->andReturn('Guzzle\Batch\BatchBuilder');
-        $m_batch->shouldReceive('add');
-        $m_batch->shouldReceive('getHistory')
-            ->andReturn(null);
-        $p_aws_s3_provider->setBatchBuilder($m_batch);
 
         $p_aws_s3_provider->shouldReceive('connect')
             ->andReturn(true);

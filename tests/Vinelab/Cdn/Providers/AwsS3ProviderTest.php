@@ -18,10 +18,10 @@ class AwsS3ProviderTest extends TestCase
     {
         parent::setUp();
 
-        $this->url = 'http://www.google.com';
-        $this->cdn_url = 'http://ZZZZZZZ.www.google.com/public/css/cool/style.css';
-        $this->path = 'public/css/cool/style.css';
-        $this->path_url = 'http://www.google.com/public/css/cool/style.css';
+        $this->url       = 'http://www.google.com';
+        $this->cdn_url   = 'http://ZZZZZZZ.www.google.com/public/css/cool/style.css';
+        $this->path      = 'public/css/cool/style.css';
+        $this->path_url  = 'http://www.google.com/public/css/cool/style.css';
         $this->pased_url = parse_url($this->url);
 
         $this->m_console = M::mock('Symfony\Component\Console\Output\ConsoleOutput');
@@ -32,7 +32,7 @@ class AwsS3ProviderTest extends TestCase
 
         $this->m_helper = M::mock('Vinelab\Cdn\CdnHelper');
         $this->m_helper->shouldReceive('parseUrl')
-            ->andReturn($this->pased_url);
+                       ->andReturn($this->pased_url);
 
         $this->m_spl_file = M::mock('Symfony\Component\Finder\SplFileInfo');
         $this->m_spl_file->shouldReceive('getPathname')->andReturn('vinelab/cdn/tests/Vinelab/Cdn/AwsS3ProviderTest.php');
@@ -50,13 +50,8 @@ class AwsS3ProviderTest extends TestCase
         $this->m_s3->shouldReceive('getCommand');
         $this->p_awsS3Provider->setS3Client($this->m_s3);
 
-        $this->m_batch = M::mock('Guzzle\Batch\BatchBuilder');
-        $this->m_batch->shouldReceive('factory')->andReturn('Guzzle\Batch\BatchBuilder');
-        $this->m_batch->shouldReceive('add');
-        $this->m_batch->shouldReceive('getHistory')->andReturn(null);
-        $this->p_awsS3Provider->setBatchBuilder($this->m_batch);
-
         $this->p_awsS3Provider->shouldReceive('connect')->andReturn(true);
+
     }
 
     public function tearDown()
@@ -74,25 +69,24 @@ class AwsS3ProviderTest extends TestCase
             'providers' => [
                 'aws' => [
                     's3' => [
-                        'credentials' => [
-                            'key'    => 'XXXXXXX',
-                            'secret' => 'YYYYYYY',
+                        'region'  => 'ZZZZZZZ',
+                        'version' => 'EEEEEEE',
+                        'credentials'   => [
+                            'key'     => 'XXXXXXX',
+                            'secret'  => 'YYYYYYY',
                         ],
-                        'buckets'     => [
+                        'buckets'       => [
                             'ZZZZZZZ' => '*',
                         ],
-                        'acl'         => 'public-read',
-                        'cloudfront'  => [
+                        'acl'           => 'public-read',
+                        'cloudfront'    => [
                             'use'     => false,
                             'cdn_url' => null,
                         ],
-                        'metadata' => [],
-
-                        'expires' => gmdate("D, d M Y H:i:s T", strtotime("+5 years")),
-
+                        'metadata'      => [ ],
+                        'expires'       => gmdate("D, d M Y H:i:s T", strtotime("+5 years")),
                         'cache-control' => 'max-age=2628000',
-                        
-                        'version' => null,
+                        'version'       => null,
                     ],
                 ],
             ],
@@ -112,25 +106,24 @@ class AwsS3ProviderTest extends TestCase
             'providers' => [
                 'aws' => [
                     's3' => [
-                        'credentials' => [
+                        'region'  => 'ZZZZZZZ',
+                        'version' => 'EEEEEEE',
+                        'credentials'   => [
                             'key'    => 'XXXXXXX',
                             'secret' => 'YYYYYYY',
                         ],
-                        'buckets'     => [
+                        'buckets'       => [
                             'ZZZZZZZ' => '*',
                         ],
-                        'acl'         => 'public-read',
-                        'cloudfront'  => [
+                        'acl'           => 'public-read',
+                        'cloudfront'    => [
                             'use'     => false,
                             'cdn_url' => null,
                         ],
-                        'metadata' => [],
-
-                        'expires' => gmdate("D, d M Y H:i:s T", strtotime("+5 years")),
-
+                        'metadata'      => [ ],
+                        'expires'       => gmdate("D, d M Y H:i:s T", strtotime("+5 years")),
                         'cache-control' => 'max-age=2628000',
-                        
-                        'version' => null,
+                        'version'       => null,
                     ],
                 ],
             ],
@@ -138,7 +131,7 @@ class AwsS3ProviderTest extends TestCase
 
         $this->p_awsS3Provider->init($configurations);
 
-        $result = $this->p_awsS3Provider->upload(new Collection([$this->m_spl_file]));
+        $result = $this->p_awsS3Provider->upload(new Collection([ $this->m_spl_file ]));
 
         assertEquals(true, $result);
     }
@@ -152,25 +145,24 @@ class AwsS3ProviderTest extends TestCase
             'providers' => [
                 'aws' => [
                     's3' => [
-                        'credentials' => [
+                        'region'  => 'ZZZZZZZ',
+                        'version' => 'EEEEEEE',
+                        'credentials'   => [
                             'key'    => 'XXXXXXX',
                             'secret' => 'YYYYYYY',
                         ],
-                        'buckets'     => [
+                        'buckets'       => [
                             'ZZZZZZZ' => '*',
                         ],
-                        'acl'         => 'public-read',
-                        'cloudfront'  => [
+                        'acl'           => 'public-read',
+                        'cloudfront'    => [
                             'use'     => false,
                             'cdn_url' => null,
                         ],
-                        'metadata' => [],
-
-                        'expires' => gmdate("D, d M Y H:i:s T", strtotime("+5 years")),
-
+                        'metadata'      => [ ],
+                        'expires'       => gmdate("D, d M Y H:i:s T", strtotime("+5 years")),
                         'cache-control' => 'max-age=2628000',
-                        
-                        'version' => null,
+                        'version'       => null,
                     ],
                 ],
             ],
@@ -192,25 +184,24 @@ class AwsS3ProviderTest extends TestCase
             'providers' => [
                 'aws' => [
                     's3' => [
-                        'credentials' => [
+                        'region'  => 'ZZZZZZZ',
+                        'version' => 'EEEEEEE',
+                        'credentials'   => [
                             'key'    => 'XXXXXXX',
                             'secret' => 'YYYYYYY',
                         ],
-                        'buckets'     => [
+                        'buckets'       => [
                             '' => '*',
                         ],
-                        'acl'         => 'public-read',
-                        'cloudfront'  => [
+                        'acl'           => 'public-read',
+                        'cloudfront'    => [
                             'use'     => false,
                             'cdn_url' => null,
                         ],
-                        'metadata' => [],
-
-                        'expires' => gmdate("D, d M Y H:i:s T", strtotime("+5 years")),
-
+                        'metadata'      => [ ],
+                        'expires'       => gmdate("D, d M Y H:i:s T", strtotime("+5 years")),
                         'cache-control' => 'max-age=2628000',
-                        
-                        'version' => null,
+                        'version'       => null,
                     ],
                 ],
             ],

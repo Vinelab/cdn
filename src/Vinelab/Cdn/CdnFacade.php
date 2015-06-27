@@ -118,12 +118,11 @@ class CdnFacade implements CdnFacadeInterface
         }
 
         // Add version number
-
-        $path = str_replace(
-            "build",
-            "build" . $this->configurations['providers']['aws']['s3']['version'],
-            $path
-        );
+        //$path = str_replace(
+        //    "build",
+        //    $this->configurations['providers']['aws']['s3']['version'],
+        //    $path
+        //);
 
         // remove slashes from begging and ending of the path
         // and append directories if needed
