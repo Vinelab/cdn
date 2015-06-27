@@ -63,6 +63,9 @@ return [
 	| Of course, examples of configuring each provider platform that is
 	| supported by Laravel is shown below to make development simple.
     |
+    | version: 'latest' means versioning is not enabled, you can replace it
+    |          by your version to enabled it.
+    |
     */
     'providers' => [
 
@@ -70,7 +73,7 @@ return [
 
             's3' => [
 
-                'version'       => 'latest', // If versioning is not enabled then set to latest
+                'version'       => 'latest',
 
                 'region'        => '',
 
@@ -110,17 +113,19 @@ return [
                 | The following list is a set of canned ACLs and the associated
                 | predefined grants: private, public-read, public-read-write, authenticated-read
                 | bucket-owner-read, bucket-owner-full-control, log-delivery-write
+                |
                 */
                 'acl'           => 'public-read',
 
                 /*
                 |--------------------------------------------------------------------------
-                | Use CloudFront as the CDN
+                | CloudFront as CDN
                 |--------------------------------------------------------------------------
                 |
                 | Amazon S3 can be linked to CloudFront through distributions. This allows
                 | the files in your S3 buckets to be served from a number of global
                 | locations to achieve low latency and faster page load times.
+                |
                 */
                 'cloudfront'    => [
                     'use'     => false,
@@ -129,25 +134,31 @@ return [
 
                 /*
                 |--------------------------------------------------------------------------
-                | Add metadata to each s3 file
+                | Metadata of S3 Files
                 |--------------------------------------------------------------------------
-                |   Add metadata to each s3 file
+                |
+                | Add metadata to each S3 file
+                |
                 */
                 'metadata'      => [ ],
 
                 /*
                 |--------------------------------------------------------------------------
-                | Add expiry data to file
+                | Files Expiry Data
                 |--------------------------------------------------------------------------
-                |   Add expiry data to file
+                |
+                | Add expiry data to file
+                |
                 */
                 'expires'       => gmdate("D, d M Y H:i:s T", strtotime("+5 years")),
 
                 /*
                 |--------------------------------------------------------------------------
-                | Add browser level cache
+                | Browser Level Cache
                 |--------------------------------------------------------------------------
-                |   Add browser level cache
+                |
+                | Add browser level cache
+                |
                 */
                 'cache-control' => 'max-age=2628000',
 
