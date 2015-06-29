@@ -1,4 +1,4 @@
-# CDN Assets Manager
+# Laravel CDN Assets Manager
 
 [![Total Downloads](https://poser.pugx.org/vinelab/cdn/downloads)](https://packagist.org/packages/vinelab/cdn) 
 [![Latest Stable Version](https://poser.pugx.org/vinelab/cdn/v/stable)](https://packagist.org/packages/vinelab/cdn) 
@@ -10,191 +10,182 @@
 
 ##### Content Delivery Network Package for Laravel
 
-Upload static assets of your choice to a CDN and have the file paths replaced with full URLs.
-
-
+The package provides the devloper the ability to upload his assets (or any public file) to a CDN with a single artisan command. 
+And then it allows him to switch between the local and the online version  of the files, for develpoment and production purposes.
 
 
 ## Highlights
 
+
+- Amazon Web Services - S3
 - Supports Laravel 5.1
+- Artisan command to upload content to CDN
+- Simple Facade to access CDN assets
 
 
+## Installation
 
+#### Via Composer
 
+A. Require `vinelab/cdn` in your project:
 
-## Install
+```bash 
+composer require vinelab/cdn:*
+```
 
-### Via Composer
+*Since this is a Laravel package we need to register the service provider:*
 
-- Add the package to your `composer.json` and run `composer update`
+Add the service provider to `app/config/app.php`:
 
-    ```json
-    {
-        "require": {
-            "vinelab/cdn": "*"
-        }
-    }
-    ```
-
-- Add the service provider to `app/config/app.php`:
-
-    ```php
-    'providers' => array(
-        '...',
-        Vinelab\Cdn\CdnServiceProvider::class,
-        '...'
-    ),
-    ```
-
-The service provider will register all the required classes for this package and will also alias
-the `Cdn` class to `CdnFacadeProvider` so you can simply use the `Cdn` facade anywhere in your app.
+```php
+'providers' => array(
+	 //...
+     Vinelab\Cdn\CdnServiceProvider::class,
+),
+```
 
 ## Configuration
 
-Publish the package config file:
+First you need to publish the package config file:
 
 ```bash
 php artisan vendor:publish vinelab/cdn
 ```
 
-Find it at `config/cdn.php`
+You can find it at `config/cdn.php`
 
-### Providers
 
-Supported Providers:
-
-- Amazon Web Services - S3 (Default)
-
-#### Default Provider
+##### Default Provider
 ```php
 'default' => 'AwsS3',
 ```
 
-#### CDN Provider Setup
+##### CDN Provider Configuration
 
 ```php
-    'aws' => [
+'aws' => [
 
-        's3' => [
-        
-        	'version'	=> 'latest',
-        	
-        	'region'	=> '',
+    's3' => [
+    
+        'version'	=> 'latest',
+        'region'	=> '',
 
-            'credentials' => [
-                'key'    => '',
-                'secret'    => '',
-            ],
-
-            'buckets' => [
-                'my-backup-bucket' => '*',
-            ]
+        'buckets' => [
+            'my-backup-bucket' => '*',
         ]
-    ],
+    ]
+],
 ```
 
-##### Multiple Buckets
+###### Multiple Buckets
 
 ```php
 'buckets' => [
 
     'my-default-bucket' => '*',
-    'js-bucket' => ['public/js'],
-    'css-bucket' => ['public/css'],
-    '...'
+    
+    // 'js-bucket' => ['public/js'],
+    // 'css-bucket' => ['public/css'],
+    // ...
 ]
 
 ```
 
-### Files & Directories
+#### Files & Directories
 
-#### Include
+###### Include:
 
 Specify directories, extensions, files and patterns to be uploaded.
 
 ```php
-    'include'    => [
-        'directories'   => ['public/dist'],
-        'extensions'    => ['.js', '.css', '.yxz'],
-        'patterns'      => ['**/*.coffee'],
-    ],
+'include'    => [
+    'directories'   => ['public/dist'],
+    'extensions'    => ['.js', '.css', '.yxz'],
+    'patterns'      => ['**/*.coffee'],
+],
 ```
 
-#### Exclude
+###### Exclude:
 
 Specify what to be ignored.
 
 ```php
-    'exclude'    => [
-        'directories'   => ['public/uploads'],
-        'files'         => [''],
-        'extensions'    => ['.TODO', '.txt'],
-        'patterns'      => ['src/*', '.idea/*'],
-        'hidden'        => true, // ignore hidden files
-    ],
+'exclude'    => [
+    'directories'   => ['public/uploads'],
+    'files'         => [''],
+    'extensions'    => ['.TODO', '.txt'],
+    'patterns'      => ['src/*', '.idea/*'],
+    'hidden'        => true, // ignore hidden files
+],
 ```
 
-#### URL
+##### URL
 
 Set the CDN URL:
 
 ```php
-    'url' => 'https://s3.amazonaws.com',
+'url' => 'https://s3.amazonaws.com',
 ```
 
-#### Threshold
-Determines how many files to be uploaded concurrently.
+##### Bypass
 
-> Will clear the buffer when the `threshold` has been reached, be careful when setting this to a high value
-not to exceed what you have allowed in your PHP configuration.
+To load your LOCAL assets for testing or during development, set the `bypass` option to `true`:
 
 ```php
-    'threshold' => 10,
+'bypass' => true,
 ```
 
-#### Bypass
-
-To load your local assets (not the CDN assets) for testing or during development, set the `bypass` option to `true`:
+##### Cloudfront Support
 
 ```php
-    'bypass' => true,
+'cloudfront'    => [
+    'use' => false,
+    'cdn_url' => ''
+],
 ```
+
+
+##### Other Configurations
+You can always refer to the AWS S3 Docuemntation for more details: [aws-sdk-php](http://docs.aws.amazon.com/aws-sdk-php/v3/guide/)
+
+```php
+'acl'           => 'public-read',
+'metadata'      => [ ],
+'expires'       => gmdate("D, d M Y H:i:s T", strtotime("+5 years")),
+'cache-control' => 'max-age=2628000',
+```
+
 ## Usage
 
-### Push
+#### Push
 
 Upload your assets with
-```dos
+```bash
 php artisan cdn:push
 ```
-### Empty
+#### Empty
 
 Delete all of your assets remotely with
-```dos
+```bash
 php artisan cdn:empty
 ```
-### Load Assets
 
-Now you can use the facade `Cdn` to call the `Cdn::asset()` function.
-Note: the `asset` works the same as the Laravel `asset` it start looking for assets in the `public/` directory:
+#### Load Assets
+
+Use the facade `Cdn` to call the `Cdn::asset()` function.
+
+*Note: the `asset` works the same as the Laravel `asset` it start looking for assets in the `public/` directory:*
 
 ```blade
-    {{Cdn::asset('assets/js/main.js')}}
-    // https://js-bucket.s3.amazonaws.com/public/assets/js/main.js
+{{Cdn::asset('assets/js/main.js')}}        // example result: https://js-bucket.s3.amazonaws.com/public/assets/js/main.js
 
-    {{Cdn::asset('assets/css/main.css')}}
-    // https://css-bucket.s3.amazonaws.com/public/assets/css/main.css
+{{Cdn::asset('assets/css/style.css')}}        // example result: https://css-bucket.s3.amazonaws.com/public/assets/css/style.css
 ```
 
-If you want to use a file from outside the `public/` directory anywhere in `app/` you can use the `Cdn::path()` function to do that:
+To use a file from outside the `public/` directory, anywhere in `app/` use the `Cdn::path()` function:
 
 ```blade
-    {{Cdn::path('public/assets/js/main.js')}}
-    // https://js-bucket.s3.amazonaws.com/public/assets/js/main.js
-
-    {{Cdn::path('private/something/file.txt')}}
-    // https://css-bucket.s3.amazonaws.com/private/something/file.txt
+{{Cdn::path('private/something/file.txt')}}        // example result: https://css-bucket.s3.amazonaws.com/private/something/file.txt
 ```
 
 
@@ -206,6 +197,19 @@ If you want to use a file from outside the `public/` directory anywhere in `app/
 
 
 
+
+
+## Test
+
+To run the tests, run the following command from the project folder.
+
+```bash
+$ ./vendor/bin/phpunit
+```
+
+## Support
+
+[On Github](https://github.com/Vinelab/cdn/issues)
 
 
 ## Contributing
