@@ -10,9 +10,8 @@
 
 ##### Content Delivery Network Package for Laravel
 
-The package provides the devloper the ability to upload his assets (or any public file) to a CDN with a single artisan command. 
-And then it allows him to switch between the local and the online version  of the files, for develpoment and production purposes.
-
+The package provides the developer the ability to upload his assets (or any public file) to a CDN with a single artisan command.
+And then it allows him to switch between the local and the online version of the files, for development and production purposes.
 
 ## Highlights
 
@@ -46,7 +45,16 @@ Add the service provider to `app/config/app.php`:
 
 ## Configuration
 
-First you need to publish the package config file:
+Set AWS Credentials to the `.env` file.
+
+*Note: you should have an `.env` file at the project root directory of your project, to hold your sensitive information.*
+
+```bash
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+```
+
+Publish the package config file:
 
 ```bash
 php artisan vendor:publish vinelab/cdn
