@@ -19,7 +19,7 @@ class AwsS3ProviderTest extends TestCase
         parent::setUp();
 
         $this->url       = 'http://www.google.com';
-        $this->cdn_url   = 'http://ZZZZZZZ.www.google.com/public/css/cool/style.css';
+        $this->cdn_url   = 'http://my-bucket-name.www.google.com/public/css/cool/style.css';
         $this->path      = 'public/css/cool/style.css';
         $this->path_url  = 'http://www.google.com/public/css/cool/style.css';
         $this->pased_url = parse_url($this->url);
@@ -47,7 +47,10 @@ class AwsS3ProviderTest extends TestCase
 
         $this->m_s3 = M::mock('Aws\S3\S3Client');
         $this->m_s3->shouldReceive('factory')->andReturn('Aws\S3\S3Client');
-        $this->m_s3->shouldReceive('getCommand');
+        $m_command = M::mock('Aws\Command');
+        $this->m_s3->shouldReceive('getCommand')
+            ->andReturn($m_command);
+        $this->m_s3->shouldReceive('execute');
         $this->p_awsS3Provider->setS3Client($this->m_s3);
 
         $this->p_awsS3Provider->shouldReceive('connect')->andReturn(true);
@@ -69,14 +72,10 @@ class AwsS3ProviderTest extends TestCase
             'providers' => [
                 'aws' => [
                     's3' => [
-                        'region'  => 'ZZZZZZZ',
-                        'version' => 'EEEEEEE',
-                        'credentials'   => [
-                            'key'     => 'XXXXXXX',
-                            'secret'  => 'YYYYYYY',
-                        ],
-                        'buckets'       => [
-                            'ZZZZZZZ' => '*',
+                        'region'  => 'us-standard',
+                        'version' => 'latest',
+                        'buckets'     => [
+                            'my-bucket-name' => '*',
                         ],
                         'acl'           => 'public-read',
                         'cloudfront'    => [
@@ -106,14 +105,10 @@ class AwsS3ProviderTest extends TestCase
             'providers' => [
                 'aws' => [
                     's3' => [
-                        'region'  => 'ZZZZZZZ',
-                        'version' => 'EEEEEEE',
-                        'credentials'   => [
-                            'key'    => 'XXXXXXX',
-                            'secret' => 'YYYYYYY',
-                        ],
-                        'buckets'       => [
-                            'ZZZZZZZ' => '*',
+                        'region'  => 'us-standard',
+                        'version' => 'latest',
+                        'buckets'     => [
+                            'my-bucket-name' => '*',
                         ],
                         'acl'           => 'public-read',
                         'cloudfront'    => [
@@ -145,14 +140,10 @@ class AwsS3ProviderTest extends TestCase
             'providers' => [
                 'aws' => [
                     's3' => [
-                        'region'  => 'ZZZZZZZ',
-                        'version' => 'EEEEEEE',
-                        'credentials'   => [
-                            'key'    => 'XXXXXXX',
-                            'secret' => 'YYYYYYY',
-                        ],
-                        'buckets'       => [
-                            'ZZZZZZZ' => '*',
+                        'region'  => 'us-standard',
+                        'version' => 'latest',
+                        'buckets'     => [
+                            'my-bucket-name' => '*',
                         ],
                         'acl'           => 'public-read',
                         'cloudfront'    => [
@@ -184,13 +175,9 @@ class AwsS3ProviderTest extends TestCase
             'providers' => [
                 'aws' => [
                     's3' => [
-                        'region'  => 'ZZZZZZZ',
-                        'version' => 'EEEEEEE',
-                        'credentials'   => [
-                            'key'    => 'XXXXXXX',
-                            'secret' => 'YYYYYYY',
-                        ],
-                        'buckets'       => [
+                        'region'  => 'us-standard',
+                        'version' => 'latest',
+                        'buckets'     => [
                             '' => '*',
                         ],
                         'acl'           => 'public-read',

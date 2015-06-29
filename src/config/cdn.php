@@ -15,7 +15,7 @@ return [
     | Default: false
     |
     */
-    'bypass'    => false,
+    'bypass' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -28,7 +28,7 @@ return [
     | Supported provider: Amazon S3 (AwsS3)
     |
     */
-    'default'   => 'AwsS3',
+    'default' => 'AwsS3',
 
     /*
     |--------------------------------------------------------------------------
@@ -38,7 +38,7 @@ return [
     | Set your CDN url, [without the bucket name]
     |
     */
-    'url'       => 'https://s3.amazonaws.com',
+    'url' => 'https://s3.amazonaws.com',
 
     /*
     |--------------------------------------------------------------------------
@@ -63,8 +63,9 @@ return [
 	| Of course, examples of configuring each provider platform that is
 	| supported by Laravel is shown below to make development simple.
     |
-    | version: 'latest' means versioning is not enabled, you can replace it
-    |          by your version to enabled it.
+    | Note: Credentials must be set in the .env file:
+    |         AWS_ACCESS_KEY_ID
+    |         AWS_SECRET_ACCESS_KEY
     |
     */
     'providers' => [
@@ -73,14 +74,27 @@ return [
 
             's3' => [
 
-                'version'       => 'latest',
+                /*
+                |--------------------------------------------------------------------------
+                | Web Service Version
+                |--------------------------------------------------------------------------
+                |
+                | The version of the web service to utilize.
+                | http://docs.aws.amazon.com/aws-sdk-php/v3/guide/guide/configuration.html#version
+                |
+                */
+                'version' => 'latest',
 
-                'region'        => '',
-
-                'credentials'   => [
-                    'key'    => '',
-                    'secret' => '',
-                ],
+                /*
+                |--------------------------------------------------------------------------
+                | Region to Connect
+                |--------------------------------------------------------------------------
+                |
+                | List of available regions:
+                | http://docs.aws.amazon.com/general/latest/gr/rande.html#awsconfig_region
+                |
+                */
+                'region' => '',
 
                 /*
                 |--------------------------------------------------------------------------
@@ -99,8 +113,9 @@ return [
                 'buckets'       => [
 
                     'bucket-name' => '*',
-                    //        'your-js-bucket-name-here'   =>  ['public/js'],
-                    //        'your-css-bucket-name-here'  =>  ['public/css'],
+                    // examples:
+                    //   'your-js-bucket-name-here'   =>  ['public/js'],
+                    //   'your-css-bucket-name-here'  =>  ['public/css'],
                 ],
 
                 /*
@@ -115,7 +130,7 @@ return [
                 | bucket-owner-read, bucket-owner-full-control, log-delivery-write
                 |
                 */
-                'acl'           => 'public-read',
+                'acl' => 'public-read',
 
                 /*
                 |--------------------------------------------------------------------------
@@ -128,7 +143,7 @@ return [
                 |
                 */
                 'cloudfront'    => [
-                    'use'     => false,
+                    'use' => false,
                     'cdn_url' => ''
                 ],
 
@@ -140,7 +155,7 @@ return [
                 | Add metadata to each S3 file
                 |
                 */
-                'metadata'      => [ ],
+                'metadata' => [ ],
 
                 /*
                 |--------------------------------------------------------------------------
@@ -150,7 +165,7 @@ return [
                 | Add expiry data to file
                 |
                 */
-                'expires'       => gmdate("D, d M Y H:i:s T", strtotime("+5 years")),
+                'expires' => gmdate("D, d M Y H:i:s T", strtotime("+5 years")),
 
                 /*
                 |--------------------------------------------------------------------------
@@ -165,10 +180,8 @@ return [
             ],
 
         ],
-//        'cloudflare' => [
-//            'key'       => '',
-//            'secret'    => '',
-//        ],
+
+
 
     ],
     /*

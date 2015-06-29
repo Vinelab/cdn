@@ -27,10 +27,6 @@ class CdnFacadeTest extends TestCase
                     's3' => [
                         'region'  => 'rrrrrrrrrrrgggggggggnnnnn',
                         'version' => 'vvvvvvvvssssssssssnnnnnnn',
-                        'credentials' => [
-                            'key'     => 'keeeeeeeeeeeeeeeeeeeeeeey',
-                            'secret'  => 'ssssssssccccccccccctttttt',
-                        ],
                         'buckets'     => [
                             'bbbuuuucccctttt' => '*',
                         ],
