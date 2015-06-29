@@ -221,8 +221,9 @@ class AwsS3Provider extends Provider implements ProviderInterface
 
                 $this->s3_client->execute($command);
 
-            } catch (S3Exception $e) {
-                $this->console->writeln("<fg=red>Error while uploading: ($file->getRealpath())</fg=red>");
+            } catch(S3Exception $e) {
+
+                $this->console->writeln("<fg=red>" . $e->getMessage() . "</fg=red>");
 
                 return false;
             }
