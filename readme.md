@@ -8,16 +8,16 @@
 [![License](https://poser.pugx.org/vinelab/cdn/license)](https://packagist.org/packages/vinelab/cdn)
 
 
-Content Delivery Network Package for Laravel
+##### Content Delivery Network Package for Laravel
 
 Upload static assets of your choice to a CDN and have the file paths replaced with full URLs.
-----------
 
 
 
 
+## Highlights
 
-
+- Supports Laravel 5.1
 
 
 
@@ -42,7 +42,7 @@ Upload static assets of your choice to a CDN and have the file paths replaced wi
     ```php
     'providers' => array(
         '...',
-        'Vinelab\Cdn\CdnServiceProvider',
+        Vinelab\Cdn\CdnServiceProvider::class,
         '...'
     ),
     ```
@@ -53,12 +53,12 @@ the `Cdn` class to `CdnFacadeProvider` so you can simply use the `Cdn` facade an
 ## Configuration
 
 Publish the package config file:
-```dos
+
+```bash
 php artisan vendor:publish vinelab/cdn
 ```
-and check it out at `app/config/packages/vinelab/cdn/cdn.php`
 
-In case you would like to have environment-based configuration `app/config/packages/vinelab/cdn/[ENV]/cdn.php`
+Find it at `config/cdn.php`
 
 ### Providers
 
