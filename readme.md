@@ -45,9 +45,9 @@ Add the service provider to `app/config/app.php`:
 
 ## Configuration
 
-Set AWS Credentials to the `.env` file.
+Set the Credentials in the `.env` file.
 
-*Note: you should have an `.env` file at the project root directory of your project, to hold your sensitive information.*
+*Note: you must have an `.env` file at the project root, to hold your sensitive information.*
 
 ```bash
 AWS_ACCESS_KEY_ID=
@@ -162,7 +162,7 @@ To load your LOCAL assets for testing or during development, set the `bypass` op
 'cache-control' => 'max-age=2628000',
 ```
 
-You can always refer to the AWS S3 Docuemntation for more details: [aws-sdk-php](http://docs.aws.amazon.com/aws-sdk-php/v3/guide/)
+You can always refer to the AWS S3 Documentation for more details: [aws-sdk-php](http://docs.aws.amazon.com/aws-sdk-php/v3/guide/)
 
 ## Usage
 
