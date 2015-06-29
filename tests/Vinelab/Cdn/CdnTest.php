@@ -85,14 +85,10 @@ class CdnTest extends TestCase
             'providers' => [
                 'aws' => [
                     's3' => [
-                        'region'  => 'rrrrrrrrrrrgggggggggnnnnn',
-                        'version' => 'vvvvvvvvssssssssssnnnnnnn',
-                        'credentials' => [
-                            'key'    => 'keeeeeeeeeeeeeeeeeeeeeeey',
-                            'secret' => 'ssssssssccccccccccctttttt',
-                        ],
+                        'region'  => 'us-standard',
+                        'version' => 'latest',
                         'buckets'     => [
-                            'bbbuuuucccctttt' => '*',
+                            'my-bucket-name' => '*',
                         ],
                         'acl'         => 'public-read',
                         'cloudfront'  => [
@@ -156,6 +152,7 @@ class CdnTest extends TestCase
         $m_spl_file->shouldReceive('getRealPath')
             ->andReturn(__DIR__ . '/AwsS3ProviderTest.php');
 
+        // partial mock
         $p_aws_s3_provider = M::mock('\Vinelab\Cdn\Providers\AwsS3Provider[connect]', array
         (
             $m_console,

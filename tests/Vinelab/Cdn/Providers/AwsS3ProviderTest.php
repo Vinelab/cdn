@@ -19,7 +19,7 @@ class AwsS3ProviderTest extends TestCase
         parent::setUp();
 
         $this->url       = 'http://www.google.com';
-        $this->cdn_url   = 'http://ZZZZZZZ.www.google.com/public/css/cool/style.css';
+        $this->cdn_url   = 'http://my-bucket-name.www.google.com/public/css/cool/style.css';
         $this->path      = 'public/css/cool/style.css';
         $this->path_url  = 'http://www.google.com/public/css/cool/style.css';
         $this->pased_url = parse_url($this->url);
@@ -72,14 +72,10 @@ class AwsS3ProviderTest extends TestCase
             'providers' => [
                 'aws' => [
                     's3' => [
-                        'region'  => 'ZZZZZZZ',
-                        'version' => 'EEEEEEE',
-                        'credentials'   => [
-                            'key'     => 'XXXXXXX',
-                            'secret'  => 'YYYYYYY',
-                        ],
-                        'buckets'       => [
-                            'ZZZZZZZ' => '*',
+                        'region'  => 'us-standard',
+                        'version' => 'latest',
+                        'buckets'     => [
+                            'my-bucket-name' => '*',
                         ],
                         'acl'           => 'public-read',
                         'cloudfront'    => [
@@ -109,14 +105,10 @@ class AwsS3ProviderTest extends TestCase
             'providers' => [
                 'aws' => [
                     's3' => [
-                        'region'  => 'ZZZZZZZ',
-                        'version' => 'EEEEEEE',
-                        'credentials'   => [
-                            'key'    => 'XXXXXXX',
-                            'secret' => 'YYYYYYY',
-                        ],
-                        'buckets'       => [
-                            'ZZZZZZZ' => '*',
+                        'region'  => 'us-standard',
+                        'version' => 'latest',
+                        'buckets'     => [
+                            'my-bucket-name' => '*',
                         ],
                         'acl'           => 'public-read',
                         'cloudfront'    => [
@@ -148,14 +140,10 @@ class AwsS3ProviderTest extends TestCase
             'providers' => [
                 'aws' => [
                     's3' => [
-                        'region'  => 'ZZZZZZZ',
-                        'version' => 'EEEEEEE',
-                        'credentials'   => [
-                            'key'    => 'XXXXXXX',
-                            'secret' => 'YYYYYYY',
-                        ],
-                        'buckets'       => [
-                            'ZZZZZZZ' => '*',
+                        'region'  => 'us-standard',
+                        'version' => 'latest',
+                        'buckets'     => [
+                            'my-bucket-name' => '*',
                         ],
                         'acl'           => 'public-read',
                         'cloudfront'    => [
@@ -187,13 +175,9 @@ class AwsS3ProviderTest extends TestCase
             'providers' => [
                 'aws' => [
                     's3' => [
-                        'region'  => 'ZZZZZZZ',
-                        'version' => 'EEEEEEE',
-                        'credentials'   => [
-                            'key'    => 'XXXXXXX',
-                            'secret' => 'YYYYYYY',
-                        ],
-                        'buckets'       => [
+                        'region'  => 'us-standard',
+                        'version' => 'latest',
+                        'buckets'     => [
                             '' => '*',
                         ],
                         'acl'           => 'public-read',
