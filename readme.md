@@ -27,7 +27,7 @@ And then it allows him to switch between the local and the online version  of th
 
 #### Via Composer
 
-A. Require `vinelab/cdn` in your project:
+Require `vinelab/cdn` in your project:
 
 ```bash 
 composer require vinelab/cdn:*
@@ -146,7 +146,6 @@ To load your LOCAL assets for testing or during development, set the `bypass` op
 
 
 ##### Other Configurations
-You can always refer to the AWS S3 Docuemntation for more details: [aws-sdk-php](http://docs.aws.amazon.com/aws-sdk-php/v3/guide/)
 
 ```php
 'acl'           => 'public-read',
@@ -155,17 +154,19 @@ You can always refer to the AWS S3 Docuemntation for more details: [aws-sdk-php]
 'cache-control' => 'max-age=2628000',
 ```
 
+You can always refer to the AWS S3 Docuemntation for more details: [aws-sdk-php](http://docs.aws.amazon.com/aws-sdk-php/v3/guide/)
+
 ## Usage
 
 #### Push
 
-Upload your assets with
+Upload assets
 ```bash
 php artisan cdn:push
 ```
 #### Empty
 
-Delete all of your assets remotely with
+Delete all of your assets remotely
 ```bash
 php artisan cdn:empty
 ```
