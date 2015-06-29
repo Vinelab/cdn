@@ -166,7 +166,11 @@ class CdnTest extends TestCase
         $m_s3 = M::mock('Aws\S3\S3Client');
         $m_s3->shouldReceive('factory')
             ->andReturn('Aws\S3\S3Client');
-        $m_s3->shouldReceive('getCommand');
+        $m_command = M::mock('Aws\Command');
+        $m_s3->shouldReceive('getCommand')
+            ->andReturn($m_command);
+        $m_s3->shouldReceive('execute');
+
         $p_aws_s3_provider->setS3Client($m_s3);
 
         $p_aws_s3_provider->shouldReceive('connect')
