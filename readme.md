@@ -13,9 +13,9 @@
 The package provides the developer the ability to upload his assets (or any public file) to a CDN with a single artisan command.
 And then it allows him to switch between the local and the online version of the files.
 
-###Vision
-- For Laravel 5.1 use the latest realease version `master`.
-- For Laravel 4.2 use the version `v1.0.1` [Last suport for L 4.2](https://github.com/Vinelab/cdn/releases/tag/v1.0.1)
+#### Laravel Support
+- For Laravel 5.1 use the latest realease (`master`).
+- For Laravel 4.2 use the realease `v1.0.1` [Last suport for L 4.2](https://github.com/Vinelab/cdn/releases/tag/v1.0.1)
 
 ## Highlights
 
