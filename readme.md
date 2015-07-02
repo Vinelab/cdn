@@ -3,7 +3,7 @@
 [![Total Downloads](https://poser.pugx.org/vinelab/cdn/downloads)](https://packagist.org/packages/vinelab/cdn) 
 [![Latest Stable Version](https://poser.pugx.org/vinelab/cdn/v/stable)](https://packagist.org/packages/vinelab/cdn) 
 [![Latest Unstable Version](https://poser.pugx.org/vinelab/cdn/v/unstable)](https://packagist.org/packages/vinelab/cdn) 
-[![Build Status](https://travis-ci.org/Vinelab/cdn.svg?branch=master)](https://travis-ci.org/Vinelab/cdn)
+[![Build Status](https://travis-ci.org/Vinelab/cdn.svg)](https://travis-ci.org/Vinelab/cdn)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Vinelab/cdn/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Vinelab/cdn/?branch=master)
 [![License](https://poser.pugx.org/vinelab/cdn/license)](https://packagist.org/packages/vinelab/cdn)
 
@@ -11,15 +11,18 @@
 ##### Content Delivery Network Package for Laravel
 
 The package provides the developer the ability to upload his assets (or any public file) to a CDN with a single artisan command.
-And then it allows him to switch between the local and the online version of the files, for development and production purposes.
+And then it allows him to switch between the local and the online version of the files.
+
+#### Laravel Support
+- For Laravel 5.1 use the latest realease (`master`).
+- For Laravel 4.2 use the realease `v1.0.1` [Last suport for L 4.2](https://github.com/Vinelab/cdn/releases/tag/v1.0.1)
 
 ## Highlights
 
-
 - Amazon Web Services - S3
-- Supports Laravel 5.1
 - Artisan command to upload content to CDN
 - Simple Facade to access CDN assets
+
 
 
 ## Installation
@@ -34,11 +37,11 @@ composer require vinelab/cdn:*
 
 *Since this is a Laravel package we need to register the service provider:*
 
-Add the service provider to `app/config/app.php`:
+Add the service provider to `config/app.php`:
 
 ```php
 'providers' => array(
-	 //...
+     //...
      Vinelab\Cdn\CdnServiceProvider::class,
 ),
 ```
@@ -75,8 +78,8 @@ You can find it at `config/cdn.php`
 
     's3' => [
     
-        'version'	=> 'latest',
-        'region'	=> '',
+        'version'   => 'latest',
+        'region'    => '',
 
         'buckets' => [
             'my-backup-bucket' => '*',
@@ -168,13 +171,13 @@ You can always refer to the AWS S3 Documentation for more details: [aws-sdk-php]
 
 #### Push
 
-Upload assets
+Upload assets to CDN
 ```bash
 php artisan cdn:push
 ```
 #### Empty
 
-Delete all of your assets remotely
+Delete assets from CDN
 ```bash
 php artisan cdn:empty
 ```
