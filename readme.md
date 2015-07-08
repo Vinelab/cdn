@@ -24,6 +24,11 @@ And then it allows him to switch between the local and the online version of the
 - Simple Facade to access CDN assets
 
 
+### Questions
+1. Is this package an alternative to Laravel FileSystem and do they work together?
+
++ No, the package was introduced in Laravel 4 and it's main purpose is to manage your CDN assets by loading them from the CDN into your Views pages, and easily switch between your Local and CDN version of the files. As well it allows you to upload all your assets with single command after specifying the assets directory and rules. The FileSystem was introduced in Laravel 5 and it's designed to facilitate the loading/uploading of files form/to a CDN. It can be used the same way as this Package for loading assets from the CDN, but it's harder to upload your assets to the CDN since it expect you to upload your files one by one. As a result this package still not a replacement of the Laravel FileSystem and they can be used together.
+
 
 ## Installation
 
