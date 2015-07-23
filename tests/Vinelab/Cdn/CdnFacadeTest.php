@@ -1,61 +1,61 @@
 <?php
+
 namespace Vinelab\Cdn\Tests;
 
 use Mockery as M;
 
 /**
- * Class CdnFacadeTest
+ * Class CdnFacadeTest.
  *
  * @category Test
- * @package  Vinelab\Cdn\Tests
+ *
  * @author   Mahmoud Zalt <mahmoud@vinelab.com>
  */
 class CdnFacadeTest extends TestCase
 {
-
     public function setUp()
     {
         parent::setUp();
 
         $configuration_file = [
-            'bypass'    => false,
-            'default'   => 'AwsS3',
-            'url'       => 'https://s3.amazonaws.com',
+            'bypass' => false,
+            'default' => 'AwsS3',
+            'url' => 'https://s3.amazonaws.com',
             'threshold' => 10,
             'providers' => [
                 'aws' => [
                     's3' => [
-                        'region'  => 'rrrrrrrrrrrgggggggggnnnnn',
+                        'region' => 'rrrrrrrrrrrgggggggggnnnnn',
                         'version' => 'vvvvvvvvssssssssssnnnnnnn',
-                        'buckets'     => [
+                        'buckets' => [
                             'bbbuuuucccctttt' => '*',
                         ],
-                        'acl'         => 'public-read',
-                        'cloudfront'  => [
-                            'use'     => false,
+                        'acl' => 'public-read',
+                        'cloudfront' => [
+                            'use' => false,
                             'cdn_url' => '',
                         ],
-                        'version'     => '1'
+                        'version' => '1',
                     ],
                 ],
             ],
-            'include'   => [
-                'directories' => [ __DIR__ ],
-                'extensions'  => [ ],
-                'patterns'    => [ ],
+            'include' => [
+                'directories' => [__DIR__],
+                'extensions' => [],
+                'patterns' => [],
             ],
-            'exclude'   => [
-                'directories' => [ ],
-                'files'       => [ ],
-                'extensions'  => [ ],
-                'patterns'    => [ ],
-                'hidden'      => true,
+            'exclude' => [
+                'directories' => [],
+                'files' => [],
+                'extensions' => [],
+                'patterns' => [],
+                'hidden' => true,
             ],
         ];
 
         $this->asset_path = 'foo/bar.php';
-        $this->path_path  = 'public/foo/bar.php';
-        $this->asset_url  = 'https://bucket.s3.amazonaws.com/public/foo/bar.php';
+        $this->path_path = 'public/foo/bar.php';
+        $this->asset_url = 'https://bucket.s3.amazonaws.com/public/foo/bar.php';
 
         $this->provider = M::mock('Vinelab\Cdn\Providers\AwsS3Provider');
 
@@ -67,7 +67,7 @@ class CdnFacadeTest extends TestCase
         $this->helper->shouldReceive('cleanPath')->andReturn($this->asset_path);
         $this->helper->shouldReceive('startsWith')->andReturn(true);
 
-        $this->validator = new \Vinelab\Cdn\Validators\CdnFacadeValidator;
+        $this->validator = new \Vinelab\Cdn\Validators\CdnFacadeValidator();
 
         $this->facade = new \Vinelab\Cdn\CdnFacade(
             $this->provider_factory, $this->helper, $this->validator);
@@ -106,7 +106,6 @@ class CdnFacadeTest extends TestCase
      */
     public function testUrlGeneratorThrowsException()
     {
-        $this->invokeMethod($this->facade, 'generateUrl', array( null, null ));
+        $this->invokeMethod($this->facade, 'generateUrl', array(null, null));
     }
-
 }

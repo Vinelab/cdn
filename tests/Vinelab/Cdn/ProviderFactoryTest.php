@@ -1,24 +1,23 @@
 <?php
+
 namespace Vinelab\Cdn\Tests;
 
 use Mockery as M;
 
 /**
- * Class ProviderFactoryTest
+ * Class ProviderFactoryTest.
  *
  * @category Test
- * @package Vinelab\Cdn\Tests
+ *
  * @author  Mahmoud Zalt <mahmoud@vinelab.com>
  */
 class ProviderFactoryTest extends TestCase
 {
-
     public function setUp()
     {
         parent::setUp();
 
-        $this->provider_factory = new \Vinelab\Cdn\ProviderFactory;
-
+        $this->provider_factory = new \Vinelab\Cdn\ProviderFactory();
     }
 
     public function tearDown()
@@ -45,7 +44,6 @@ class ProviderFactoryTest extends TestCase
         assertEquals($provider, $m_aws_s3);
     }
 
-
     /**
      * @expectedException \Vinelab\Cdn\Exceptions\MissingConfigurationException
      */
@@ -59,5 +57,4 @@ class ProviderFactoryTest extends TestCase
 
         $this->provider_factory->create($configurations);
     }
-
 }

@@ -1,14 +1,14 @@
 <?php
+
 namespace Vinelab\Cdn\Contracts;
 
 /**
- * Interface AssetInterface
- * @package  Vinelab\Cdn\Contracts
+ * Interface AssetInterface.
+ *
  * @author   Mahmoud Zalt <mahmoud@vinelab.com>
  */
 interface AssetInterface
 {
-
     public function init($configurations);
 
     public function getIncludedDirectories();
@@ -30,5 +30,4 @@ interface AssetInterface
     public function getAssets();
 
     public function setAssets($assets);
-
-} 
+}

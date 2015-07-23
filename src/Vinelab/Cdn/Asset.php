@@ -1,4 +1,5 @@
 <?php
+
 namespace Vinelab\Cdn;
 
 use Vinelab\Cdn\Contracts\AssetInterface;
@@ -6,37 +7,36 @@ use Vinelab\Cdn\Contracts\AssetInterface;
 /**
  * Class Asset
  * Class Asset used to parse and hold all assets and
- * paths related data and configurations
+ * paths related data and configurations.
  *
  * @category DTO
- * @package Vinelab\Cdn
+ *
  * @author  Mahmoud Zalt <mahmoud@vinelab.com>
  */
 class Asset implements AssetInterface
 {
-
     /**
-     * default [include] configurations
+     * default [include] configurations.
      *
      * @var array
      */
     protected $default_include = [
         'directories' => ['public'],
-        'extensions'  => [],
-        'patterns'    => [],
+        'extensions' => [],
+        'patterns' => [],
     ];
 
     /**
-     * default [exclude] configurations
+     * default [exclude] configurations.
      *
      * @var array
      */
     protected $default_exclude = [
         'directories' => [],
-        'files'       => [],
-        'extensions'  => [],
-        'patterns'    => [],
-        'hidden'      => true,
+        'files' => [],
+        'extensions' => [],
+        'patterns' => [],
+        'hidden' => true,
     ];
 
     /**
@@ -92,7 +92,7 @@ class Asset implements AssetInterface
     public $assets;
 
     /**
-     * build a Asset object that contains the assets related configurations
+     * build a Asset object that contains the assets related configurations.
      *
      * @param array $configurations
      *
@@ -114,7 +114,6 @@ class Asset implements AssetInterface
 
         return $this;
     }
-
 
     /**
      * Check if the config file has any missed attribute, and if any attribute
@@ -210,5 +209,4 @@ class Asset implements AssetInterface
     {
         return $this->exclude_hidden;
     }
-
 }

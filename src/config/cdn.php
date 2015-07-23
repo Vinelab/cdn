@@ -23,7 +23,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | Here you may specify which of the CDN providers below you wish
-	| to use as your default provider for all CDN work.
+    | to use as your default provider for all CDN work.
     |
     | Supported provider: Amazon S3 (AwsS3)
     |
@@ -59,9 +59,9 @@ return [
     | CDN Supported Providers
     |--------------------------------------------------------------------------
     |
-	| Here are each of the CDN providers setup for your application.
-	| Of course, examples of configuring each provider platform that is
-	| supported by Laravel is shown below to make development simple.
+    | Here are each of the CDN providers setup for your application.
+    | Of course, examples of configuring each provider platform that is
+    | supported by Laravel is shown below to make development simple.
     |
     | Note: Credentials must be set in the .env file:
     |         AWS_ACCESS_KEY_ID
@@ -110,7 +110,7 @@ return [
                 | * Note: in case of multiple buckets remove the '*'
                 |
                 */
-                'buckets'       => [
+                'buckets' => [
 
                     'bucket-name' => '*',
                     // examples:
@@ -142,9 +142,9 @@ return [
                 | locations to achieve low latency and faster page load times.
                 |
                 */
-                'cloudfront'    => [
+                'cloudfront' => [
                     'use' => false,
-                    'cdn_url' => ''
+                    'cdn_url' => '',
                 ],
 
                 /*
@@ -155,7 +155,7 @@ return [
                 | Add metadata to each S3 file
                 |
                 */
-                'metadata' => [ ],
+                'metadata' => [],
 
                 /*
                 |--------------------------------------------------------------------------
@@ -165,7 +165,7 @@ return [
                 | Add expiry data to file
                 |
                 */
-                'expires' => gmdate("D, d M Y H:i:s T", strtotime("+5 years")),
+                'expires' => gmdate('D, d M Y H:i:s T', strtotime('+5 years')),
 
                 /*
                 |--------------------------------------------------------------------------
@@ -181,8 +181,6 @@ return [
 
         ],
 
-
-
     ],
     /*
     |--------------------------------------------------------------------------
@@ -195,10 +193,10 @@ return [
     | Enter the full paths of directories (starting from the application root).
     |
     */
-    'include'   => [
-        'directories' => [ 'public' ],
-        'extensions'  => [ ],
-        'patterns'    => [ ],
+    'include' => [
+        'directories' => ['public'],
+        'extensions' => [],
+        'patterns' => [],
     ],
 
     /*
@@ -212,12 +210,12 @@ return [
     | 'hidden' is a boolean to excludes "hidden" directories and files (starting with a dot)
     |
     */
-    'exclude'   => [
-        'directories' => [ ],
-        'files'       => [ ],
-        'extensions'  => [ ],
-        'patterns'    => [ ],
-        'hidden'      => true,
+    'exclude' => [
+        'directories' => [],
+        'files' => [],
+        'extensions' => [],
+        'patterns' => [],
+        'hidden' => true,
     ],
 
 ];

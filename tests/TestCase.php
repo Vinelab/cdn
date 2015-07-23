@@ -1,13 +1,14 @@
-<?php namespace Vinelab\Cdn\Tests;
+<?php
+
+namespace Vinelab\Cdn\tests;
 
 // requiring this file to reference assertions as global functions. (to skip the $this->)
 require_once 'vendor/phpunit/phpunit/src/Framework/Assert/Functions.php';
 
-use Mockery as M;
 use PHPUnit_Framework_TestCase as PHPUnit;
 
-class TestCase extends PHPUnit {
-
+class TestCase extends PHPUnit
+{
     public function __construct()
     {
         parent::__construct();
@@ -23,11 +24,10 @@ class TestCase extends PHPUnit {
         parent::tearDown();
     }
 
-
     /**
      * Call protected/private method of a class.
      *
-     * @param object &$object Instantiated object that we will run method on.
+     * @param object &$object    Instantiated object that we will run method on.
      * @param string $methodName Method name to call
      * @param array  $parameters Array of parameters to pass into method.
      *
@@ -41,5 +41,4 @@ class TestCase extends PHPUnit {
 
         return $method->invokeArgs($object, $parameters);
     }
-
 }

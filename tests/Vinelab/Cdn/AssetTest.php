@@ -1,23 +1,23 @@
 <?php
+
 namespace Vinelab\Cdn\Tests;
 
 use Mockery as M;
 
 /**
- * Class AssetTest
+ * Class AssetTest.
  *
  * @category Test
- * @package Vinelab\Cdn\Tests
+ *
  * @author  Mahmoud Zalt <mahmoud@vinelab.com>
  */
 class AssetTest extends TestCase
 {
-
     public function setUp()
     {
         parent::setUp();
 
-        $this->asset = new \Vinelab\Cdn\Asset;
+        $this->asset = new \Vinelab\Cdn\Asset();
     }
 
     public function tearDown()
@@ -159,5 +159,4 @@ class AssetTest extends TestCase
 
         assertEquals($result, $bol);
     }
-
 }

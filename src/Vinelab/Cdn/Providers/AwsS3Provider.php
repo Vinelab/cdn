@@ -1,4 +1,5 @@
 <?php
+
 namespace Vinelab\Cdn\Providers;
 
 use Aws\S3\BatchDelete;
@@ -11,7 +12,7 @@ use Vinelab\Cdn\Validators\Contracts\ProviderValidatorInterface;
 
 /**
  * Class AwsS3Provider
- * Amazon (AWS) S3
+ * Amazon (AWS) S3.
  *
  *
  * @category Driver
@@ -27,46 +28,44 @@ use Vinelab\Cdn\Validators\Contracts\ProviderValidatorInterface;
  * @property string  $cloudfront
  * @property string  $cloudfront_url
  *
- * @package  Vinelab\Cdn\Providers
  * @author   Mahmoud Zalt <mahmoud@vinelab.com>
  */
 class AwsS3Provider extends Provider implements ProviderInterface
 {
-
     /**
      * All the configurations needed by this class with the
-     * optional configurations default values
+     * optional configurations default values.
      *
      * @var array
      */
     protected $default = [
-        'url'       => null,
+        'url' => null,
         'threshold' => 10,
         'providers' => [
             'aws' => [
                 's3' => [
-                    'version'    => null,
-                    'region'     => null,
-                    'buckets'    => null,
-                    'acl'        => 'public-read',
+                    'version' => null,
+                    'region' => null,
+                    'buckets' => null,
+                    'acl' => 'public-read',
                     'cloudfront' => [
-                        'use'     => false,
+                        'use' => false,
                         'cdn_url' => null,
                     ],
-                ]
-            ]
+                ],
+            ],
         ],
     ];
 
     /**
-     * Required configurations (must exist in the config file)
+     * Required configurations (must exist in the config file).
      *
      * @var array
      */
     protected $rules = ['version', 'region', 'key', 'secret', 'buckets', 'url'];
 
     /**
-     * this array holds the parsed configuration to be used across the class
+     * this array holds the parsed configuration to be used across the class.
      *
      * @var Array
      */
@@ -114,7 +113,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
 
     /**
      * Read the configuration and prepare an array with the relevant configurations
-     * for the (AWS S3) provider. and return itself
+     * for the (AWS S3) provider. and return itself.
      *
      * @param $configurations
      *
@@ -127,13 +126,13 @@ class AwsS3Provider extends Provider implements ProviderInterface
         $this->default = array_merge($this->default, $configurations);
 
         $supplier = [
-            'provider_url'   => $this->default['url'],
-            'threshold'      => $this->default['threshold'],
-            'version'        => $this->default['providers']['aws']['s3']['version'],
-            'region'         => $this->default['providers']['aws']['s3']['region'],
-            'buckets'        => $this->default['providers']['aws']['s3']['buckets'],
-            'acl'            => $this->default['providers']['aws']['s3']['acl'],
-            'cloudfront'     => $this->default['providers']['aws']['s3']['cloudfront']['use'],
+            'provider_url' => $this->default['url'],
+            'threshold' => $this->default['threshold'],
+            'version' => $this->default['providers']['aws']['s3']['version'],
+            'region' => $this->default['providers']['aws']['s3']['region'],
+            'buckets' => $this->default['providers']['aws']['s3']['buckets'],
+            'acl' => $this->default['providers']['aws']['s3']['acl'],
+            'cloudfront' => $this->default['providers']['aws']['s3']['cloudfront']['use'],
             'cloudfront_url' => $this->default['providers']['aws']['s3']['cloudfront']['cdn_url'],
         ];
 
@@ -147,7 +146,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
 
     /**
      * Create an S3 client instance
-     * (Note: it will read the credentials form the .env file)
+     * (Note: it will read the credentials form the .env file).
      *
      * @return bool
      */
@@ -157,13 +156,11 @@ class AwsS3Provider extends Provider implements ProviderInterface
             // Instantiate an S3 client
             $this->setS3Client(new S3Client([
                         'version' => $this->supplier['version'],
-                        'region'  => $this->supplier['region'],
+                        'region' => $this->supplier['region'],
                     ]
                 )
             );
-
-        } catch(\Exception $e) {
-
+        } catch (\Exception $e) {
             return false;
         }
 
@@ -171,7 +168,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
     }
 
     /**
-     * Upload assets
+     * Upload assets.
      *
      * @param $assets
      *
@@ -191,29 +188,26 @@ class AwsS3Provider extends Provider implements ProviderInterface
 
         // upload each asset file to the CDN
         foreach ($assets as $file) {
-
             try {
                 $command = $this->s3_client->getCommand('putObject', [
 
                     // the bucket name
-                    'Bucket'       => $this->getBucket(),
+                    'Bucket' => $this->getBucket(),
                     // the path of the file on the server (CDN)
-                    'Key'          => str_replace('\\', '/', $file->getPathName()),
+                    'Key' => str_replace('\\', '/', $file->getPathName()),
                     // the path of the path locally
-                    'Body'         => fopen($file->getRealPath(), 'r'),
+                    'Body' => fopen($file->getRealPath(), 'r'),
                     // the permission of the file
 
-                    'ACL'          => $this->acl,
+                    'ACL' => $this->acl,
                     'CacheControl' => $this->default['providers']['aws']['s3']['cache-control'],
-                    'MetaData'     => $this->default['providers']['aws']['s3']['metadata'],
-                    "Expires"      => $this->default['providers']['aws']['s3']['expires']
+                    'MetaData' => $this->default['providers']['aws']['s3']['metadata'],
+                    'Expires' => $this->default['providers']['aws']['s3']['expires'],
                 ]);
 //                var_dump(get_class($command));exit();
                 $this->s3_client->execute($command);
-
-            } catch(S3Exception $e) {
-
-                $this->console->writeln("<fg=red>" . $e->getMessage() . "</fg=red>");
+            } catch (S3Exception $e) {
+                $this->console->writeln('<fg=red>'.$e->getMessage().'</fg=red>');
 
                 return false;
             }
@@ -226,7 +220,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
     }
 
     /**
-     * Empty bucket
+     * Empty bucket.
      *
      * @return bool
      */
@@ -248,12 +242,12 @@ class AwsS3Provider extends Provider implements ProviderInterface
             // Get the contents of the bucket for information purposes
             $contents = $this->s3_client->listObjects([
                 'Bucket' => $this->getBucket(),
-                'Key'    => ''
+                'Key' => '',
             ]);
 
             // Check if the bucket is already empty
             if (!$contents['Contents']) {
-                $this->console->writeln('<fg=green>The bucket ' . $this->getBucket() . ' is already empty.</fg=green>');
+                $this->console->writeln('<fg=green>The bucket '.$this->getBucket().' is already empty.</fg=green>');
 
                 return true;
             }
@@ -261,25 +255,24 @@ class AwsS3Provider extends Provider implements ProviderInterface
             // Empty out the bucket
             $empty = BatchDelete::fromListObjects($this->s3_client, [
                 'Bucket' => $this->getBucket(),
-                'Prefix' => null
+                'Prefix' => null,
             ]);
 
             $empty->delete();
-
-        } catch(S3Exception $e) {
-            $this->console->writeln("<fg=red>" . $e->getMessage() . "</fg=red>");
+        } catch (S3Exception $e) {
+            $this->console->writeln('<fg=red>'.$e->getMessage().'</fg=red>');
 
             return false;
         }
 
-        $this->console->writeln('<fg=green>The bucket ' . $this->getBucket() . ' is now empty.</fg=green>');
+        $this->console->writeln('<fg=green>The bucket '.$this->getBucket().' is now empty.</fg=green>');
 
         return true;
     }
 
     /**
      * This function will be called from the CdnFacade class when
-     * someone use this {{ Cdn::asset('') }} facade helper
+     * someone use this {{ Cdn::asset('') }} facade helper.
      *
      * @param $path
      *
@@ -290,15 +283,15 @@ class AwsS3Provider extends Provider implements ProviderInterface
         if ($this->getCloudFront() === true) {
             $url = $this->cdn_helper->parseUrl($this->getCloudFrontUrl());
 
-            return $url['scheme'] . '://' . $url['host'] . '/' . $path;
+            return $url['scheme'].'://'.$url['host'].'/'.$path;
         }
 
         $url = $this->cdn_helper->parseUrl($this->getUrl());
 
         $bucket = $this->getBucket();
-        $bucket = (!empty($bucket)) ? $bucket . '.' : '';
+        $bucket = (!empty($bucket)) ? $bucket.'.' : '';
 
-        return $url['scheme'] . '://' . $bucket . $url['host'] . '/' . $path;
+        return $url['scheme'].'://'.$bucket.$url['host'].'/'.$path;
     }
 
     /**
@@ -314,7 +307,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
      */
     public function getUrl()
     {
-        return rtrim($this->provider_url, "/") . '/';
+        return rtrim($this->provider_url, '/').'/';
     }
 
     /**
@@ -334,7 +327,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
      */
     public function getCloudFrontUrl()
     {
-        return rtrim($this->cloudfront_url, "/") . '/';
+        return rtrim($this->cloudfront_url, '/').'/';
     }
 
     /**
@@ -350,7 +343,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
         // Vinelab\Cdn\Providers\AwsS3Provider::$buckets has no effect
         $bucket = $this->buckets;
 
-        return rtrim(key($bucket), "/");
+        return rtrim(key($bucket), '/');
     }
 
     /**
@@ -362,5 +355,4 @@ class AwsS3Provider extends Provider implements ProviderInterface
     {
         return isset($this->supplier[$attr]) ? $this->supplier[$attr] : null;
     }
-
 }

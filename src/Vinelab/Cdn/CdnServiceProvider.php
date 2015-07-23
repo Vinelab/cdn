@@ -1,19 +1,19 @@
 <?php
+
 namespace Vinelab\Cdn;
 
 use Illuminate\Support\ServiceProvider;
 
 /**
- * Class CdnServiceProvider
+ * Class CdnServiceProvider.
  *
  * @category Service Provider
- * @package Vinelab\Cdn
+ *
  * @author  Mahmoud Zalt <mahmoud@vinelab.com>
  * @author  Abed Halawi <abed.halawi@vinelab.com>
  */
 class CdnServiceProvider extends ServiceProvider
 {
-
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -23,20 +23,16 @@ class CdnServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap the application events.
-     *
-     * @return void
      */
     public function boot()
     {
         $this->publishes([
-            __DIR__ . '/../../config/cdn.php' => config_path('cdn.php')
+            __DIR__.'/../../config/cdn.php' => config_path('cdn.php'),
         ]);
     }
 
     /**
      * Register the service provider.
-     *
-     * @return void
      */
     public function register()
     {
@@ -131,5 +127,4 @@ class CdnServiceProvider extends ServiceProvider
     {
         return array();
     }
-
 }

@@ -1,19 +1,19 @@
 <?php
+
 namespace Vinelab\Cdn\Tests;
 
 use Illuminate\Support\Collection;
 use Mockery as M;
 
 /**
- * Class FinderTest
+ * Class FinderTest.
  *
  * @category Test
- * @package Vinelab\Cdn\Tests
+ *
  * @author  Mahmoud Zalt <mahmoud@vinelab.com>
  */
 class FinderTest extends TestCase
 {
-
     public function setUp()
     {
         parent::setUp();
@@ -27,12 +27,12 @@ class FinderTest extends TestCase
 
     public function testReadReturnCorrectDataType()
     {
-        $asset_holder = new \Vinelab\Cdn\Asset;
+        $asset_holder = new \Vinelab\Cdn\Asset();
 
         $asset_holder->init(array(
             'include' => [
                 'directories' => [__DIR__],
-            ]
+            ],
         ));
 
         $console_output = M::mock('Symfony\Component\Console\Output\ConsoleOutput');
@@ -48,13 +48,12 @@ class FinderTest extends TestCase
         assertEquals($result, new Collection($result->all()));
     }
 
-
     /**
      * @expectedException \InvalidArgumentException
      */
     public function testReadThrowsException()
     {
-        $asset_holder = new \Vinelab\Cdn\Asset;
+        $asset_holder = new \Vinelab\Cdn\Asset();
 
         $asset_holder->init(array('include' => []));
 
@@ -65,7 +64,5 @@ class FinderTest extends TestCase
         $finder = new \Vinelab\Cdn\Finder($console_output);
 
         $finder->read($asset_holder);
-
     }
-
 }

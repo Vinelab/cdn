@@ -1,7 +1,7 @@
 <?php
+
 namespace Vinelab\Cdn;
 
-use File;
 use Illuminate\Support\Collection;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
@@ -9,15 +9,14 @@ use Vinelab\Cdn\Contracts\AssetInterface;
 use Vinelab\Cdn\Contracts\FinderInterface;
 
 /**
- * Class Finder
+ * Class Finder.
  *
  * @category Finder Helper
- * @package Vinelab\Cdn
+ *
  * @author  Mahmoud Zalt <mahmoud@vinelab.com>
  */
 class Finder extends SymfonyFinder implements FinderInterface
 {
-
     /**
      * @var \Symfony\Component\Console\Output\ConsoleOutput
      */
@@ -33,11 +32,10 @@ class Finder extends SymfonyFinder implements FinderInterface
         parent::__construct();
     }
 
-
     /**
      * return a collection of arrays of assets paths found
      * in the included directories, except all ignored
-     * (directories, patterns, extensions and files)
+     * (directories, patterns, extensions and files).
      *
      * @param AssetInterface $asset_holder
      *
@@ -45,11 +43,11 @@ class Finder extends SymfonyFinder implements FinderInterface
      */
     public function read(AssetInterface $asset_holder)
     {
-        /**
+        /*
          * add the included directories and files
          */
         $this->includeThis($asset_holder);
-        /**
+        /*
          * exclude the ignored directories and files
          */
         $this->excludeThis($asset_holder);
@@ -61,7 +59,7 @@ class Finder extends SymfonyFinder implements FinderInterface
         $assets = [];
         foreach ($this->files() as $file) {
             // user terminal message
-            $this->console->writeln('<fg=cyan>' . 'Path: ' . $file->getRealpath() . '</fg=cyan>');
+            $this->console->writeln('<fg=cyan>'.'Path: '.$file->getRealpath().'</fg=cyan>');
 
             $assets[] = $file;
         }
@@ -69,9 +67,8 @@ class Finder extends SymfonyFinder implements FinderInterface
         return new Collection($assets);
     }
 
-
     /**
-     * Add the included directories and files
+     * Add the included directories and files.
      *
      * @param AssetInterface $asset_holder
      */
@@ -83,7 +80,7 @@ class Finder extends SymfonyFinder implements FinderInterface
 
         // include files with this extensions
         foreach ($asset_holder->getIncludedExtensions() as $extension) {
-            $this->name('*' . $extension);
+            $this->name('*'.$extension);
         }
 
         // include patterns
@@ -96,7 +93,7 @@ class Finder extends SymfonyFinder implements FinderInterface
     }
 
     /**
-     * exclude the ignored directories and files
+     * exclude the ignored directories and files.
      *
      * @param AssetInterface $asset_holder
      */
@@ -114,7 +111,7 @@ class Finder extends SymfonyFinder implements FinderInterface
         $excluded_extensions = $asset_holder->getExcludedExtensions();
         if (!empty($excluded_extensions)) {
             foreach ($asset_holder->getExcludedExtensions() as $extension) {
-                $this->notName('*' . $extension);
+                $this->notName('*'.$extension);
             }
         }
 
@@ -123,5 +120,4 @@ class Finder extends SymfonyFinder implements FinderInterface
             $this->notName($pattern);
         }
     }
-
 }

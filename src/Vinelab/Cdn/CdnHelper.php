@@ -1,4 +1,5 @@
 <?php
+
 namespace Vinelab\Cdn;
 
 use Illuminate\Config\Repository;
@@ -8,17 +9,16 @@ use Vinelab\Cdn\Exceptions\MissingConfigurationFileException;
 
 /**
  * Class CdnHelper
- * Helper class containing shared functions
+ * Helper class containing shared functions.
  *
  * @category General Helper
- * @package Vinelab\Cdn
+ *
  * @author  Mahmoud Zalt <mahmoud@vinelab.com>
  */
 class CdnHelper implements CdnHelperInterface
 {
-
     /**
-     * An object of the 'Repository' class that allows reading the laravel config files
+     * An object of the 'Repository' class that allows reading the laravel config files.
      *
      * @var \Illuminate\Config\Repository
      */
@@ -34,9 +34,10 @@ class CdnHelper implements CdnHelperInterface
 
     /**
      * Check if the config file exist and return it or
-     * throw an exception
+     * throw an exception.
      *
      * @return array
+     *
      * @throws Exceptions\MissingConfigurationFileException
      */
     public function getConfigurations()
@@ -50,9 +51,8 @@ class CdnHelper implements CdnHelperInterface
         return $configurations;
     }
 
-
     /**
-     * Checks for any required configuration is missed
+     * Checks for any required configuration is missed.
      *
      * @param $configuration
      * @param $required
@@ -64,23 +64,20 @@ class CdnHelper implements CdnHelperInterface
         // search for any null or empty field to throw an exception
         $missing = '';
         foreach ($configuration as $key => $value) {
-
             if (in_array($key, $required) &&
                 (empty($value) || $value == null || $value == '')
             ) {
-                $missing .= ' ' . $key;
+                $missing .= ' '.$key;
             }
         }
 
-
         if ($missing) {
-            throw new MissingConfigurationException("Missed Configuration:" . $missing);
+            throw new MissingConfigurationException('Missed Configuration:'.$missing);
         }
-
     }
 
     /**
-     * Take url as string and return it parsed object
+     * Take url as string and return it parsed object.
      *
      * @param $url
      *
@@ -92,7 +89,7 @@ class CdnHelper implements CdnHelperInterface
     }
 
     /**
-     * check if a string starts with a string
+     * check if a string starts with a string.
      *
      * @param $with
      * @param $str
@@ -105,7 +102,7 @@ class CdnHelper implements CdnHelperInterface
     }
 
     /**
-     * remove any extra slashes '/' from the path
+     * remove any extra slashes '/' from the path.
      *
      * @param $path
      *
@@ -115,5 +112,4 @@ class CdnHelper implements CdnHelperInterface
     {
         return rtrim(ltrim($path, '/'), '/');
     }
-
 }

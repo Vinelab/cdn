@@ -1,19 +1,19 @@
 <?php
+
 namespace Vinelab\Cdn\Tests;
 
 use Illuminate\Support\Collection;
 use Mockery as M;
 
 /**
- * Class CdnTest
+ * Class CdnTest.
  *
  * @category Test
- * @package Vinelab\Cdn\Tests
+ *
  * @author  Mahmoud Zalt <mahmoud@vinelab.com>
  */
 class CdnTest extends TestCase
 {
-
     public function setUp()
     {
         parent::setUp();
@@ -38,13 +38,13 @@ class CdnTest extends TestCase
 
         $this->m_asset->shouldReceive('getAssets')
             ->once()
-            ->andReturn(New Collection());
+            ->andReturn(new Collection());
 
         $this->m_finder = M::mock('Vinelab\Cdn\Contracts\FinderInterface');
         $this->m_finder->shouldReceive('read')
             ->with($this->m_asset)
             ->once()
-            ->andReturn(New Collection());
+            ->andReturn(new Collection());
 
         $this->m_provider = M::mock('Vinelab\Cdn\Providers\Provider');
         $this->m_provider->shouldReceive('upload')
@@ -73,49 +73,49 @@ class CdnTest extends TestCase
     }
 
     /**
-     * Integration Test
+     * Integration Test.
      */
     public function testPushCommand()
     {
         $configuration_file = [
-            'bypass'    => false,
-            'default'   => 'AwsS3',
-            'url'       => 'https://s3.amazonaws.com',
+            'bypass' => false,
+            'default' => 'AwsS3',
+            'url' => 'https://s3.amazonaws.com',
             'threshold' => 10,
             'providers' => [
                 'aws' => [
                     's3' => [
-                        'region'  => 'us-standard',
+                        'region' => 'us-standard',
                         'version' => 'latest',
-                        'buckets'     => [
+                        'buckets' => [
                             'my-bucket-name' => '*',
                         ],
-                        'acl'         => 'public-read',
-                        'cloudfront'  => [
-                            'use'     => false,
+                        'acl' => 'public-read',
+                        'cloudfront' => [
+                            'use' => false,
                             'cdn_url' => '',
                         ],
                         'metadata' => [],
 
-                        'expires' => gmdate("D, d M Y H:i:s T", strtotime("+5 years")),
+                        'expires' => gmdate('D, d M Y H:i:s T', strtotime('+5 years')),
 
                         'cache-control' => 'max-age=2628000',
-                        
-                        'version' => '',
+
+'version' => '',
                     ],
                 ],
             ],
-            'include'   => [
+            'include' => [
                 'directories' => [__DIR__],
-                'extensions'  => [],
-                'patterns'    => [],
+                'extensions' => [],
+                'patterns' => [],
             ],
-            'exclude'   => [
+            'exclude' => [
                 'directories' => [],
-                'files'       => [],
-                'extensions'  => [],
-                'patterns'    => [],
-                'hidden'      => true,
+                'files' => [],
+                'extensions' => [],
+                'patterns' => [],
+                'hidden' => true,
             ],
         ];
 
@@ -150,14 +150,13 @@ class CdnTest extends TestCase
         $m_spl_file->shouldReceive('getPathname')
             ->andReturn('vinelab/cdn/tests/Vinelab/Cdn/AwsS3ProviderTest.php');
         $m_spl_file->shouldReceive('getRealPath')
-            ->andReturn(__DIR__ . '/AwsS3ProviderTest.php');
+            ->andReturn(__DIR__.'/AwsS3ProviderTest.php');
 
         // partial mock
-        $p_aws_s3_provider = M::mock('\Vinelab\Cdn\Providers\AwsS3Provider[connect]', array
-        (
+        $p_aws_s3_provider = M::mock('\Vinelab\Cdn\Providers\AwsS3Provider[connect]', array(
             $m_console,
             $m_validator,
-            $m_helper
+            $m_helper,
         ));
 
         $m_s3 = M::mock('Aws\S3\S3Client');
@@ -187,5 +186,4 @@ class CdnTest extends TestCase
 
         assertEquals($result, true);
     }
-
 }

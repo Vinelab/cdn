@@ -1,14 +1,14 @@
 <?php
+
 namespace Vinelab\Cdn\Providers\Contracts;
 
 /**
- * Interface ProviderInterface
- * @package  Vinelab\Cdn\Providers\Contracts
+ * Interface ProviderInterface.
+ *
  * @author   Mahmoud Zalt <mahmoud@vinelab.com>
  */
 interface ProviderInterface
 {
-
     public function init($configurations);
 
     public function upload($assets);
@@ -26,5 +26,4 @@ interface ProviderInterface
     public function getBucket();
 
     public function setS3Client($s3_client);
-
-} 
+}
