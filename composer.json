@@ -20,7 +20,7 @@
         }
     ],
     "require": {
-        "php": ">=5.5.0",
+        "php": ">=5.5.9",
         "illuminate/support": "~5.0",
         "illuminate/config": "~5.0",
         "symfony/finder": "2.7.*",
