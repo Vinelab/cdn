@@ -49,6 +49,9 @@ class AwsS3ProviderTest extends TestCase
         $m_command = M::mock('Aws\Command');
         $this->m_s3->shouldReceive('getCommand')
             ->andReturn($m_command);
+        $m_command1 = M::mock('Aws\Result')->shouldIgnoreMissing();
+        $this->m_s3->shouldReceive('listObjects')
+            ->andReturn($m_command1);
         $this->m_s3->shouldReceive('execute');
         $this->p_awsS3Provider->setS3Client($this->m_s3);
 

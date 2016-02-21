@@ -5,6 +5,7 @@ namespace Vinelab\Cdn\Providers;
 use Aws\S3\BatchDelete;
 use Aws\S3\Exception\S3Exception;
 use Aws\S3\S3Client;
+use Illuminate\Support\Collection;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Vinelab\Cdn\Contracts\CdnHelperInterface;
 use Vinelab\Cdn\Providers\Contracts\ProviderInterface;
@@ -184,37 +185,48 @@ class AwsS3Provider extends Provider implements ProviderInterface
         }
 
         // user terminal message
-        $this->console->writeln('<fg=yellow>Uploading in progress...</fg=yellow>');
+        $this->console->writeln('<fg=yellow>Comparing local files and bucket...</fg=yellow>');
+
+        $assets = $this->getFilesAlreadyOnBucket($assets);
 
         // upload each asset file to the CDN
-        foreach ($assets as $file) {
-            try {
-                $command = $this->s3_client->getCommand('putObject', [
+        if(count($assets) > 0) {
+            $this->console->writeln('<fg=yellow>Upload in progress......</fg=yellow>');
+            foreach ($assets as $file) {
+                try {
+                    $this->console->writeln('<fg=cyan>'.'Uploading file path: '.$file->getRealpath().'</fg=cyan>');
+                    $command = $this->s3_client->getCommand('putObject', [
 
-                    // the bucket name
-                    'Bucket' => $this->getBucket(),
-                    // the path of the file on the server (CDN)
-                    'Key' => str_replace('\\', '/', $file->getPathName()),
-                    // the path of the path locally
-                    'Body' => fopen($file->getRealPath(), 'r'),
-                    // the permission of the file
+                        // the bucket name
+                        'Bucket' => $this->getBucket(),
+                        // the path of the file on the server (CDN)
+                        'Key' => str_replace('\\', '/', $file->getPathName()),
+                        // the path of the path locally
+                        'Body' => fopen($file->getRealPath(), 'r'),
+                        // the permission of the file
 
-                    'ACL' => $this->acl,
-                    'CacheControl' => $this->default['providers']['aws']['s3']['cache-control'],
-                    'MetaData' => $this->default['providers']['aws']['s3']['metadata'],
-                    'Expires' => $this->default['providers']['aws']['s3']['expires'],
-                ]);
+                        'ACL' => $this->acl,
+                        'CacheControl' => $this->default['providers']['aws']['s3']['cache-control'],
+                        'MetaData' => $this->default['providers']['aws']['s3']['metadata'],
+                        'Expires' => $this->default['providers']['aws']['s3']['expires'],
+                    ]);
 //                var_dump(get_class($command));exit();
-                $this->s3_client->execute($command);
-            } catch (S3Exception $e) {
-                $this->console->writeln('<fg=red>'.$e->getMessage().'</fg=red>');
 
-                return false;
+
+                    $this->s3_client->execute($command);
+                } catch (S3Exception $e) {
+                    $this->console->writeln('<fg=red>'.$e->getMessage().'</fg=red>');
+
+                    return false;
+                }
             }
-        }
 
-        // user terminal message
-        $this->console->writeln('<fg=green>Upload completed successfully.</fg=green>');
+            // user terminal message
+            $this->console->writeln('<fg=green>Upload completed successfully.</fg=green>');
+        } else {
+            // user terminal message
+            $this->console->writeln('<fg=yellow>No new files to upload.</fg=yellow>');
+        }
 
         return true;
     }
@@ -354,5 +366,43 @@ class AwsS3Provider extends Provider implements ProviderInterface
     public function __get($attr)
     {
         return isset($this->supplier[$attr]) ? $this->supplier[$attr] : null;
+    }
+
+    /**
+     * @param $assets
+     * @return mixed
+     */
+    private function getFilesAlreadyOnBucket($assets)
+    {
+        $filesOnAWS = new Collection([]);
+
+        $files = $this->s3_client->listObjects([
+            'Bucket' => $this->getBucket(),
+        ]);
+
+        if (!$files['Contents']) {
+            //no files on bucket. lets upload everything found.
+            return $assets;
+        }
+
+        foreach($files['Contents'] as $file) {
+            $a = ['Key' => $file['Key'], "LastModified" => $file['LastModified']->getTimestamp(), 'Size' => $file['Size']];
+            $filesOnAWS->put($file['Key'], $a);
+        }
+
+        $assets->transform(function($item, $key) use(&$filesOnAWS) {
+            $fileOnAWS = $filesOnAWS->get(str_replace('\\', '/', $item->getPathName()));
+
+            //select to upload files that are different in size AND last modified time.
+            if(!($item->getMTime() === $fileOnAWS['LastModified']) && !($item->getSize() === $fileOnAWS['Size'])) {
+                return $item;
+            }
+        });
+
+        $assets = $assets->reject(function($item) {
+            return $item === null;
+        });
+
+        return $assets;
     }
 }
