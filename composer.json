@@ -15,6 +15,10 @@
     ],
     "authors": [
         {
+            "name": "Abed Halawi",
+            "email": "abed.halawi@vinelab.com"
+        },
+        {
             "name": "Mahmoud Zalt",
             "email": "mahmoud@vinelab.com"
         }
@@ -23,8 +27,8 @@
         "php": ">=5.5.0",
         "illuminate/support": "~5.0",
         "illuminate/config": "~5.0",
-        "symfony/finder": "2.7.*",
-        "symfony/console": "2.7.*",
+        "symfony/finder": "2.*",
+        "symfony/console": "2.*",
         "aws/aws-sdk-php": "~3.0"
     },
     "require-dev": {
