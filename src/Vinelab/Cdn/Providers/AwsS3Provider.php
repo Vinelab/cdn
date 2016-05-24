@@ -28,6 +28,7 @@ use Vinelab\Cdn\Validators\Contracts\ProviderValidatorInterface;
  * @property string  $acl
  * @property string  $cloudfront
  * @property string  $cloudfront_url
+ * @property string  $http
  *
  * @author   Mahmoud Zalt <mahmoud@vinelab.com>
  */
@@ -48,6 +49,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
                     'version' => null,
                     'region' => null,
                     'buckets' => null,
+                    'http' => null,
                     'acl' => 'public-read',
                     'cloudfront' => [
                         'use' => false,
@@ -158,6 +160,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
             $this->setS3Client(new S3Client([
                         'version' => $this->supplier['version'],
                         'region' => $this->supplier['region'],
+                        'http'    => $this->supplier['http']
                     ]
                 )
             );

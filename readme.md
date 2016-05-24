@@ -81,6 +81,7 @@ You can find it at `config/cdn.php`
         'version'   => 'latest',
         'region'    => '',
 
+
         'buckets' => [
             'my-backup-bucket' => '*',
         ]
@@ -136,6 +137,14 @@ Set the CDN URL:
 
 ```php
 'url' => 'https://s3.amazonaws.com',
+```
+
+##### HTTP
+
+Set the HTTP parameters:
+
+```php
+'http' => '['verify' => path-to-your-pem-certificate-file]',
 ```
 
 ##### Bypass
