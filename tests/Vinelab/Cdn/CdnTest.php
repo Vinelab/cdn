@@ -87,6 +87,7 @@ class CdnTest extends TestCase
                     's3' => [
                         'region' => 'us-standard',
                         'version' => 'latest',
+                        'http' => null,
                         'buckets' => [
                             'my-bucket-name' => '*',
                         ],
@@ -100,8 +101,6 @@ class CdnTest extends TestCase
                         'expires' => gmdate('D, d M Y H:i:s T', strtotime('+5 years')),
 
                         'cache-control' => 'max-age=2628000',
-
-'version' => '',
                     ],
                 ],
             ],
