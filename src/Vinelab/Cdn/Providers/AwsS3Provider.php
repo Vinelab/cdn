@@ -126,7 +126,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
     {
         // merge the received config array with the default configurations array to
         // fill missed keys with null or default values.
-        $this->default = array_merge($this->default, $configurations);
+        $this->default = array_replace_recursive($this->default, $configurations);
 
         $supplier = [
             'provider_url' => $this->default['url'],
