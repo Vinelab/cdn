@@ -211,7 +211,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
 
                         'ACL' => $this->acl,
                         'CacheControl' => $this->default['providers']['aws']['s3']['cache-control'],
-                        'MetaData' => $this->default['providers']['aws']['s3']['metadata'],
+                        'Metadata' => $this->default['providers']['aws']['s3']['metadata'],
                         'Expires' => $this->default['providers']['aws']['s3']['expires'],
                     ]);
 //                var_dump(get_class($command));exit();
