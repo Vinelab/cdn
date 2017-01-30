@@ -91,24 +91,22 @@ class CdnServiceProvider extends ServiceProvider
 
         // register the commands:
         //-----------------------
-        $this->app['cdn.push'] = $this->app->share(function () {
-            return $this->app->make('Vinelab\Cdn\Commands\PushCommand');
+        $this->app->singleton('cdn.push', function ($app) {
+            return $app->make('Vinelab\Cdn\Commands\PushCommand');
         });
-
         $this->commands('cdn.push');
 
-        $this->app['cdn.empty'] = $this->app->share(function () {
-            return $this->app->make('Vinelab\Cdn\Commands\EmptyCommand');
+        $this->app->singleton('cdn.empty', function ($app) {
+            return $app->make('Vinelab\Cdn\Commands\EmptyCommand');
         });
-
         $this->commands('cdn.empty');
 
         // facade bindings:
         //-----------------
 
         // Register 'CdnFacade' instance container to our CdnFacade object
-        $this->app['cdn'] = $this->app->share(function () {
-            return $this->app->make('Vinelab\Cdn\CdnFacade');
+        $this->app->singleton('cdn', function ($app) {
+            return $app->make('Vinelab\Cdn\CdnFacade');
         });
 
         // Shortcut so developers don't need to add an Alias in app/config/app.php
